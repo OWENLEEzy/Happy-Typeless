@@ -4,13 +4,15 @@ from datetime import datetime
 from src.config import get_settings
 from src.models.analysis import BadgeInfo, OverviewStats
 from src.models.transcription import TranscriptionList
+from src.translations import I18n
 
 
 class OverviewService:
     """Service for calculating overview statistics"""
 
-    def __init__(self, data: TranscriptionList):
+    def __init__(self, data: TranscriptionList, lang: str = "en"):
         self.data = data
+        self.i18n = I18n(lang)
 
     def get_stats(self) -> OverviewStats:
         """Calculate overview statistics"""
@@ -50,18 +52,20 @@ class OverviewService:
     def _calculate_badge(self, total_words: int) -> BadgeInfo:
         """Calculate achievement badge based on total word count"""
         levels = get_settings().thresholds.badge_levels
-        for threshold, name, icon, color in levels:
+        for threshold, name_key, icon, color in levels:
             if total_words < threshold:
                 return BadgeInfo(
                     icon=icon,
-                    name=name,
+                    name=self.i18n.t(name_key),
                     color=color,
                     threshold=threshold,
                     progress=total_words / threshold,
                 )
         # All levels surpassed - show highest badge at 100%
-        threshold, name, icon, color = levels[-1]
-        return BadgeInfo(icon=icon, name=name, color=color, threshold=threshold, progress=1.0)
+        threshold, name_key, icon, color = levels[-1]
+        return BadgeInfo(
+            icon=icon, name=self.i18n.t(name_key), color=color, threshold=threshold, progress=1.0
+        )
 
     def _empty_stats(self) -> OverviewStats:
         """Return empty stats"""

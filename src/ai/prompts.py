@@ -1,3 +1,5 @@
+MAX_PROMPT_CONTENT_LENGTH = 2000  # ~1000 tokens for Chinese text
+
 ANALYSIS_PROMPT = """You are a professional voice transcription analyst. Analyze the following voice content and return structured JSON data.
 
 Voice content:
@@ -40,15 +42,31 @@ Return ONLY the following JSON (no other text):
 """
 
 
-def build_prompt(content: str, timestamp: int, app_name: str | None = None) -> str:
-    """Build analysis prompt from transcription data."""
+def build_prompt(
+    content: str,
+    timestamp: int,
+    app_name: str | None = None,
+    lang: str = "en",
+) -> str:
+    """Build analysis prompt from transcription data.
+
+    Args:
+        content: Voice transcription text.
+        timestamp: Unix timestamp of the recording.
+        app_name: Name of the app active during recording.
+        lang: Report language ('zh' or 'en'). Controls topic label language.
+    """
     from datetime import UTC, datetime
 
     dt = datetime.fromtimestamp(timestamp, tz=UTC).astimezone()
-    truncated = content[:2000] if len(content) > 2000 else content  # ~1000 tokens for Chinese
-    return ANALYSIS_PROMPT.format(
+    truncated = content[:MAX_PROMPT_CONTENT_LENGTH]
+    lang_instruction = (
+        "Note: Use Chinese (中文) for all topic labels in the topics array." if lang == "zh" else ""
+    )
+    prompt = ANALYSIS_PROMPT.format(
         content=truncated,
         time=dt.strftime("%H:%M"),
         date=dt.strftime("%Y-%m-%d"),
         app=app_name or "Unknown",
     )
+    return f"{prompt}\n{lang_instruction}".strip() if lang_instruction else prompt

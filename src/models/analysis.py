@@ -108,17 +108,6 @@ class TimeTrends(BaseModel):
     top_dates: list[DateEntry]
 
 
-class TopicDistribution(BaseModel):
-    """Topic distribution"""
-
-    ai: int
-    design: int
-    daily: int
-    ai_ratio: float
-    design_ratio: float
-    daily_ratio: float
-
-
 class SentenceLengthDistribution(BaseModel):
     """Sentence length distribution"""
 
@@ -143,7 +132,9 @@ class LongestYap(BaseModel):
 class ContentAnalysis(BaseModel):
     """Content deep dive analysis result"""
 
-    topic_distribution: TopicDistribution
     sentence_length_distribution: SentenceLengthDistribution
     longest_yap: LongestYap
     word_cloud: list[WordFrequency] = []
+    topic_distribution: dict[str, int] = {}  # Topic name -> count
+    word_categories: dict[str, int] = {}  # filler, connector, content word counts
+    top_phrases: list[dict] = []  # Top recurring phrases

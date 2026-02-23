@@ -1,21 +1,15 @@
-# tests/unit/nlp/strategies/test_segment_zh.py
-from src.nlp.strategies.segment_zh import ChineseSegmentStrategy
+# tests/unit/nlp/strategies/test_segment_en.py
+from src.nlp.strategies.segment_en import EnglishSegmentStrategy
 
 
-def test_chinese_segment():
-    strategy = ChineseSegmentStrategy(stop_words={"的", "了", "是", "在", "我"})
+def test_english_segment_fallback():
+    strategy = EnglishSegmentStrategy(
+        stop_words={"the", "a", "an"},
+        spacy_model=None,  # Force fallback
+    )
 
-    result = strategy.segment("我测试一下分词功能")
+    result = strategy.segment("This is a test")
 
-    assert "我" not in result  # Stop word filtered
-    assert "测试" in result
-    assert "分词" in result
-    assert "功能" in result
-
-
-def test_chinese_is_question():
-    strategy = ChineseSegmentStrategy(stop_words=set())
-
-    assert strategy.is_question("这是什么？") is True
-    assert strategy.is_question("What is this?") is True
-    assert strategy.is_question("这是一个陈述句") is False
+    assert "the" not in result
+    assert "a" not in result
+    assert "test" in result

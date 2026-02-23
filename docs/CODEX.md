@@ -314,10 +314,26 @@ config = ModelConfig(
     model_name="glm-4-flash",
     api_key="your_key",
 )
-analyzer = AIAnalyzer(primary=config)
+analyzer = AIAnalyzer(
+    primary=config,
+    lang="zh",  # "zh" or "en" — controls topic label language in AI prompt
+)
 results = analyzer.analyze(transcription_list)
 # returns dict[str, AITranscriptionAnalysis]
 ```
+
+### Lang Parameter Threading
+
+`lang` flows top-down through the AI stack:
+
+```
+cli.py (--lang / settings.report_lang)
+  → AIAnalyzer(lang=)
+    → AIClient(lang=)
+      → build_prompt(lang=)
+```
+
+When `lang="zh"`, `build_prompt()` appends a Chinese-language instruction to the prompt so the model generates `topics` in Chinese directly.  A static `_ENUM_ZH` dict in `BrutalistHTMLGenerator` provides a fallback translation for any cached English topics.
 
 ### AITranscriptionAnalysis Fields
 
@@ -387,6 +403,32 @@ class RepositoryFactory:
 **File**: `src/config.py`
 
 ```python
+class ThresholdConfig(BaseModel):
+    """All numeric threshold values in one place"""
+    # Sentence length
+    fragmentation_high: int = 70
+    fragmentation_low: int = 40
+    short_sentence: int = 20
+    long_sentence: int = 100
+    # Time periods
+    late_night_hours: list[int]  # 23:00-06:59
+    work_hours: list[int]        # 09:00-18:59
+    # Personality tag thresholds
+    conscientiousness_high: float = 0.6
+    conscientiousness_low: float = 0.4
+    question_ratio_high: int = 30   # % above -> "questioner"
+    command_ratio_min: int = 20     # % above -> "commander"
+    neg_ratio_low: int = 10         # % below -> "stable"
+    neg_ratio_high: int = 30        # % above -> "emotional"
+    work_efficiency_high: int = 70  # % above -> "workaholic"
+    work_efficiency_low: int = 30   # % below -> "lifestyle"
+    # Efficiency score thresholds
+    late_night_score_zero_at: float = 0.5  # ratio at which sleep score hits 0
+    work_efficiency_full_at: float = 0.6   # ratio at which work score hits 100
+    focus_min_seconds: float = 10.0        # below -> partial focus score
+    focus_optimal_seconds: float = 30.0    # above -> score starts declining
+
+
 class Settings(BaseSettings):
     """Global configuration using pydantic-settings"""
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
@@ -402,13 +444,21 @@ class Settings(BaseSettings):
     ai_primary_model: str = "glm-4-flash"
     ai_api_key: str = ""
     ai_fallback_provider: str = "deepseek"
+    ai_fallback_model: str = "deepseek-v3"
     ai_fallback_api_key: str = ""
     ai_max_cost_per_run: float = 10.0
     ai_concurrency: int = 20
+    ai_cache_save_frequency: int = 20  # save cache every N new entries
 
     # Report configuration
     report_lang: str = "zh"
     auto_open_report: bool = True
+
+    # Computed path properties (derived from base dirs, not overridable via env)
+    cache_path: Path          # → data/ai_cache.json
+    cost_log_path: Path       # → data/cost_log.json
+    temp_export_path: Path    # → data/raw/temp_export.json
+    default_report_path: Path # → output/personal/Typeless_Report.html
 
 def get_settings() -> Settings:
     """Get global settings singleton"""
@@ -431,7 +481,7 @@ app.add_typer(cache_app, name="cache")
 @app.command()
 def analyze(
     input: Path = typer.Option(None, "-i", "--input"),
-    output: Path = typer.Option("output/personal/Typeless_Report.html", "-o", "--output"),
+    output: Path = typer.Option(None, "-o", "--output"),  # default: settings.default_report_path
     lang: str = typer.Option(None, "-l", "--lang"),
     mock: bool = typer.Option(False, "-m", "--mock"),
     mock_count: int = typer.Option(500, "--mock-count"),
@@ -538,5 +588,5 @@ generator.generate(result, "output/report.html")
 | Project | Value |
 |---------|-------|
 | **Branch** | `main` |
-| **Commit Hash** | `ac6f026110ed4dc79b6693874a3c4f53318c783d` |
-| **Short Hash** | `ac6f026` |
+| **Commit Hash** | `14da0e8613e00cdceb2caed736f18166afe26d30` |
+| **Short Hash** | `14da0e8` |

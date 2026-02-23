@@ -10,6 +10,3 @@ def test_segment_strategy_is_abstract():
 
 def test_segment_strategy_has_required_methods():
     assert hasattr(SegmentStrategy, "segment")
-    assert hasattr(SegmentStrategy, "is_question")
-    assert hasattr(SegmentStrategy, "is_stop_word")
-    assert hasattr(SegmentStrategy, "is_filler_word")

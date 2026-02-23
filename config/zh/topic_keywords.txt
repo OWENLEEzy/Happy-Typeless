@@ -1,0 +1,3 @@
+ai 人工智能 gpt chatgpt claude 大语言语言 llm openai anthropic machine learning 机器学习 深度学习 神经网络 模型 提示 嵌入 向量 rag 推理 训练 微调 token
+design 设计 ui ux figma sketch 原型 线框 颜色 排版 布局 组件 界面 品牌 风格 brutalist 粗野主义
+work 工作 meeting 会议 deadline 截止 project 项目 task 任务 client 客户 report 报告 presentation 演示 document 文档 email 邮件 schedule 日程 plan 计划

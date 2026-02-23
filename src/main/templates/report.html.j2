@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="{{ html_lang }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ t("html_title") }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        /* ── Design tokens (unchanged from original) ───────────────── */
+        :root {
+            --bg-primary:    #F4EFEA;
+            --bg-card:       #FFFFFF;
+            --bg-elevated:   #FAF9F6;
+            --bg-hover:      #F0EDE8;
+            --text-primary:  #2D2D2D;
+            --text-secondary:#6B6B6B;
+            --text-tertiary: #9B9B9B;
+            --border-default:#2D2D2D;
+            --border-subtle: #E5E5E5;
+            --accent-primary:#FFDE00;
+            --accent-secondary:#6FC2FF;
+            --accent-success:#00D26A;
+            --accent-warning:#FFAB00;
+            --accent-error:  #FF4D4D;
+            --accent-purple: #A855F7;
+            --accent-orange: #FF8C00;
+        }
+
+        body.theme-dark {
+            --bg-primary:    #121212;
+            --bg-card:       #1E1E1E;
+            --bg-elevated:   #2A2A2A;
+            --bg-hover:      #323232;
+            --text-primary:  #F4EFEA;
+            --text-secondary:#9B9B9B;
+            --text-tertiary: #5A5A5A;
+            --border-default:#6B6B6B;
+            --border-subtle: #3A3A3A;
+        }
+
+        /* ── Reset ─────────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.5;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ── Mono utility ───────────────────────────────────────────── */
+        .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+        /* ── Newspaper band grid (core layout primitive) ────────────── */
+        /* A band is a row of cells separated by 1px lines (gap = border color). */
+        .band {
+            display: grid;
+            background: var(--border-default);
+            gap: 1px;
+            margin-bottom: 1px;
+        }
+        .band-c1  { grid-template-columns: 1fr; }
+        .band-c2  { grid-template-columns: repeat(2, 1fr); }
+        .band-c3  { grid-template-columns: repeat(3, 1fr); }
+        .band-c4  { grid-template-columns: repeat(4, 1fr); }
+        .band-c6  { grid-template-columns: repeat(6, 1fr); }
+        .band-1-2 { grid-template-columns: 1fr 2fr; }
+        .band-2-1 { grid-template-columns: 2fr 1fr; }
+        .band-1-1-2 { grid-template-columns: 1fr 1fr 2fr; }
+        .band-3-1 { grid-template-columns: 3fr 1fr; }
+        .band-2-1-1 { grid-template-columns: 2fr 1fr 1fr; }
+
+        .cell {
+            background: var(--bg-card);
+            padding: 14px 16px;
+            min-width: 0;
+        }
+        .cell-sm { background: var(--bg-card); padding: 10px 14px; min-width: 0; }
+        .cell-lg { background: var(--bg-card); padding: 20px 24px; min-width: 0; }
+
+        /* Span helpers for band children */
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+        .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
+
+        /* ── Section header bar (inverted) ─────────────────────────── */
+        .band-hdr {
+            background: var(--border-default);
+            color: var(--bg-card);
+            padding: 5px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 1px;
+        }
+
+        /* ── Navigation ─────────────────────────────────────────────── */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            height: 46px;
+            background: var(--bg-primary);
+            border-bottom: 2px solid var(--border-default);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .nav-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border: 1px solid var(--border-default);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .nav-btn:hover { background: var(--text-primary); color: var(--bg-card); }
+
+        /* ── Page wrapper ───────────────────────────────────────────── */
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; }
+
+        /* ── Page header ────────────────────────────────────────────── */
+        .page-hdr {
+            padding: 28px 0 20px;
+            border-bottom: 2px solid var(--border-default);
+            margin-bottom: 0;
+        }
+        .page-hdr-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .page-hdr-title {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+        .page-hdr-range {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        .range-accent { color: var(--accent-primary); font-weight: 600; }
+
+        /* ── Tabs ───────────────────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-default);
+            margin-bottom: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 12px 18px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--text-primary); background: var(--bg-elevated); }
+        .tab-btn.active { color: var(--text-primary); border-bottom-color: var(--accent-primary); }
+        .tab-panel { display: none; padding-top: 1px; }
+        .tab-panel.active { display: block; }
+
+        /* ── Stat display ───────────────────────────────────────────── */
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+        .stat-num-lg { font-size: 56px; }
+        .stat-num-sm { font-size: 28px; }
+        .stat-lbl {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .stat-unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-left: 3px;
+        }
+
+        /* ── Progress bar ───────────────────────────────────────────── */
+        .bar-track { height: 4px; background: var(--bg-elevated); margin-top: 8px; }
+        .bar-fill { height: 100%; transition: width 0.6s; }
+
+        /* ── Badge ──────────────────────────────────────────────────── */
+        .badge-icon { font-size: 32px; margin-bottom: 6px; }
+        .badge-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .badge-prog {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--text-tertiary);
+            margin-top: 5px;
+        }
+
+        /* ── Sentence compare ───────────────────────────────────────── */
+        .sent-half {
+            padding: 14px;
+            text-align: center;
+            flex: 1;
+        }
+        .sent-half.q { border-right: 1px solid var(--border-default); }
+        .sent-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 0.9;
+        }
+        .sent-pct.q { color: var(--accent-purple); }
+        .sent-pct.s { color: var(--accent-success); }
+        .sent-type { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-top: 6px; }
+        .sent-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+
+        /* ── Emotion bar ────────────────────────────────────────────── */
+        .emo-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .emo-row:last-child { border-bottom: none; }
+        .emo-label { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; min-width: 112px; flex-shrink: 0; color: var(--text-secondary); white-space: nowrap; }
+        .emo-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 600;
+            width: 68px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .emo-track { flex: 1; height: 6px; background: var(--bg-elevated); }
+        .emo-fill { height: 100%; transition: width 0.6s; }
+        .emo-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); width: 40px; text-align: right; flex-shrink: 0; }
+
+        /* ── Personality tags ───────────────────────────────────────── */
+        .p-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border: 1px solid var(--border-default);
+            margin: 3px;
+            transition: all 0.15s;
+        }
+        .p-tag:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--accent-primary); }
+        .p-tag-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .p-tag-desc { font-size: 10px; color: var(--text-secondary); }
+
+        /* ── Efficiency scores ──────────────────────────────────────── */
+        .eff-cell { text-align: center; padding: 14px 10px; }
+        .eff-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1;
+            display: block;
+        }
+        .eff-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-top: 4px; }
+
+        /* ── Frag box ───────────────────────────────────────────────── */
+        .frag-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .frag-lv {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-warning);
+        }
+        .frag-meta { font-size: 10px; color: var(--text-secondary); }
+
+        /* ── Word cloud tags ────────────────────────────────────────── */
+        .w-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            margin: 2px;
+            border: 1px solid var(--border-default);
+            font-family: 'JetBrains Mono', monospace;
+            cursor: default;
+            transition: all 0.15s;
+        }
+        .w-tag:hover { background: var(--accent-primary); transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--border-default); }
+        .w-tag.hi { background: var(--accent-primary); border-color: var(--accent-primary); }
+        .text-xs  { font-size: 11px; }
+        .text-sm  { font-size: 12px; }
+        .text-base{ font-size: 13px; }
+        .text-lg  { font-size: 15px; }
+
+        /* ── Topic cells ────────────────────────────────────────────── */
+        .topic-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .topic-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-top: 4px; }
+        .topic-pct { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); }
+
+        /* ── Chart container ────────────────────────────────────────── */
+        .chart-box { width: 100%; }
+
+        /* ── Longest yap ────────────────────────────────────────────── */
+        .yap-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .yap-body { font-size: 13px; line-height: 1.65; }
+
+        /* ── Accordion ──────────────────────────────────────────────── */
+        .accord-item { border-bottom: 1px solid var(--border-subtle); }
+        .accord-item:last-child { border-bottom: none; }
+        .accord-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        .accord-hdr:hover { opacity: 0.8; }
+        .accord-title { display: flex; align-items: center; gap: 10px; }
+        .accord-label { font-size: 12px; font-weight: 600; }
+        .accord-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .accord-icon { font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; }
+        .accord-hdr.open .accord-icon { transform: rotate(180deg); }
+        .accord-body { display: none; max-height: 280px; overflow-y: auto; border-top: 1px solid var(--border-subtle); }
+        .accord-body.open { display: block; }
+        .accord-row { padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .accord-row:last-child { border-bottom: none; }
+        .accord-meta {
+            display: grid;
+            grid-template-columns: 120px 48px 50px;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .accord-score { color: var(--accent-error); font-weight: 600; }
+        .accord-text { font-size: 12px; line-height: 1.5; }
+
+        /* ── Data table ─────────────────────────────────────────────── */
+        .dt { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .dt th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-default);
+        }
+        .dt td { padding: 6px 8px; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+        .dt tr:last-child td { border-bottom: none; }
+        .dt tr:hover td { background: var(--bg-elevated); }
+
+        /* ── Rank list ──────────────────────────────────────────────── */
+        .rank-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .rank-row:last-child { border-bottom: none; }
+        .rank-medal { font-size: 14px; width: 22px; text-align: center; }
+        .rank-body { flex: 1; min-width: 0; }
+        .rank-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
+        .rank-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+        .rank-n {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .rank-bar { height: 3px; background: var(--bg-elevated); }
+        .rank-bar-fill { height: 100%; background: var(--accent-primary); }
+
+        /* ── AI moment items ────────────────────────────────────────── */
+        .moment {
+            padding: 10px 12px;
+            border-left: 2px solid var(--border-subtle);
+            margin-bottom: 8px;
+            transition: border-color 0.15s;
+        }
+        .moment:hover { border-left-color: var(--accent-primary); }
+        .moment-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; }
+        .moment-text { font-size: 12px; line-height: 1.5; }
+
+        /* ── AI topic tags ──────────────────────────────────────────── */
+        .ai-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border: 1px solid var(--border-subtle);
+            margin: 2px;
+            font-size: 11px;
+        }
+        .ai-tag-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+
+        /* ── Habit stat ─────────────────────────────────────────────── */
+        .habit-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .habit-row:last-child { border-bottom: none; }
+        .habit-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); }
+        .habit-val { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 600; line-height: 1; }
+
+        /* ── Mental health mini ─────────────────────────────────────── */
+        .mh-half { text-align: center; padding: 16px 10px; flex: 1; }
+        .mh-half:first-child { border-right: 1px solid var(--border-default); }
+        .mh-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .mh-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-top: 6px; }
+
+        /* ── Footer ─────────────────────────────────────────────────── */
+        .footer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-subtle);
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Utilities ──────────────────────────────────────────────── */
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .text-center { text-align: center; }
+        .col-green  { color: var(--accent-success); }
+        .col-red    { color: var(--accent-error); }
+        .col-blue   { color: var(--accent-secondary); }
+        .col-yellow { color: var(--accent-primary); }
+        .col-purple { color: var(--accent-purple); }
+        .col-orange { color: var(--accent-orange); }
+        .col-muted  { color: var(--text-secondary); }
+        .mt4  { margin-top: 4px; }
+        .mt8  { margin-top: 8px; }
+        .mt12 { margin-top: 12px; }
+        .mt16 { margin-top: 16px; }
+        .mb8  { margin-bottom: 8px; }
+        .mb12 { margin-bottom: 12px; }
+        .mb16 { margin-bottom: 16px; }
+        .gap8  { gap: 8px; }
+        .gap12 { gap: 12px; }
+        .overflow-hidden { overflow: hidden; }
+
+        /* ── Responsive ─────────────────────────────────────────────── */
+        @media (max-width: 1100px) {
+            .band-c6 { grid-template-columns: repeat(3, 1fr); }
+            .band-c4 { grid-template-columns: repeat(2, 1fr); }
+            .band-1-1-2 { grid-template-columns: 1fr 1fr; }
+            .band-1-1-2 .span-2 { grid-column: span 2; }
+        }
+        @media (max-width: 720px) {
+            .band-c6, .band-c4, .band-c3, .band-c2,
+            .band-1-2, .band-2-1, .band-1-1-2, .band-3-1, .band-2-1-1 {
+                grid-template-columns: 1fr;
+            }
+            .span-2, .span-3, .span-4, .span-6 { grid-column: span 1; }
+            .stat-num { font-size: 32px; }
+            .sent-half.q { border-right: none; border-bottom: 1px solid var(--border-default); }
+            .accord-meta { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navigation ──────────────────────────────────────────── -->
+    <nav class="nav">
+        <div class="nav-brand">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+            {{ t("brand_name") }}
+        </div>
+        <button class="nav-btn" id="theme-btn">{{ t("btn_dark_mode") }}</button>
+    </nav>
+
+    <div class="wrapper">
+
+        <!-- ── Page header ──────────────────────────────────────── -->
+        <header class="page-hdr">
+            <p class="page-hdr-meta">{{ t("report_header") }}</p>
+            <h1 class="page-hdr-title">{{ t("report_subtitle") }}</h1>
+            <p class="page-hdr-range">
+                {{ t("data_range_label") }}:
+                <span class="range-accent">{{ start_date }}</span>
+                {{ t("to") }}
+                <span class="range-accent">{{ end_date }}</span>
+            </p>
+        </header>
+
+        <!-- ── Tab navigation ───────────────────────────────────── -->
+        <div class="tabs">
+            <button class="tab-btn active" data-panel="overview">{{ t("tab_overview_profile") }}</button>
+            <button class="tab-btn" data-panel="content">{{ t("tab_content_communication") }}</button>
+            <button class="tab-btn" data-panel="time">{{ t("tab_time_habits") }}</button>
+        </div>
+
+
+        {# ══════════════════════════════════════════════════════════
+           TAB 1 — OVERVIEW & PROFILE
+           ══════════════════════════════════════════════════════════ #}
+        <div class="tab-panel active" id="panel-overview">
+
+            {# — 6 core stats ─ #}
+            <div class="band-hdr">{{ t("report_header") }} — {{ start_date }} {{ t("to") }} {{ end_date }}</div>
+            <div class="band band-c6">
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_total_records") }}</p>
+                    <p class="stat-num" data-count="{{ total_records }}" data-dec="0">{{ "{:,}".format(total_records) }}</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_total_words") }}</p>
+                    <p class="stat-num col-green" data-count="{{ total_words }}" data-dec="0">{{ "{:,}".format(total_words) }}</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_total_duration") }}</p>
+                    <p class="stat-num">{{ "%.0f"|format(total_duration) }}<span class="stat-unit">{{ t("unit_minutes") }}</span></p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_daily_avg") }}</p>
+                    <p class="stat-num">{{ "%.1f"|format(daily_avg) }}</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_avg_words") }}</p>
+                    <p class="stat-num">{{ "%.1f"|format(avg_words) }}</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">{{ t("card_avg_duration") }}</p>
+                    <p class="stat-num">{{ "%.1f"|format(avg_duration) }}<span class="stat-unit">{{ t("unit_seconds") }}</span></p>
+                </div>
+            </div>
+
+            {# — Badge + Sentence patterns + Emotion overview ─ #}
+            <div class="band band-c3 mt8">
+                {# Badge #}
+                <div class="cell text-center">
+                    <div class="badge-icon">{{ badge_icon }}</div>
+                    <p class="badge-name mono">{{ badge_name }}</p>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:{{ (badge_progress * 100)|round(1) }}%; background:{{ badge_color }};"></div>
+                    </div>
+                    <p class="badge-prog">{{ "{:,}".format(total_words) }} / {{ "{:,}".format(badge_threshold) }} {{ t("badge_progress") }}</p>
+                </div>
+
+                {# Sentence patterns #}
+                <div class="cell" style="padding:0;">
+                    <p class="stat-lbl" style="padding: 10px 14px 0;">{{ t("section_sentence_patterns") }}</p>
+                    <div class="flex">
+                        <div class="sent-half q">
+                            <p class="sent-pct q">{{ "%.0f"|format(question_ratio) }}%</p>
+                            <p class="sent-type">{{ t("label_question") }}</p>
+                            <p class="sent-count">{{ question_count }} {{ t("label_unit_suffix") }}</p>
+                        </div>
+                        <div class="sent-half">
+                            <p class="sent-pct s">{{ "%.0f"|format(statement_ratio) }}%</p>
+                            <p class="sent-type">{{ t("label_statement") }}</p>
+                            <p class="sent-count">{{ statement_count }} {{ t("label_unit_suffix") }}</p>
+                        </div>
+                    </div>
+                    <p style="font-size:11px; color:var(--text-secondary); padding:8px 14px; border-top:1px solid var(--border-subtle);">{{ sentence_conclusion }}</p>
+                </div>
+
+                {# Emotion overview #}
+                <div class="cell">
+                    <p class="stat-lbl mb8">{{ t("section_emotion_overview") }}</p>
+                    <div class="emo-row">
+                        <span class="emo-label col-green">{{ t("label_normal_positive") }}</span>
+                        <span class="emo-pct col-green">{{ "%.0f"|format(normal_ratio) }}%</span>
+                        <div class="emo-track"><div class="emo-fill" style="width:{{ normal_ratio }}%; background:var(--accent-success);"></div></div>
+                        <span class="emo-count">{{ normal_count }}</span>
+                    </div>
+                    <div class="emo-row">
+                        <span class="emo-label col-red">{{ t("label_negative") }}</span>
+                        <span class="emo-pct col-red">{{ "%.1f"|format(negative_ratio) }}%</span>
+                        <div class="emo-track"><div class="emo-fill" style="width:{{ negative_ratio }}%; background:var(--accent-error);"></div></div>
+                        <span class="emo-count">{{ negative_count }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {# — Personality tags ─ #}
+            <div class="band-hdr mt8">{{ t("section_personality") }}</div>
+            <div class="band band-c1">
+                <div class="cell flex flex-wrap items-center" style="min-height:56px;">
+                    {% if personality_tags %}
+                        {% for tag in personality_tags %}
+                        <div class="p-tag" style="border-color:{{ tag.color }};">
+                            <span class="p-tag-name" style="color:{{ tag.color }};">{{ tag.name }}</span>
+                            <span class="p-tag-desc">{{ tag.desc }}</span>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# — Efficiency + Big Five ─ #}
+            <div class="band-hdr mt8">{{ t("section_efficiency") }}</div>
+            <div class="band band-c2">
+                {# Efficiency scores #}
+                <div class="cell" style="padding:0; display:flex; flex-direction:column;">
+                    {% if eff_scores %}
+                    <div class="band band-c4" style="margin:0; background:var(--border-subtle);">
+                        {% for s in eff_scores %}
+                        <div class="eff-cell" style="background:var(--bg-card);">
+                            <span class="eff-val" style="color:{{ s.color }};">{{ s.value }}</span>
+                            <span class="eff-lbl">{{ t(s.label_key) }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="frag-box" style="margin-top:auto;">
+                        <span class="frag-lv">{{ frag_level }}</span>
+                        <span class="frag-meta">{{ t("fragmentation_title") }} · {{ frag_ratio }}% · {{ frag_desc }}</span>
+                    </div>
+                    {% else %}
+                    <div class="cell"><span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span></div>
+                    {% endif %}
+                </div>
+                {# Big Five radar #}
+                <div class="cell">
+                    <p class="stat-lbl mb8">{{ t("personality_big_five") }}</p>
+                    <div class="chart-box" id="chart-bigfive" style="height:170px;"></div>
+                </div>
+            </div>
+
+        </div>
+        {# end panel-overview #}
+
+
+        {# ══════════════════════════════════════════════════════════
+           TAB 2 — CONTENT & COMMUNICATION
+           ══════════════════════════════════════════════════════════ #}
+        <div class="tab-panel" id="panel-content">
+
+            {# — Topic classification ─ #}
+            <div class="band-hdr">{{ t("section_topic_classification") }}</div>
+            <div class="band band-c3">
+                {% if topic_total > 0 %}
+                <div class="cell text-center" style="border-left:3px solid var(--accent-success);">
+                    <p class="topic-num col-green">{{ topic_daily }}</p>
+                    <p class="topic-lbl">{{ t("topic_label_daily") }}</p>
+                    <p class="topic-pct">{{ (topic_daily / topic_total * 100)|round|int }}%</p>
+                </div>
+                <div class="cell text-center" style="border-left:3px solid var(--accent-secondary);">
+                    <p class="topic-num col-blue">{{ topic_ai }}</p>
+                    <p class="topic-lbl">{{ t("topic_label_ai") }}</p>
+                    <p class="topic-pct">{{ (topic_ai / topic_total * 100)|round|int }}%</p>
+                </div>
+                <div class="cell text-center" style="border-left:3px solid var(--accent-purple);">
+                    <p class="topic-num col-purple">{{ topic_design }}</p>
+                    <p class="topic-lbl">{{ t("topic_label_design") }}</p>
+                    <p class="topic-pct">{{ (topic_design / topic_total * 100)|round|int }}%</p>
+                </div>
+                {% else %}
+                <div class="cell span-3" style="color:var(--text-tertiary); font-size:11px;">{{ t("no_data") }}</div>
+                {% endif %}
+            </div>
+
+            {# — Word cloud ─ #}
+            <div class="band-hdr mt8">{{ t("section_word_cloud") }}</div>
+            <div class="band band-c1">
+                <div class="cell flex flex-wrap overflow-hidden" style="max-height:130px;">
+                    {% if word_tags %}
+                        {% for tag in word_tags %}
+                        <span class="w-tag {{ tag.size_class }}{% if tag.highlight %} hi{% endif %}">{{ tag.name }} ({{ tag.count }})</span>
+                        {% endfor %}
+                    {% else %}
+                        <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# — Length distribution + Longest yap ─ #}
+            <div class="band-hdr mt8">{{ t("section_length_distribution") }} / {{ t("section_longest_yap") }}</div>
+            <div class="band band-1-2">
+                <div class="cell">
+                    <div class="chart-box" id="chart-length" style="height:180px;"></div>
+                </div>
+                <div class="cell">
+                    {% if yap_content %}
+                    <div class="yap-meta">
+                        <span>{{ t("meta_date") }} {{ yap_date }}</span>
+                        <span>{{ t("meta_hour") }} {{ yap_hour }}:00</span>
+                        <span>{{ t("meta_duration") }} {{ "%.0f"|format(yap_duration) }}{{ t("meta_seconds") }}</span>
+                        <span>{{ t("meta_words") }} {{ yap_words }}{{ t("meta_words_unit") }}</span>
+                    </div>
+                    <p class="yap-body">"{{ yap_content }}"</p>
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# — Emotion deep analysis ─ #}
+            <div class="band-hdr mt8">{{ t("section_emotion_deep") }}</div>
+            <div class="band band-2-1">
+                {# Accordion #}
+                <div class="cell">
+                    {% if emotion_cats %}
+                    <div>
+                        {% for cat in emotion_cats %}
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:{{ cat.color }};">{{ cat.label }}</span>
+                                    <span class="accord-count">{{ cat.count }} ({{ cat.ratio }}%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                {% if cat.records %}
+                                    {% for rec in cat.records %}
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>{{ rec.date_str }}</span>
+                                            <span class="accord-score">{{ "%.2f"|format(rec.score) }}</span>
+                                            <span>{{ rec.words }} {{ t("meta_words_unit") }}</span>
+                                        </div>
+                                        <div class="accord-text">{{ rec.content }}</div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                <div class="accord-row" style="color:var(--text-tertiary);">{{ t("no_data") }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+                {# Emotion trend chart #}
+                <div class="cell">
+                    <p class="stat-lbl mb8">{{ t("section_emotion_trend") }}</p>
+                    {% if has_emotion_trend %}
+                    <div class="chart-box" id="chart-emotion-trend" style="height:260px;"></div>
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            {# — Swear + App usage + Mental health ─ #}
+            <div class="band-hdr mt8">{{ t("section_swear_calendar") }} / {{ t("section_app_usage") }} / {{ t("mental_health") }}</div>
+            <div class="band band-c3">
+                {# Swear calendar #}
+                <div class="cell" style="padding:0;">
+                    {% if swear_items %}
+                    <table class="dt" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>{{ swear_col_datetime }}</th>
+                                <th>{{ swear_col_extra }}</th>
+                                <th>{{ swear_col_content }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in swear_items %}
+                            <tr>
+                                <td class="mono" style="font-size:10px; color:var(--accent-error);">{{ item.date_str }}</td>
+                                <td class="mono" style="font-size:10px; color:var(--text-secondary);">{{ item.extra_text }}</td>
+                                <td style="font-size:11px;">{{ item.content }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="padding:20px 16px; font-size:11px; color:var(--text-secondary);">{{ t("no_swear_data") }}</div>
+                    {% endif %}
+                </div>
+
+                {# App usage #}
+                <div class="cell" style="padding:0;">
+                    {% if app_items %}
+                    <table class="dt" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:24px;">#</th>
+                                <th>{{ app_col_app }}</th>
+                                <th>{{ app_col_count }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for app in app_items %}
+                            <tr>
+                                <td class="mono" style="font-size:13px;">{{ app.medal }}</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">{{ app.name }}</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:{{ app.ratio }}%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">{{ app.count }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div style="padding:20px 16px; font-size:11px; color:var(--text-secondary);">{{ t("no_app_data") }}</div>
+                    {% endif %}
+                </div>
+
+                {# Mental health #}
+                <div class="cell" style="padding:0;">
+                    <div class="flex">
+                        <div class="mh-half">
+                            <p class="mh-val" style="color:var(--accent-warning);">{{ "%.2f"|format(avg_stress) }}</p>
+                            <p class="mh-lbl">{{ t("avg_stress") }}</p>
+                        </div>
+                        <div class="mh-half">
+                            <p class="mh-val col-green">{{ "%.2f"|format(avg_optimism) }}</p>
+                            <p class="mh-lbl">{{ t("avg_optimism") }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {# — AI Topics + Triggers ─ #}
+            <div class="band-hdr mt8">{{ t("topic_distribution") }} / {{ t("emotion_triggers") }}</div>
+            <div class="band band-c2">
+                {# AI topic tags #}
+                <div class="cell flex flex-wrap" style="align-content:flex-start; max-height:180px; overflow:hidden;">
+                    {% if ai_topics %}
+                        {% for topic in ai_topics %}
+                        <span class="ai-tag">{{ topic.topic }} <span class="ai-tag-count">({{ topic.count }})</span></span>
+                        {% endfor %}
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("empty_no_data") }}</span>
+                    {% endif %}
+                </div>
+                {# Triggers chart #}
+                <div class="cell">
+                    <div class="chart-box" id="chart-triggers" style="height:180px;">
+                        <p id="chart-triggers-empty" style="display:none; font-size:11px; color:var(--text-tertiary); padding:16px;">{{ t("empty_no_data") }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {# — Creative + Humor moments ─ #}
+            <div class="band-hdr mt8">{{ t("creative_moments") }} / {{ t("humor_moments") }}</div>
+            <div class="band band-c2">
+                <div class="cell" style="max-height:240px; overflow-y:auto;">
+                    {% if ai_creative %}
+                        {% for m in ai_creative %}
+                        <div class="moment">
+                            <p class="moment-meta">{{ m.date }} · {{ m.novelty }}</p>
+                            <p class="moment-text">"{{ m.content }}"</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("empty_no_data") }}</span>
+                    {% endif %}
+                </div>
+                <div class="cell" style="max-height:240px; overflow-y:auto;">
+                    {% if ai_humor %}
+                        {% for h in ai_humor %}
+                        <div class="moment">
+                            <p class="moment-meta">{{ h.date }} · {{ h.type }}</p>
+                            <p class="moment-text">"{{ h.content }}"</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("empty_no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        {# end panel-content #}
+
+
+        {# ══════════════════════════════════════════════════════════
+           TAB 3 — TIME & HABITS
+           ══════════════════════════════════════════════════════════ #}
+        <div class="tab-panel" id="panel-time">
+
+            {# — Usage habits + Extreme comparison ─ #}
+            <div class="band-hdr">{{ t("section_usage_habits") }} / {{ t("section_extreme_comparison") }}</div>
+            <div class="band band-c2">
+                {# Habits #}
+                <div class="cell">
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_consecutive_days") }}</span>
+                        <span class="habit-val">{{ consecutive_days }}</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_active_days") }}</span>
+                        <span class="habit-val">{{ active_days }}</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_gap_days") }}</span>
+                        <span class="habit-val">{{ gap_days }}</span>
+                    </div>
+                </div>
+                {# Extreme comparison #}
+                <div class="cell">
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_busiest_week") }}</span>
+                        <span class="habit-val">{{ busiest_week }}</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_laziest_week") }}</span>
+                        <span class="habit-val">{{ laziest_week }}</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">{{ t("label_gap_ratio") }}</span>
+                        <span class="habit-val col-yellow">{{ "%.1f"|format(week_ratio) }}×</span>
+                    </div>
+                </div>
+            </div>
+
+            {# — 30-day trend ─ #}
+            <div class="band-hdr mt8">{{ t("section_30day_trend") }}</div>
+            <div class="band band-c1">
+                <div class="cell">
+                    <div class="chart-box" id="chart-trend" style="height:200px;"></div>
+                </div>
+            </div>
+
+            {# — 24-hour distribution + Top 5 dates ─ #}
+            <div class="band-hdr mt8">{{ t("section_24hour_dist") }} / {{ t("section_top_dates") }}</div>
+            <div class="band band-c2">
+                <div class="cell">
+                    <div class="chart-box" id="chart-hour" style="height:200px;"></div>
+                </div>
+                <div class="cell">
+                    {% if top_dates %}
+                        {% for item in top_dates %}
+                        <div class="rank-row">
+                            <span class="rank-medal">{{ item.medal }}</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">{{ item.date }}</span>
+                                    <span class="rank-n">{{ item.count }}</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:{{ item.bar_width }}%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                    <span style="font-size:11px; color:var(--text-tertiary);">{{ t("no_data") }}</span>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+        {# end panel-time #}
+
+    </div><!-- end .wrapper -->
+
+    <footer class="footer">
+        {{ t("footer_generated") }} · {{ end_date }}
+    </footer>
+
+    <script>
+        const DATA = {{ chart_data | tojson }};
+        {% raw %}
+
+        /* ── Color helper ───────────────────────────────────────── */
+        function c() {
+            const dark = document.body.classList.contains('theme-dark');
+            return {
+                bg:     dark ? '#1E1E1E' : '#FFFFFF',
+                text:   dark ? '#9B9B9B' : '#6B6B6B',
+                border: dark ? '#3A3A3A' : '#E5E5E5',
+                yellow: '#FFDE00',
+                green:  '#00D26A',
+                blue:   '#6FC2FF',
+                red:    '#FF4D4D',
+                purple: '#A855F7',
+            };
+        }
+
+        const charts = {};
+
+        function initChart(id) {
+            const el = document.getElementById(id);
+            if (!el) return null;
+            if (!charts[id]) { charts[id] = echarts.init(el); charts[id].resize(); }
+            return charts[id];
+        }
+
+        /* ── Chart renderers ────────────────────────────────────── */
+        function renderTrendChart() {
+            const chart = initChart('chart-trend');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 44, right: 16, top: 12, bottom: 28 },
+                xAxis: {
+                    type: 'category', data: DATA.daily_trend.dates,
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                series: [{
+                    type: 'line', data: DATA.daily_trend.counts, smooth: true,
+                    symbol: 'none',
+                    itemStyle: { color: col.yellow },
+                    lineStyle: { width: 2, color: col.yellow },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255,222,0,0.35)' },
+                        { offset: 1, color: 'rgba(255,222,0,0)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderHourChart() {
+            const chart = initChart('chart-hour');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 30, right: 12, top: 12, bottom: 28 },
+                xAxis: {
+                    type: 'category',
+                    data: Array.from({length: 24}, (_, i) => i + 'h'),
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'bar', data: DATA.hour_dist,
+                    itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: col.blue },
+                        { offset: 1, color: 'rgba(111,194,255,0.2)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderLengthChart() {
+            const chart = initChart('chart-length');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+                legend: {
+                    orient: 'vertical', right: 0, top: 'center',
+                    textStyle: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                series: [{
+                    type: 'pie', radius: ['42%', '68%'],
+                    center: ['38%', '50%'],
+                    label: { show: false },
+                    data: [
+                        { value: DATA.length_dist.short,  name: DATA.i18n.chart_short,  itemStyle: { color: col.green } },
+                        { value: DATA.length_dist.medium, name: DATA.i18n.chart_medium, itemStyle: { color: col.blue } },
+                        { value: DATA.length_dist.long,   name: DATA.i18n.chart_long,   itemStyle: { color: col.purple } }
+                    ]
+                }]
+            });
+        }
+
+        function renderEmotionTrendChart() {
+            const chart = initChart('chart-emotion-trend');
+            if (!chart || DATA.emotion_trend.dates.length === 0) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 44, right: 16, top: 12, bottom: 36 },
+                xAxis: {
+                    type: 'category', data: DATA.emotion_trend.dates,
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text, rotate: 30 }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'line', data: DATA.emotion_trend.scores, smooth: true,
+                    symbol: 'none',
+                    itemStyle: { color: col.red },
+                    lineStyle: { width: 2, color: col.red },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255,77,77,0.3)' },
+                        { offset: 1, color: 'rgba(255,77,77,0)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderBigFiveChart() {
+            const chart = initChart('chart-bigfive');
+            if (!chart) return;
+            const col = c();
+            const bf = DATA.ai_insights.big_five;
+            const labels = DATA.i18n.big_five_labels;
+            chart.setOption({
+                radar: {
+                    indicator: labels.map(name => ({ name, max: 1 })),
+                    splitLine: { lineStyle: { color: col.border } },
+                    axisLine: { lineStyle: { color: col.border } },
+                    name: { textStyle: { color: col.text, fontFamily: 'JetBrains Mono', fontSize: 10 } }
+                },
+                series: [{
+                    type: 'radar',
+                    data: [{
+                        value: [bf.openness, bf.conscientiousness, bf.extraversion, bf.agreeableness, bf.neuroticism],
+                        itemStyle: { color: col.yellow },
+                        lineStyle: { color: col.yellow },
+                        areaStyle: { color: 'rgba(255,222,0,0.2)' }
+                    }]
+                }]
+            });
+        }
+
+        function renderTriggersChart() {
+            const chart = initChart('chart-triggers');
+            if (!chart || DATA.ai_insights.triggers_labels.length === 0) {
+                const el = document.getElementById('chart-triggers-empty');
+                if (el) el.style.display = 'block';
+                return;
+            }
+            const col = c();
+            chart.setOption({
+                grid: { left: 120, right: 16, top: 8, bottom: 28 },
+                xAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                yAxis: {
+                    type: 'category', data: DATA.ai_insights.triggers_labels,
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'bar', data: DATA.ai_insights.triggers_values,
+                    itemStyle: { color: col.blue }
+                }]
+            });
+        }
+
+        function rerenderActive() {
+            const active = document.querySelector('.tab-panel.active');
+            if (!active) return;
+            const id = active.id;
+            if (id === 'panel-overview') { renderBigFiveChart(); }
+            else if (id === 'panel-content') { renderLengthChart(); renderTriggersChart(); renderEmotionTrendChart(); }
+            else if (id === 'panel-time') { renderTrendChart(); renderHourChart(); }
+        }
+
+        /* ── Count-up animation ──────────────────────────────────── */
+        function countUp(el, target, decimals) {
+            const start = performance.now();
+            const dur = 900;
+            function step(now) {
+                const p = Math.min((now - start) / dur, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                const val = target * ease;
+                el.textContent = decimals > 0
+                    ? val.toFixed(decimals)
+                    : Math.floor(val).toLocaleString();
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = decimals > 0 ? target.toFixed(decimals) : Number(target).toLocaleString();
+            }
+            requestAnimationFrame(step);
+        }
+
+        function initCountUp() {
+            document.querySelectorAll('[data-count]').forEach(el => {
+                const target = parseFloat(el.dataset.count);
+                const dec = parseInt(el.dataset.dec || '0');
+                if (!isNaN(target)) countUp(el, target, dec);
+            });
+        }
+
+        /* ── Theme toggle ────────────────────────────────────────── */
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+            const isDark = document.body.classList.contains('theme-dark');
+            document.getElementById('theme-btn').textContent = isDark ? DATA.i18n.btn_light : DATA.i18n.btn_dark;
+            setTimeout(rerenderActive, 120);
+        }
+
+        /* ── Tab switching ───────────────────────────────────────── */
+        function switchTab(panel) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + panel).classList.add('active');
+            document.querySelector(`[data-panel="${panel}"]`).classList.add('active');
+            setTimeout(() => {
+                if (panel === 'overview') renderBigFiveChart();
+                else if (panel === 'content') { renderLengthChart(); renderTriggersChart(); renderEmotionTrendChart(); }
+                else if (panel === 'time') { renderTrendChart(); renderHourChart(); }
+            }, 80);
+        }
+
+        /* ── Accordion ───────────────────────────────────────────── */
+        function toggleAccordion(hdr) {
+            const body = hdr.nextElementSibling;
+            const wasOpen = hdr.classList.contains('open');
+            document.querySelectorAll('.accord-hdr').forEach(h => {
+                h.classList.remove('open');
+                h.nextElementSibling.classList.remove('open');
+            });
+            if (!wasOpen) { hdr.classList.add('open'); body.classList.add('open'); }
+        }
+
+        /* ── Init ────────────────────────────────────────────────── */
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.panel));
+        });
+        document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+        window.addEventListener('resize', () => Object.values(charts).forEach(ch => ch && ch.resize()));
+
+        renderBigFiveChart();
+        renderEmotionTrendChart();
+        initCountUp();
+
+        {% endraw %}
+    </script>
+</body>
+</html>

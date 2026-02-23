@@ -4,7 +4,7 @@ English | [中文](docs/zh/README.md)
 
 > Analyze your Typeless voice-to-text history and generate a beautiful AI-powered report — personality insights, mood trends, topic mapping, and more.
 
-**[→ View Example Report](https://htmlpreview.github.io/?https://github.com/OWENLEEzy/Happy-Typeless/blob/main/output/examples/Typeless_Report_Example.html)**
+**[→ View Example Report (Chinese)](https://htmlpreview.github.io/?https://github.com/OWENLEEzy/Happy-Typeless/blob/main/output/examples/Typeless_Report_Example_zh.html)** · **[View Example Report (English)](https://htmlpreview.github.io/?https://github.com/OWENLEEzy/Happy-Typeless/blob/main/output/examples/Typeless_Report_Example_en.html)**
 
 ---
 
@@ -97,7 +97,7 @@ uv run typeless cost
 |--------|-------------|
 | `-i, --input PATH` | Use an exported JSON file instead of the database |
 | `-o, --output PATH` | Output path (default: `output/personal/Typeless_Report.html`) |
-| `-l, --lang` | Report language: `zh` (default) or `en` |
+| `-l, --lang` | Report language: `zh` or `en` (default) |
 | `-m, --mock` | Use mock data — no API key or Typeless needed |
 | `--force-refresh` | Ignore cache and re-run all AI analysis |
 | `--no-open` | Don't auto-open the browser |

@@ -19,6 +19,8 @@ class AIAnalyzer:
         max_cost_cny: float = 10.0,
         force_refresh: bool = False,
         cost_log_path: Path = Path("data/cost_log.json"),
+        cache_save_frequency: int = 20,
+        lang: str = "en",
     ) -> None:
         self._cache = AICache(
             cache_path,
@@ -35,6 +37,8 @@ class AIAnalyzer:
             concurrency=concurrency,
             max_cost_cny=max_cost_cny,
             cost_log_path=cost_log_path,
+            cache_save_frequency=cache_save_frequency,
+            lang=lang,
         )
 
     def analyze(self, transcriptions: TranscriptionList) -> dict[str, AITranscriptionAnalysis]:

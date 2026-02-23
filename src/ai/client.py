@@ -5,11 +5,12 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 import instructor
-from openai import AsyncOpenAI
+from openai import AsyncOpenAI, RateLimitError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from src.ai.base import (
     JSON_MODE_PROVIDERS,
+    MODEL_PRICING,
     OPENAI_COMPATIBLE_BASE_URLS,
     PRICING_TABLE,
     CostRecord,
@@ -57,6 +58,8 @@ class AIClient:
         concurrency: int = 20,
         max_cost_cny: float = 10.0,
         cost_log_path: Path = Path("data/cost_log.json"),
+        cache_save_frequency: int = 20,
+        lang: str = "en",
     ) -> None:
         self._providers = [primary] + (fallbacks or [])
         self._clients = {cfg.provider: build_instructor_client(cfg) for cfg in self._providers}
@@ -65,6 +68,8 @@ class AIClient:
         self._max_cost = max_cost_cny
         self._cache = cache
         self._cost_log_path = cost_log_path
+        self._cache_save_frequency = cache_save_frequency
+        self._lang = lang
         self._total_cost: float = 0.0
         self._new_entries: int = 0
         self._cache_hits: int = 0
@@ -80,9 +85,9 @@ class AIClient:
 
     @staticmethod
     @retry(
-        wait=wait_exponential(multiplier=1, min=2, max=60),
+        wait=wait_exponential(multiplier=2, min=5, max=120),
         stop=stop_after_attempt(3),
-        retry=retry_if_exception_type((TimeoutError, ConnectionError)),
+        retry=retry_if_exception_type((TimeoutError, ConnectionError, RateLimitError)),
         reraise=True,
     )
     async def _call_api(
@@ -97,8 +102,10 @@ class AIClient:
             temperature=0.3,
         )
 
-    def _calc_cost(self, provider: ProviderType, usage: TokenUsage) -> float:
-        pricing = PRICING_TABLE.get(provider, {"input": 1.0, "output": 1.0})
+    def _calc_cost(self, config: ModelConfig, usage: TokenUsage) -> float:
+        pricing = MODEL_PRICING.get(config.model_name) or PRICING_TABLE.get(
+            config.provider, {"input": 1.0, "output": 1.0}
+        )
         return (
             usage.prompt_tokens * pricing["input"] / 1_000_000
             + usage.completion_tokens * pricing["output"] / 1_000_000
@@ -119,6 +126,7 @@ class AIClient:
                 transcription.content,
                 transcription.timestamp,
                 transcription.app_name,
+                lang=self._lang,
             )
 
             for provider_type, client in self._clients.items():
@@ -126,19 +134,25 @@ class AIClient:
                 try:
                     result, completion = await self._call_api(client, config, prompt)
 
-                    if completion.usage:
-                        usage = TokenUsage(
-                            prompt_tokens=completion.usage.prompt_tokens,
-                            completion_tokens=completion.usage.completion_tokens,
-                        )
-                        call_cost = self._calc_cost(provider_type, usage)
-                        self._total_cost += call_cost
-                        self._total_tokens += usage.prompt_tokens + usage.completion_tokens
-
                     async with self._cache_lock:
+                        # Cost accounting and cache write are serialised together so
+                        # _total_cost is always consistent with subsequent budget checks.
+                        if completion.usage:
+                            # Anthropic uses input_tokens/output_tokens; OpenAI uses
+                            # prompt_tokens/completion_tokens.  Prefer OpenAI names first.
+                            raw = completion.usage
+                            usage = TokenUsage(
+                                prompt_tokens=getattr(raw, "prompt_tokens", None)
+                                or getattr(raw, "input_tokens", 0),
+                                completion_tokens=getattr(raw, "completion_tokens", None)
+                                or getattr(raw, "output_tokens", 0),
+                            )
+                            call_cost = self._calc_cost(config, usage)
+                            self._total_cost += call_cost
+                            self._total_tokens += usage.prompt_tokens + usage.completion_tokens
                         self._cache.set(transcription.id, result)
                         self._new_entries += 1
-                        if self._new_entries % 20 == 0:
+                        if self._new_entries % self._cache_save_frequency == 0:
                             self._cache.save()
 
                     return result

@@ -55,8 +55,11 @@ class EfficiencyService:
         late_night_hours = self.thresholds.late_night_hours
         late_night_count = sum(1 for t in self.data if t.datetime.hour in late_night_hours)
         late_night_ratio = late_night_count / max(total, 1)
-        # Formula: 100 - (late_night_ratio / 0.5) * 100, clamped to [0, 100]
-        sleep_health_score = max(0, min(100, 100 - (late_night_ratio / 0.5) * 100))
+        # Formula: 100 - (late_night_ratio / threshold) * 100, clamped to [0, 100]
+        sleep_health_score = max(
+            0,
+            min(100, 100 - (late_night_ratio / self.thresholds.late_night_score_zero_at) * 100),
+        )
 
         # Work efficiency score
         # Based on usage during work hours (9-18) on weekdays
@@ -65,18 +68,22 @@ class EfficiencyService:
             1 for t in self.data if t.datetime.weekday() < 5 and t.datetime.hour in work_hours
         )
         work_ratio = work_count / max(total, 1)
-        # 0% work hours = 0 points, 60%+ = 100 points
-        work_efficiency_score = min(100, work_ratio / 0.6 * 100)
+        # 0% work hours = 0 points, full-at threshold = 100 points
+        work_efficiency_score = min(100, work_ratio / self.thresholds.work_efficiency_full_at * 100)
 
         # Focus score
-        # Optimal range: 10-30 seconds per entry
+        # Optimal range: focus_min_seconds to focus_optimal_seconds per entry
         avg_duration = self._calculate_avg_duration()
-        if 10 <= avg_duration <= 30:
+        f_min = self.thresholds.focus_min_seconds
+        f_opt = self.thresholds.focus_optimal_seconds
+        if f_min <= avg_duration <= f_opt:
             focus_score = 100
-        elif avg_duration < 10:
-            focus_score = max(0, avg_duration / 10 * 100)
+        elif avg_duration < f_min:
+            focus_score = max(0, avg_duration / f_min * 100)
         else:
-            focus_score = max(0, 100 - (avg_duration - 30) / 30 * 100)
+            focus_score = max(
+                0, 100 - (avg_duration - f_opt) / self.thresholds.focus_decay_seconds * 100
+            )
 
         overall_score = round((sleep_health_score + work_efficiency_score + focus_score) / 3)
 
@@ -126,7 +133,7 @@ class EfficiencyService:
         if durations:
             return round(sum(durations) / len(durations), 1)
         # Fallback: estimate from word count (assuming ~3 words/second)
-        return round(sum(len(t.content) for t in self.data) / len(self.data) / 3, 1)
+        return round(sum(len(t.content) for t in self.data) / max(len(self.data), 1) / 3, 1)
 
     def _empty_metrics(self) -> EfficiencyMetrics:
         """Return empty metrics for empty data"""

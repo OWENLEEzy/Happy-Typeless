@@ -299,7 +299,6 @@ Happy-Typeless/
 ├── scripts/
 │   └── export_from_db.py            # Database export script (deprecated - integrated)
 ├── config/                          # Configuration files
-│   ├── emotion_words.txt            # Emotion word library (5 categories)
 │   ├── zh/                          # Chinese config
 │   │   ├── stopwords.txt
 │   │   ├── filler_words.txt
@@ -508,6 +507,15 @@ Typeless 数据库位置:
 
 ## 🔑 关键配置
 
+### 推荐 AI 配置（.env）
+
+| 场景 | 推荐配置 |
+|------|----------|
+| **默认推荐** | `AI_PRIMARY_PROVIDER=deepseek` + `AI_PRIMARY_MODEL=deepseek-v3` + `AI_CONCURRENCY=50` |
+| 备用 | `AI_PRIMARY_PROVIDER=zhipu` + `AI_PRIMARY_MODEL=glm-4-flash`（速率限制低，并发建议 ≤ 5） |
+
+> 智谱免费额度速率限制严格（code `1302`），高并发场景容易触发 429；DeepSeek V3 结构化输出稳定且并发上限更高。
+
 ### Settings 类配置
 配置位于 `src/config.py` 中的 `Settings` 类。
 
@@ -519,13 +527,11 @@ Typeless 数据库位置:
 | 填充词 | `filler_words` | 填充词集合 |
 | 时间段 | `late_night_hours` / `work_hours` | 时间分段 |
 | 徽章 | `badge_levels` | 成就徽章等级配置 |
-| 情绪 | `EmotionConfig` | 情绪词库、强度词 |
 | 显示 | `max_swear_display_items` 等 | 显示数量控制 |
 
 ### 配置文件目录结构
 ```
 config/
-├── emotion_words.txt    # 情绪词库 (5 类)
 ├── zh/                  # 中文配置
 │   ├── stopwords.txt
 │   ├── filler_words.txt

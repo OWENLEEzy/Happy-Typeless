@@ -8,11 +8,16 @@ class EnglishSegmentStrategy(SegmentStrategy):
     """English word segmentation strategy"""
 
     def __init__(
-        self, stop_words: set[str], filler_words: set[str] | None = None, spacy_model=None
+        self,
+        stop_words: set[str],
+        filler_words: set[str] | None = None,
+        connector_words: set[str] | None = None,
+        spacy_model=None,
     ):
         self.stop_words = stop_words
         self.filler_words = filler_words or set()
         self.nlp = spacy_model
+        self.connector_words = connector_words or set()
 
     def segment(self, text: str) -> list[str]:
         """Segment English text"""
@@ -22,6 +27,8 @@ class EnglishSegmentStrategy(SegmentStrategy):
 
     def _segment_with_spacy(self, text: str) -> list[str]:
         """Segment using spaCy"""
+        if self.nlp is None:
+            return self._segment_basic(text)
         doc = self.nlp(text)
         return [
             token.text.lower()
@@ -30,21 +37,25 @@ class EnglishSegmentStrategy(SegmentStrategy):
             and not token.is_punct
             and len(token.text) > 1
             and not token.text.isdigit()
+            and token.text.lower() not in self.filler_words
         ]
 
     def _segment_basic(self, text: str) -> list[str]:
         """Fallback basic tokenization"""
         words = text.lower().translate(str.maketrans("", "", string.punctuation)).split()
-        return [w for w in words if len(w) > 1 and w not in self.stop_words and not w.isdigit()]
+        return [
+            w
+            for w in words
+            if len(w) > 1
+            and w not in self.stop_words
+            and w not in self.filler_words
+            and not w.isdigit()
+        ]
 
-    def is_question(self, text: str) -> bool:
-        """Check if English text is a question"""
-        return "?" in text
+    def get_filler_words(self) -> set[str]:
+        """Get set of filler words for English."""
+        return self.filler_words
 
-    def is_stop_word(self, word: str) -> bool:
-        """Check if word is a stop word (case-insensitive for English)"""
-        return self._check_word_in_set(word, self.stop_words, case_sensitive=False)
-
-    def is_filler_word(self, word: str) -> bool:
-        """Check if word is a filler word (case-insensitive for English)"""
-        return self._check_word_in_set(word, self.filler_words, case_sensitive=False)
+    def get_connector_words(self) -> set[str]:
+        """Get set of connector words for English."""
+        return self.connector_words

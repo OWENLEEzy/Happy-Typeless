@@ -1,96 +1,67 @@
 import platform
 from pathlib import Path
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class ThresholdConfig(BaseModel):
     """Various threshold values"""
 
-    concise: int = 30
-    verbose: int = 80
-    question_high: int = 30
-    question_low: int = 10
-    negative_stable: int = 5
-    negative_emotional: int = 20
-    workaholic: float = 2.0
-    lifestyle: float = 0.5
     fragmentation_high: int = 70
     fragmentation_low: int = 40
     short_sentence: int = 20
     long_sentence: int = 100
 
-    # Additional keywords for topic classification
-    ai_keywords: list[str] = [
-        "AI",
-        "人工智能",
-        "机器学习",
-        "深度学习",
-        "模型",
-        "算法",
-        "Python",
-        "代码",
-        "编程",
-        "API",
-        "前端",
-        "后端",
-        "数据库",
-        "训练",
-        "推理",
-        "参数",
-        "优化",
-        "部署",
-        "神经网络",
-    ]
-    design_keywords: list[str] = [
-        "设计",
-        "UI",
-        "UX",
-        "界面",
-        "交互",
-        "视觉",
-        "颜色",
-        "字体",
-        "布局",
-        "原型",
-        "Figma",
-        "Sketch",
-        "用户体验",
-        "产品",
-        "功能",
-        "需求",
-    ]
-
     # Time periods
     late_night_hours: list[int] = list(range(23, 24)) + list(range(0, 7))
     work_hours: list[int] = list(range(9, 19))
 
-    # Connector words
-    connector_words: set[str] = {
-        "那个",
-        "这个",
-        "这些",
-        "那些",
-        "一下",
-        "的话",
-        "然后",
-        "就是",
-        "就是说",
-        "其实",
-        "怎么说呢",
-    }
-
-    # Filler words
-    filler_words: set[str] = {"嗯", "唔", "呃", "啊", "呀", "哎", "咳", "嘿", "噢", "嚯"}
-
-    # Badge levels
+    # Badge levels (name is i18n key)
     badge_levels: list[tuple[int, str, str, str]] = [
-        (10000, "键盘终结者", "⌨️", "#3B82F6"),
-        (50000, "话痨本痨", "🗣️", "#CD7F32"),
-        (100000, "人形打字机", "⌨️", "#C0C0C0"),
-        (500000, "当代苏格拉底", "🏛️", "#FFD700"),
+        (10000, "badge_keyboard_terminator", "⌨️", "#3B82F6"),
+        (50000, "badge_chatterbox", "🗣️", "#CD7F32"),
+        (100000, "badge_human_typewriter", "⌨️", "#C0C0C0"),
+        (500000, "badge_socrates", "🏛️", "#FFD700"),
     ]
+
+    # Personality tag thresholds
+    conscientiousness_high: float = 0.6
+    conscientiousness_low: float = 0.4
+    question_ratio_high: int = 30  # percentage; above → "questioner"
+    command_ratio_min: int = 20  # percentage; above → "commander"
+    neg_ratio_low: int = 10  # percentage; below → "stable"
+    neg_ratio_high: int = 30  # percentage; above → "emotional"
+    work_efficiency_high: int = 70  # percentage; above → "workaholic"
+    work_efficiency_low: int = 30  # percentage; below → "lifestyle"
+
+    # Efficiency score thresholds (must be > 0 to avoid ZeroDivisionError in score formulas)
+    late_night_score_zero_at: float = Field(default=0.5, gt=0)
+    work_efficiency_full_at: float = Field(default=0.6, gt=0)
+    focus_min_seconds: float = Field(default=10.0, gt=0)
+    focus_optimal_seconds: float = Field(default=30.0, gt=0)
+    # Separate denominator for the penalty slope above the optimal range.
+    # Decoupled from focus_optimal_seconds so adjusting the upper bound
+    # does not silently change how steeply the score falls for long entries.
+    focus_decay_seconds: float = Field(default=30.0, gt=0)
+
+    @model_validator(mode="after")
+    def check_threshold_pairs(self) -> "ThresholdConfig":
+        """Validate that high/low pairs are correctly ordered and focus range is valid."""
+        pairs = [
+            ("conscientiousness_high", "conscientiousness_low"),
+            ("neg_ratio_high", "neg_ratio_low"),
+            ("work_efficiency_high", "work_efficiency_low"),
+            ("focus_optimal_seconds", "focus_min_seconds"),
+        ]
+        for high_name, low_name in pairs:
+            high_val = getattr(self, high_name)
+            low_val = getattr(self, low_name)
+            if high_val <= low_val:
+                raise ValueError(
+                    f"{high_name} ({high_val}) must be greater than {low_name} ({low_val})"
+                )
+        return self
 
 
 class NLPConfig(BaseModel):
@@ -98,16 +69,8 @@ class NLPConfig(BaseModel):
 
     stop_words_path: Path
     filler_words_path: Path
-    question_patterns_path: Path
-
-
-class EmotionConfig(BaseModel):
-    """Emotion analysis configuration"""
-
-    categories: dict[str, list[str]] = {}
-    swear_words: list[str] = []
-    intensity_heavy: list[str] = []
-    intensity_light: list[str] = []
+    connector_words_path: Path
+    topic_keywords_path: Path
 
 
 class Settings(BaseSettings):
@@ -123,7 +86,6 @@ class Settings(BaseSettings):
 
     # Sub-configurations
     nlp: dict[str, NLPConfig] = {}
-    emotion: EmotionConfig = EmotionConfig()
     thresholds: ThresholdConfig = ThresholdConfig()
 
     # Typeless database path (auto-detected if empty)
@@ -134,19 +96,39 @@ class Settings(BaseSettings):
     ai_primary_model: str = "glm-4-flash"
     ai_api_key: str = ""
     ai_fallback_provider: str = "deepseek"
+    ai_fallback_model: str = "deepseek-v3"
     ai_fallback_api_key: str = ""
     ai_max_cost_per_run: float = 10.0
     ai_concurrency: int = 20
 
     # Report configuration
-    report_lang: str = "zh"
+    report_lang: str = "en"
     auto_open_report: bool = True
 
-    # Display settings
-    max_swear_display_items: int = 8
-    phrase_tags_count: int = 10
-    word_cloud_count: int = 20
-    top_dates_count: int = 5
+    # AI cache behaviour (must be >= 1 to avoid ZeroDivisionError in modulo check)
+    ai_cache_save_frequency: int = Field(default=20, ge=1)
+
+    # ── Computed paths ────────────────────────────────────────────────────────
+
+    @property
+    def cache_path(self) -> Path:
+        """Path to AI analysis disk cache."""
+        return self.data_dir / "ai_cache.json"
+
+    @property
+    def cost_log_path(self) -> Path:
+        """Path to API cost log."""
+        return self.data_dir / "cost_log.json"
+
+    @property
+    def temp_export_path(self) -> Path:
+        """Temporary JSON export from Typeless database."""
+        return self.data_dir / "raw" / "temp_export.json"
+
+    @property
+    def default_report_path(self) -> Path:
+        """Default output path for generated HTML report."""
+        return self.output_dir / "personal" / "Typeless_Report.html"
 
     def get_db_path(self) -> Path:
         """Return Typeless database path, with custom override support."""
@@ -176,70 +158,9 @@ class Settings(BaseSettings):
             self.nlp[lang] = NLPConfig(
                 stop_words_path=lang_dir / "stopwords.txt",
                 filler_words_path=lang_dir / "filler_words.txt",
-                question_patterns_path=lang_dir / "question_patterns.txt",
+                connector_words_path=lang_dir / "connector_words.txt",
+                topic_keywords_path=lang_dir / "topic_keywords.txt",
             )
-
-    def load_emotion_config(self):
-        """Load emotion config from files"""
-        emotion_file = self.config_dir / "emotion_words.txt"
-        if emotion_file.exists():
-            self._parse_emotion_file(emotion_file)
-
-    def _parse_emotion_file(self, filepath: Path):
-        """Parse emotion words configuration file"""
-        import re
-
-        current_category = None
-        categories = {}
-        swear_words = []
-
-        with open(filepath, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line or line.startswith("#"):
-                    continue
-
-                # Category header like [anger]
-                if match := re.match(r"\[(\w+)\]", line):
-                    current_category = match.group(1)
-                    categories[current_category] = []
-                elif current_category:
-                    # Handle space-separated words on same line
-                    words = line.split()
-                    categories[current_category].extend(words)
-                    if current_category in ["anger", "anxiety", "sadness", "fatigue", "stress"]:
-                        swear_words.extend(words)
-
-        # Default swear words from old Config
-        if not swear_words:
-            swear_words = [
-                "卧槽",
-                "妈的",
-                "傻逼",
-                "靠",
-                "离谱",
-                "烦",
-                "崩溃",
-                "他妈",
-                "妈蛋",
-                "滚",
-                "扯淡",
-                "放屁",
-                "废物",
-                "垃圾",
-                "累死了",
-                "烦死了",
-                "气死了",
-                "受不了",
-                "太离谱了",
-            ]
-
-        self.emotion = EmotionConfig(
-            categories=categories,
-            swear_words=swear_words,
-            intensity_heavy=["非常", "特别", "超级", "太", "极其"],
-            intensity_light=["有点", "稍微", "还算"],
-        )
 
 
 # Global singleton
@@ -252,7 +173,6 @@ def get_settings() -> Settings:
     if _settings is None:
         _settings = Settings()
         _settings.load_nlp_configs()
-        _settings.load_emotion_config()
     return _settings
 
 

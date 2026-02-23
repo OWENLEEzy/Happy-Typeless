@@ -49,11 +49,13 @@ class NLPProcessorFactory:
             return ChineseSegmentStrategy(
                 stop_words=self._load_word_type(lang, "stop_words"),
                 filler_words=self._load_word_type(lang, "filler_words"),
+                connector_words=self._load_word_type(lang, "connector_words"),
             )
         elif lang == "en":
             return EnglishSegmentStrategy(
                 stop_words=self._load_word_type(lang, "stop_words"),
                 filler_words=self._load_word_type(lang, "filler_words"),
+                connector_words=self._load_word_type(lang, "connector_words"),
                 spacy_model=self._load_spacy_if_available(),
             )
         else:
@@ -65,7 +67,7 @@ class NLPProcessorFactory:
 
         Args:
             lang: Language code ("zh", "en", etc.)
-            word_type: Type of word set ("stop_words" or "filler_words")
+            word_type: Type of word set ("stop_words", "filler_words", or "connector_words")
 
         Returns:
             Set of words for the specified language and type
@@ -87,7 +89,7 @@ class NLPProcessorFactory:
         except (OSError, ImportError):
             return None
 
-    def get_analysis_strategy(self, lang: str = "zh") -> AnalysisStrategy:
+    def get_analysis_strategy(self, lang: str = "en") -> AnalysisStrategy:
         """Get batch analysis strategy for language
 
         Args:
