@@ -1,0 +1,152 @@
+# ========================================
+# Python
+# ========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ========================================
+# Virtual environments
+# ========================================
+venv/
+env/
+ENV/
+.venv/
+
+# ========================================
+# IDEs
+# ========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-*
+
+# ========================================
+# OS
+# ========================================
+.DS_Store
+Thumbs.db
+*.desktop
+.AppleDouble
+.LSOverride
+
+# ========================================
+# Logs
+# ========================================
+*.log
+logs/
+*.log.*
+
+# ========================================
+# Output files (生成的报告)
+# ========================================
+# Ignore output directory except examples
+output/*
+!output/examples/
+output/examples/*
+!output/examples/*.html
+!output/examples/README.md
+# Ignore all HTML files except in examples
+*.html
+!output/examples/*.html
+
+# ========================================
+# Data files (原始数据，不含配置)
+# ========================================
+# Ignore data directories except examples
+data/*
+!data/examples/
+data/examples/*
+!data/examples/*.json
+!data/examples/README.md
+data/raw/
+data/processed/
+*.csv
+*.xlsx
+# JSON 配置文件保留，其他 JSON 忽略
+*.json
+!config/*.json
+!data/examples/*.json
+
+# ========================================
+# AI/ML specific
+# ========================================
+*.pkl
+*.joblib
+*.h5
+*.pb
+*.onnx
+*.pt
+*.pth
+*.model
+*.weights
+models/trained/
+models/checkpoints/
+experiments/results/
+.mlruns/
+mlruns/
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/
+
+# ========================================
+# Temporary files
+# ========================================
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+
+# ========================================
+# Environment variables
+# ========================================
+.env
+.env.local
+*.local
+
+# ========================================
+# Claude Code
+# ========================================
+.claude/
+.HOOK_OUTPUT.txt
+
+# ========================================
+# Plans (临时规划文件)
+# ========================================
+docs/plans/
+docs/CODEX.md
+
+# ========================================
+# Project specific
+# ========================================
+transcriptions.json.local
+*_local.*
+
+# ========================================
+# AI analysis data (contains user privacy)
+# ========================================
+data/ai_cache.json
+data/cost_log.json
+
+# Personal reports (contains real voice content, ignore all except placeholder)
+!output/personal/
+output/personal/*
+!output/personal/.gitkeep

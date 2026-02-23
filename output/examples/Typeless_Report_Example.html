@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typeless Analytics - 语音数据报告</title>
+    <!-- Tailwind CSS - disabled some utilities that conflict -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            corePlugins: {
+                preflight: false,
+            },
+            // Important: don't override grid utilities
+            theme: {
+                extend: {
+                    gridTemplateColumns: {
+                        '4': 'repeat(4, minmax(0, 1fr))',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Override Tailwind grid utilities for bento-grid */
+        .bento-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1rem;
+            align-items: start !important;
+            align-content: start !important;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        :root {
+            --bg-primary: #F4EFEA;
+            --bg-card: #FFFFFF;
+            --bg-elevated: #FAF9F6;
+            --bg-hover: #F0EDE8;
+            --text-primary: #2D2D2D;
+            --text-secondary: #6B6B6B;
+            --text-tertiary: #9B9B9B;
+            --border-default: #2D2D2D;
+            --border-subtle: #E5E5E5;
+            --border-color: #2D2D2D;
+            --accent-primary: #FFDE00;
+            --accent-secondary: #6FC2FF;
+            --accent-success: #00D26A;
+            --accent-warning: #FFAB00;
+            --accent-error: #FF4D4D;
+            --accent-purple: #A855F7;
+            --accent-orange: #FF8C00;
+            --accent-blue: #6FC2FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        body.theme-dark {
+            --bg-primary: #121212;
+            --bg-card: #1E1E1E;
+            --bg-elevated: #2A2A2A;
+            --bg-hover: #323232;
+            --text-primary: #F4EFEA;
+            --text-secondary: #9B9B9B;
+            --border-default: #6B6B6B;
+            --border-subtle: #3A3A3A;
+            --border-color: #6B6B6B;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', 'SF Mono', 'Consolas', monospace;
+        }
+
+        /* Card base styles */
+        .card {
+            background: var(--bg-card);
+            border: 2px solid var(--border-default);
+            border-radius: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+        }
+
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        /* Tag styles */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag-primary {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+        }
+
+        .tag-success {
+            background: var(--accent-success);
+            border-color: var(--accent-success);
+            color: white;
+        }
+
+        .tag-error {
+            background: var(--accent-error);
+            border-color: var(--accent-error);
+            color: white;
+        }
+
+        /* Data number styles */
+        .data-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 36px;
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .data-value-lg {
+            font-size: 48px;
+        }
+
+        .data-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            height: 8px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navigation bar */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 48px;
+            background: var(--bg-primary);
+            border-bottom: 2px solid var(--border-default);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 400;
+            border: 2px solid var(--border-default);
+            border-radius: 0;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+
+        .btn:hover {
+            background: var(--text-primary);
+            color: var(--bg-card);
+            transform: translate(-2px, -2px);
+            box-shadow: 4px 4px 0 var(--accent-primary);
+        }
+
+        /* Catchphrase tags */
+        .phrase-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 6px 12px;
+            margin: 4px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .phrase-tag:hover {
+            background: var(--accent-primary);
+            transform: translate(-1px, -1px);
+        }
+
+        .phrase-count {
+            font-size: 10px;
+            padding: 2px 6px;
+            background: var(--accent-secondary);
+            border-radius: 0;
+        }
+
+        /* Sentence pattern comparison blocks */
+        .sentence-compare {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .sentence-block {
+            flex: 1;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .sentence-block.question {
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05));
+            border: 2px solid var(--accent-purple);
+        }
+
+        .sentence-block.statement {
+            background: linear-gradient(135deg, rgba(0, 210, 106, 0.15), rgba(0, 210, 106, 0.05));
+            border: 2px solid var(--accent-success);
+        }
+
+        .sentence-percent {
+            font-size: 2.5rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .question .sentence-percent { color: var(--accent-purple); }
+        .statement .sentence-percent { color: var(--accent-success); }
+
+        /* Emotion three-part section */
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.75rem;
+        }
+
+        .emotion-item {
+            text-align: center;
+            padding: 1rem;
+            border: 2px solid;
+            background: var(--bg-elevated);
+        }
+
+        .emotion-item.normal { border-color: var(--accent-success); }
+        .emotion-item.swear { border-color: var(--accent-orange); }
+        .emotion-item.negative { border-color: var(--accent-error); }
+
+        /* Profanity calendar */
+        .swear-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            background: var(--bg-elevated);
+            margin-bottom: 0.4rem;
+            font-size: 0.8rem;
+        }
+
+        .swear-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-error);
+            white-space: nowrap;
+        }
+
+        /* Top 5 */
+        .top-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.3rem 0;
+        }
+
+        .top-rank {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: var(--bg-elevated);
+        }
+
+        .top-rank.gold { background: var(--accent-primary); }
+        .top-rank.silver { background: var(--accent-secondary); }
+        .top-rank.bronze { background: var(--accent-error); }
+
+        .top-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--bg-primary);
+            margin-top: 0.25rem;
+        }
+
+        .top-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-success), var(--accent-secondary));
+        }
+
+        /* Word cloud tags */
+        .word-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            margin: 4px;
+            border: 1px solid var(--border-default);
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s ease;
+        }
+
+        .word-tag:hover {
+            background: var(--accent-primary);
+            transform: translate(-1px, -1px);
+            box-shadow: 2px 2px 0 var(--border-default);
+        }
+
+        /* Topic classification */
+        .topic-grid {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .topic-item {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid;
+        }
+
+        .topic-item.daily { border-color: var(--accent-success); }
+        .topic-item.ai { border-color: var(--accent-secondary); }
+        .topic-item.design { border-color: var(--accent-purple); }
+
+        /* Longest recording */
+        .longest-yap {
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            padding: 1rem;
+        }
+
+        .yap-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Achievement badge */
+        .badge-card {
+            background: linear-gradient(135deg, var(--bg-elevated), var(--bg-card));
+            border: 2px solid var(--border-default);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-name {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-progress {
+            height: 6px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .badge-progress-fill {
+            height: 100%;
+            background: var(--accent-success);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Bento Grid column span - use bento- prefix to avoid Tailwind conflicts */
+        .bento-col-1 { grid-column: span 1; }
+        .bento-col-2 { grid-column: span 2; }
+        .bento-col-3 { grid-column: span 3; }
+        .bento-col-4 { grid-column: span 4; }
+
+        /* Chart container */
+        .chart-container {
+            width: 100%;
+            height: 200px;
+        }
+
+        /* ==========================================
+           Phase 1 new styles
+           ========================================== */
+
+        /* Language style tags */
+        .personality-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 8px 14px;
+            margin: 4px;
+            background: var(--bg-elevated);
+            border: 2px solid;
+            border-radius: 0;
+            transition: all 0.2s ease;
+        }
+
+        .personality-tag:hover {
+            transform: translate(-1px, -1px);
+            box-shadow: 2px 2px 0 var(--accent-primary);
+        }
+
+        .tag-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .tag-desc {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Word categories */
+        .word-category {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .word-category:last-child {
+            border-bottom: none;
+        }
+
+        .cat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 3px 8px;
+            color: white;
+            text-transform: uppercase;
+            font-weight: 600;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .cat-words {
+            flex: 1;
+        }
+
+        .cat-word {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 2px;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .cat-word small {
+            color: var(--text-tertiary);
+            font-size: 10px;
+            margin-left: 4px;
+        }
+
+        /* Efficiency scores */
+        .efficiency-grid {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1rem;
+        }
+
+        .eff-item {
+            text-align: center;
+        }
+
+        .eff-score {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 600;
+            display: block;
+        }
+
+        .eff-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .fragmentation-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .frag-level {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 4px 10px;
+            background: var(--accent-warning);
+            color: white;
+        }
+
+        .frag-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .frag-text {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        /* App usage stats */
+        .app-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .app-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .app-rank {
+            width: 24px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .app-info {
+            flex: 1;
+        }
+
+        .app-name {
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+
+        .app-bar {
+            height: 4px;
+            background: var(--bg-primary);
+        }
+
+        .app-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-success), var(--accent-secondary));
+        }
+
+        .app-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Emotion deep analysis */
+        .emotion-deep-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .emotion-deep-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-elevated);
+            border-left: 3px solid;
+        }
+
+        .emotion-deep-item:nth-child(1) { border-color: #FF4D4D; }
+        .emotion-deep-item:nth-child(2) { border-color: #FFAB00; }
+        .emotion-deep-item:nth-child(3) { border-color: #6FC2FF; }
+        .emotion-deep-item:nth-child(4) { border-color: #9B9B9B; }
+        .emotion-deep-item:nth-child(5) { border-color: #A855F7; }
+
+        .emotion-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .emotion-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .emotion-ratio {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            min-width: 40px;
+            text-align: right;
+        }
+
+        /* Emotion collapsible panels */
+        .emotion-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .emotion-accordion-item {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border-default);
+            border-radius: 0;
+        }
+        .emotion-accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+        .emotion-accordion-header:hover {
+            background: var(--bg-hover);
+        }
+        .emotion-accordion-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .emotion-accordion-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .emotion-accordion-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .emotion-accordion-icon {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: var(--text-secondary);
+        }
+        .emotion-accordion-header.active .emotion-accordion-icon {
+            transform: rotate(180deg);
+        }
+        .emotion-accordion-content {
+            display: none;
+            border-top: 2px solid var(--border-default);
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .emotion-accordion-content.active {
+            display: block;
+        }
+        .emotion-record-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .emotion-record-item:last-child {
+            border-bottom: none;
+        }
+        .emotion-record-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .emotion-record-score {
+            color: var(--accent-error);
+            font-weight: 600;
+        }
+        .emotion-record-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        /* Bento Grid Layout */
+        .bento-grid {
+            display: grid !important;
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 1rem;
+            align-items: start !important;
+            align-content: start !important;
+        }
+
+        /* Fix grid child flexbox collapse - CRITICAL for content visibility */
+        .bento-grid > * {
+            min-height: auto !important;
+            min-width: 0;
+            height: auto !important;
+        }
+
+        /* Ensure flex containers inside grid items expand */
+        .bento-grid .card {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: auto !important;
+            height: auto !important;
+            align-self: start !important;
+        }
+
+        .bento-grid .card > * {
+            min-height: auto !important;
+            flex-shrink: 0;
+        }
+
+        .bento-grid .card-body {
+            flex: 1;
+            min-height: auto !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .bento-col-4 { grid-column: span 2 !important; }
+        }
+
+        @media (max-width: 640px) {
+            .bento-grid { grid-template-columns: 1fr !important; }
+            .bento-col-1, .bento-col-2, .bento-col-3, .bento-col-4 { grid-column: span 1 !important; }
+            .nav { padding: 12px 16px; }
+            .sentence-compare { flex-direction: column; }
+            .emotion-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Tab Navigation */
+        .tabs-container {
+            display: flex;
+            gap: 0.5rem;
+            border-bottom: 2px solid var(--border-default);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 0.75rem 1.25rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-primary);
+            background: var(--bg-elevated);
+        }
+
+        .tab-btn.active {
+            color: var(--text-primary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="flex items-center gap-3">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+            <span class="font-mono font-semibold text-lg">Typeless Analytics</span>
+        </div>
+        <button class="btn" id="theme-toggle-btn">🌙 深色模式</button>
+    </nav>
+
+    <!-- Main content -->
+    <main class="p-6 lg:p-12">
+        <!-- Page title -->
+        <header class="mb-8">
+            <p class="data-label">语音数据分析报告</p>
+            <h1 class="font-mono text-4xl lg:text-5xl font-normal tracking-wide mt-2">
+                口喷成果分析
+            </h1>
+            <p class="text-neutral-600 mt-2 text-sm" id="date-range">
+                数据范围: 2025-12-24 至 2026-02-23
+            </p>
+        </header>
+
+        <!-- Tab Navigation -->
+        <div class="tabs-container">
+            <button class="tab-btn active" data-tab="overview">概览</button>
+            <button class="tab-btn" data-tab="personality">风格画像</button>
+            <button class="tab-btn" data-tab="time">时间趋势</button>
+            <button class="tab-btn" data-tab="content">内容分析</button>
+            <button class="tab-btn" data-tab="ai">AI 深度洞察</button>
+        </div>
+
+        <!-- Tab 1: Overview -->
+        <div id="tab-overview" class="tab-content active">
+            <!-- Bento Grid -->
+        <div class="bento-grid">
+
+            <!-- 1. Core Data Overview (6 cards) -->
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">总语音条数</p>
+                    <p class="data-value">1,000</p>
+                </div>
+            </div>
+
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">总输出字数</p>
+                    <p class="data-value" style="color: var(--accent-success);">31,685</p>
+                </div>
+            </div>
+
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">总语音时长</p>
+                    <p class="data-value">88<span class="text-sm text-neutral-500">分钟</span></p>
+                </div>
+            </div>
+
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">日均使用次数</p>
+                    <p class="data-value">16.1</p>
+                </div>
+            </div>
+
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">平均每条字数</p>
+                    <p class="data-value">31.7</p>
+                </div>
+            </div>
+
+            <div class="card bento-col-1">
+                <div class="card-body">
+                    <p class="data-label">平均每条时长</p>
+                    <p class="data-value">5.3<span class="text-sm text-neutral-500">秒</span></p>
+                </div>
+            </div>
+
+            <!-- Achievement badge -->
+            <div class="badge-card bento-col-1">
+                <div class="badge-icon">🗣️</div>
+                <p class="badge-name">话痨本痨</p>
+                <div class="badge-progress">
+                    <div class="badge-progress-fill" style="width: 63.370000000000005%; background-color: #CD7F32;"></div>
+                </div>
+                <p class="font-mono text-xs text-neutral-500 mt-2">31,685 / 50,000 字</p>
+            </div>
+
+            <!-- 2. Usage Habits -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">使用习惯</h3>
+                </div>
+                <div class="card-body">
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <p class="data-value">62</p>
+                            <p class="text-xs text-neutral-500 mt-1">最长连续(天)</p>
+                        </div>
+                        <div>
+                            <p class="data-value">62</p>
+                            <p class="text-xs text-neutral-500 mt-1">活跃天数</p>
+                        </div>
+                        <div>
+                            <p class="data-value">0</p>
+                            <p class="text-xs text-neutral-500 mt-1">断档天数</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2.1 Extreme comparison -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">极值对比</h3>
+                </div>
+                <div class="card-body">
+                    <div class="flex items-center justify-around">
+                        <div class="text-center">
+                            <p class="text-xs text-neutral-500">最勤奋一周</p>
+                            <p class="data-value text-xl" style="color: var(--accent-success);">130</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="data-value" style="color: var(--accent-warning);">x18.6</p>
+                            <p class="text-xs text-neutral-500">差距倍数</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-xs text-neutral-500">最慵懒一周</p>
+                            <p class="data-value text-xl" style="color: var(--accent-error);">7</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Sentence patterns -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">句式倾向</h3>
+                </div>
+                <div class="card-body">
+                    <div class="sentence-compare">
+                        <div class="sentence-block question">
+                            <p class="sentence-percent">0%</p>
+                            <p class="text-sm text-neutral-600 mt-1">问句</p>
+                            <p class="font-mono text-xs text-neutral-500">0 条</p>
+                        </div>
+                        <div class="sentence-block statement">
+                            <p class="sentence-percent">0%</p>
+                            <p class="text-sm text-neutral-600 mt-1">陈述句</p>
+                            <p class="font-mono text-xs text-neutral-500">0 条</p>
+                        </div>
+                    </div>
+                    <p class="text-center text-sm text-neutral-500 mt-4 p-2 bg-[var(--bg-elevated)] border border-[var(--border-subtle)]">
+                        💡 结论：你主要是在「下指令」，而不是「提问」
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4.1 Emotion three-part analysis -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">情绪大盘</h3>
+                </div>
+                <div class="card-body">
+                    <div class="emotion-grid" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="emotion-item normal">
+                            <p class="text-lg font-bold" style="color: var(--accent-success);">0%</p>
+                            <p class="text-xs text-neutral-600 mt-1">正常/积极</p>
+                            <p class="font-mono text-xs text-neutral-500">0 条</p>
+                        </div>
+                        <div class="emotion-item negative">
+                            <p class="text-lg font-bold" style="color: var(--accent-error);">0.0%</p>
+                            <p class="text-xs text-neutral-600 mt-1">负面情绪</p>
+                            <p class="font-mono text-xs text-neutral-500">0 条</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 30-day trend chart -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">最近 30 天使用趋势</h3>
+                </div>
+                <div class="card-body">
+                    <div id="chart-trend-overview" class="chart-container" style="height: 200px;"></div>
+                </div>
+            </div>
+
+            <!-- 24-hour distribution chart -->
+            <div class="card bento-col-2">
+                <div class="card-header">
+                    <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">24 小时使用分布</h3>
+                </div>
+                <div class="card-body">
+                    <div id="chart-hour-overview" class="chart-container" style="height: 200px;"></div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+        <!-- End Tab 1: Overview -->
+
+        <!-- Tab 2: Personality & Efficiency -->
+        <div id="tab-personality" class="tab-content">
+            <div class="bento-grid">
+                <!-- Personality Profile (Full Width) -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">🎭 语言风格画像</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="flex flex-wrap justify-center">
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Efficiency Metrics -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">⚡ 效率评分</h3>
+                    </div>
+                    <div class="card-body">
+                        
+            <div class="efficiency-grid">
+                <div class="eff-item">
+                    <span class="eff-score" style="color: #FF4D4D;">0</span>
+                    <span class="eff-label">作息</span>
+                </div>
+                <div class="eff-item">
+                    <span class="eff-score" style="color: #FF4D4D;">9</span>
+                    <span class="eff-label">效率</span>
+                </div>
+                <div class="eff-item">
+                    <span class="eff-score" style="color: #FF4D4D;">53</span>
+                    <span class="eff-label">专注</span>
+                </div>
+                <div class="eff-item">
+                    <span class="eff-score" style="color: #FF4D4D;">21</span>
+                    <span class="eff-label">综合</span>
+                </div>
+            </div>
+            <div class="fragmentation-box">
+                <span class="frag-level">低</span>
+                <span class="frag-desc">碎片化指数 20.0%</span>
+                <span class="frag-text">思考有深度</span>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- Word Categories -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">📝 口头禅分类</h3>
+                    </div>
+                    <div class="card-body">
+                        
+                    </div>
+                </div>
+
+                <!-- Sentence Patterns -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">句式倾向</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-neutral-500">{self.i18n.t("no_data")}</p>
+                    </div>
+                </div>
+
+                <!-- Emotion Overview -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">情绪大盘</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-neutral-500">{self.i18n.t("no_data")}</p>
+                    </div>
+                </div>
+
+                <!-- App Usage Stats -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">📱 App 使用统计</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="app-list">
+                <div class="app-item">
+                    <span class="app-rank">🥇</span>
+                    <div class="app-info">
+                        <div class="app-name">VSCode</div>
+                        <div class="app-bar">
+                            <div class="app-bar-fill" style="width: 0.263%;"></div>
+                        </div>
+                    </div>
+                    <span class="app-count">263</span>
+                </div>
+            
+                <div class="app-item">
+                    <span class="app-rank">🥈</span>
+                    <div class="app-info">
+                        <div class="app-name">Google Chrome</div>
+                        <div class="app-bar">
+                            <div class="app-bar-fill" style="width: 0.175%;"></div>
+                        </div>
+                    </div>
+                    <span class="app-count">175</span>
+                </div>
+            
+                <div class="app-item">
+                    <span class="app-rank">🥉</span>
+                    <div class="app-info">
+                        <div class="app-name">Terminal</div>
+                        <div class="app-bar">
+                            <div class="app-bar-fill" style="width: 0.148%;"></div>
+                        </div>
+                    </div>
+                    <span class="app-count">148</span>
+                </div>
+            
+                <div class="app-item">
+                    <span class="app-rank">4.</span>
+                    <div class="app-info">
+                        <div class="app-name">Slack</div>
+                        <div class="app-bar">
+                            <div class="app-bar-fill" style="width: 0.121%;"></div>
+                        </div>
+                    </div>
+                    <span class="app-count">121</span>
+                </div>
+            
+                <div class="app-item">
+                    <span class="app-rank">5.</span>
+                    <div class="app-info">
+                        <div class="app-name">Typeless</div>
+                        <div class="app-bar">
+                            <div class="app-bar-fill" style="width: 0.091%;"></div>
+                        </div>
+                    </div>
+                    <span class="app-count">91</span>
+                </div>
+            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Tab 2: Personality -->
+
+        <!-- Tab 3: Time Trends -->
+        <div id="tab-time" class="tab-content">
+            <div class="bento-grid">
+                <!-- Usage Habits -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">使用习惯</h3>
+                    </div>
+                    <div class="card-body">
+                        
+            <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                    <p class="data-value">62</p>
+                    <p class="text-xs text-neutral-500">最长连续(天)</p>
+                </div>
+                <div>
+                    <p class="data-value">62</p>
+                    <p class="text-xs text-neutral-500">活跃天数</p>
+                </div>
+                <div>
+                    <p class="data-value">0</p>
+                    <p class="text-xs text-neutral-500">断档天数</p>
+                </div>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- Extreme Comparison -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">极值对比</h3>
+                    </div>
+                    <div class="card-body">
+                        
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">最勤奋一周</span>
+                    <span class="font-mono">条 130</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm">最慵懒一周</span>
+                    <span class="font-mono">条 7</span>
+                </div>
+                <div class="flex justify-between items-center pt-2" style="border-top: 1px solid var(--border-subtle);">
+                    <span class="text-sm">差距倍数</span>
+                    <span class="font-mono" style="color: var(--accent-primary);">18.6x</span>
+                </div>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- 30 Day Trend -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">最近 30 天使用趋势</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-trend-time" class="chart-container" style="height: 200px;"></div>
+                    </div>
+                </div>
+
+                <!-- 24 Hour Distribution -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">24 小时使用分布</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-hour-time" class="chart-container" style="height: 200px;"></div>
+                    </div>
+                </div>
+
+                <!-- Top 5 Dates -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">劳模榜单 Top 5</h3>
+                    </div>
+                    <div class="card-body">
+                        
+                <div class="top-item">
+                    <span class="top-rank gold">🥇</span>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="text-sm">2026-01-06</span>
+                            <span class="font-mono text-sm font-medium">25</span>
+                        </div>
+                        <div class="top-bar"><div class="top-bar-fill" style="width: 100.0%;"></div></div>
+                    </div>
+                </div>
+            
+                <div class="top-item">
+                    <span class="top-rank silver">🥈</span>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="text-sm">2025-12-30</span>
+                            <span class="font-mono text-sm font-medium">23</span>
+                        </div>
+                        <div class="top-bar"><div class="top-bar-fill" style="width: 92.0%;"></div></div>
+                    </div>
+                </div>
+            
+                <div class="top-item">
+                    <span class="top-rank bronze">🥉</span>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="text-sm">2026-01-30</span>
+                            <span class="font-mono text-sm font-medium">23</span>
+                        </div>
+                        <div class="top-bar"><div class="top-bar-fill" style="width: 92.0%;"></div></div>
+                    </div>
+                </div>
+            
+                <div class="top-item">
+                    <span class="top-rank ">4.</span>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="text-sm">2026-02-13</span>
+                            <span class="font-mono text-sm font-medium">23</span>
+                        </div>
+                        <div class="top-bar"><div class="top-bar-fill" style="width: 92.0%;"></div></div>
+                    </div>
+                </div>
+            
+                <div class="top-item">
+                    <span class="top-rank ">5.</span>
+                    <div class="flex-1">
+                        <div class="flex justify-between">
+                            <span class="text-sm">2025-12-28</span>
+                            <span class="font-mono text-sm font-medium">22</span>
+                        </div>
+                        <div class="top-bar"><div class="top-bar-fill" style="width: 88.0%;"></div></div>
+                    </div>
+                </div>
+            
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Tab 3: Time Trends -->
+
+        <!-- Tab 4: Content Deep Dive -->
+        <div id="tab-content" class="tab-content">
+            <div class="bento-grid">
+                <!-- Topic Classification -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">内容主题分类</h3>
+                    </div>
+                    <div class="card-body">
+                        
+            <div class="topic-grid">
+                <div class="topic-item daily">
+                    <p class="text-sm">日常/其他</p>
+                    <p class="data-value">930</p>
+                    <p class="font-mono text-xs">91%</p>
+                </div>
+                <div class="topic-item ai">
+                    <p class="text-sm">AI技术</p>
+                    <p class="data-value" style="color: var(--accent-blue);">70</p>
+                    <p class="font-mono text-xs">7%</p>
+                </div>
+                <div class="topic-item design">
+                    <p class="text-sm">设计/创作</p>
+                    <p class="data-value" style="color: var(--accent-purple);">19</p>
+                    <p class="font-mono text-xs">2%</p>
+                </div>
+            </div>
+        
+                    </div>
+                </div>
+
+                <!-- High Frequency Words -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">高频词汇 Top 20</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="flex flex-wrap content-start" style="max-height: 160px; overflow: hidden;">
+                            <p class="text-neutral-500">暂无数据</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sentence Length Distribution -->
+                <div class="card bento-col-2">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">内容长度分布</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-length-content" class="chart-container" style="height: 180px;"></div>
+                    </div>
+                </div>
+
+                <!-- Longest Voice Recording -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">🎙️ 最长的一条语音</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="longest-yap">
+                            <div class="yap-meta">
+                                <span>📅 2025-12-28</span>
+                                <span>⏰ 1:00</span>
+                                <span>🎙️ 38秒</span>
+                                <span>📝 239字</span>
+                            </div>
+                            <p class="text-sm leading-relaxed">"The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn&#x27;t working properly in some areas."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emotion Deep Analysis -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">😔 情绪深度分析</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-neutral-500">暂无数据</p>
+                    </div>
+                </div>
+
+                <!-- Swear Calendar -->
+                <div class="card bento-col-4">
+                    <div class="card-header">
+                        <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">⚠️ 脏话日历</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center text-neutral-500 p-4">暂无数据</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Tab 4: Content -->
+
+        <!-- Tab 5: AI Insights -->
+        <div id="tab-ai" class="tab-content">
+            <div class="bento-grid">
+                
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">情绪分布</h3>
+            </div>
+            <div class="card-body">
+                <div class="emotion-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="emotion-item">
+                        <p class="text-lg font-bold" style="color: var(--accent-success);">30%</p>
+                        <p class="text-xs">正面</p>
+                        <p class="font-mono text-xs text-neutral-500">296</p>
+                    </div>
+                    <div class="emotion-item">
+                        <p class="text-lg font-bold">70%</p>
+                        <p class="text-xs">中性</p>
+                        <p class="font-mono text-xs text-neutral-500">704</p>
+                    </div>
+                    <div class="emotion-item">
+                        <p class="text-lg font-bold" style="color: var(--accent-error);">0%</p>
+                        <p class="text-xs">negative</p>
+                        <p class="font-mono text-xs text-neutral-500">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">大五人格画像</h3>
+            </div>
+            <div class="card-body">
+                <div id="chart-bigfive-ai" class="chart-container" style="height: 220px;"></div>
+            </div>
+        </div>
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">心理健康指标</h3>
+            </div>
+            <div class="card-body">
+                <div class="grid grid-cols-2 gap-4 text-center">
+                    <div>
+                        <p class="data-value" style="color: var(--accent-warning);">0.40</p>
+                        <p class="text-xs text-neutral-500">平均压力</p>
+                    </div>
+                    <div>
+                        <p class="data-value" style="color: var(--accent-success);">0.60</p>
+                        <p class="text-xs text-neutral-500">乐观指数</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">情绪触发原因</h3>
+            </div>
+            <div class="card-body">
+                <div id="chart-triggers-ai" class="chart-container" style="height: 220px;"></div>
+            </div>
+        </div>
+        <div class="card bento-col-4">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">话题分布</h3>
+            </div>
+            <div class="card-body">
+                <div class="flex flex-wrap gap-2">
+                    <span class="word-tag" style="font-size: 0.75rem;">工作 <span class="font-mono text-neutral-500 text-xs">(508)</span></span>
+<span class="word-tag" style="font-size: 0.75rem;">技术 <span class="font-mono text-neutral-500 text-xs">(508)</span></span>
+<span class="word-tag" style="font-size: 0.75rem;">生活 <span class="font-mono text-neutral-500 text-xs">(492)</span></span>
+
+                </div>
+            </div>
+        </div>
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">灵感时刻</h3>
+            </div>
+            <div class="card-body" style="max-height: 260px; overflow-y: auto;">
+                <div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-25 · routine</p><p class="text-sm leading-relaxed">"So, Let me think about it"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-25 · routine</p><p class="text-sm leading-relaxed">"Let me think about it"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-25 · routine</p><p class="text-sm leading-relaxed">"We should consider mobile users"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-26 · routine</p><p class="text-sm leading-relaxed">"Should we use TypeScript or JavaScript?"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-26 · routine</p><p class="text-sm leading-relaxed">"No worries at all"</p></div>
+
+            </div>
+        </div>
+        <div class="card bento-col-2">
+            <div class="card-header">
+                <h3 class="font-mono text-sm font-medium uppercase tracking-wider text-neutral-600">幽默时刻</h3>
+            </div>
+            <div class="card-body" style="max-height: 260px; overflow-y: auto;">
+                <div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-24 · None</p><p class="text-sm leading-relaxed">"Let&#x27;s deploy to staging first"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-26 · None</p><p class="text-sm leading-relaxed">"No worries at all"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-26 · None</p><p class="text-sm leading-relaxed">"The database migration is complete"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-26 · None</p><p class="text-sm leading-relaxed">"What&#x27;s for lunch today?"</p></div>
+<div class="p-3 mb-2" style="border: 1px solid var(--border-subtle);"><p class="font-mono text-xs text-neutral-500 mb-1">2025-12-27 · None</p><p class="text-sm leading-relaxed">"We could simplify the architecture"</p></div>
+
+            </div>
+        </div>
+            </div>
+        </div>
+        <!-- End Tab 5: AI Insights -->
+
+    </main>
+
+    <footer class="text-center py-8 text-sm text-neutral-500 font-mono">
+        Generated by Typeless Analytics · 2026-02-23
+    </footer>
+
+    <script>
+        // Data
+        const DATA = {
+            hour_dist: [105, 100, 82, 91, 61, 55, 55, 45, 30, 20, 13, 5, 6, 1, 7, 3, 4, 6, 10, 22, 35, 52, 82, 110],
+            daily_trend: {
+                dates: ["2026-01-25", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-01-31", "2026-02-01", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-07", "2026-02-08", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23"],
+                counts: [11, 15, 21, 13, 22, 23, 16, 20, 14, 11, 15, 19, 20, 16, 19, 15, 17, 13, 15, 23, 20, 15, 19, 16, 17, 19, 13, 16, 20, 7]
+            },
+            length_dist: {
+                short: 200,
+                medium: 777,
+                long: 23
+            },
+            i18n: {
+                chart_short: "短句≤20字",
+                chart_medium: "中等21-100字",
+                chart_long: "长句>100字",
+                btn_dark: "🌙 深色模式",
+                btn_light: "☀️ 浅色模式"
+            },
+            emotion_trend: {
+                dates: [],
+                scores: []
+            },
+            ai_insights: {
+                big_five: {"openness": 0.547, "conscientiousness": 0.658, "extraversion": 0.445, "agreeableness": 0.593, "neuroticism": 0.405},
+                triggers_labels: [],
+                triggers_values: [],
+                sentiment: {"positive": 296, "neutral": 704, "negative": 0}
+            }
+        };
+
+        // Colors
+        function getColors() {
+            const isDark = document.body.classList.contains('theme-dark');
+            return {
+                bg: isDark ? '#1E1E1E' : '#FFFFFF',
+                text: isDark ? '#9B9B9B' : '#6B6B6B',
+                border: isDark ? '#3A3A3A' : '#E5E5E5',
+                green: '#00D26A',
+                blue: '#6FC2FF',
+                yellow: '#FFDE00',
+                purple: '#A855F7',
+                pink: '#FF4D4D'
+            };
+        }
+
+        // Chart instance cache
+        const charts = {};
+
+        // 30-day trend chart
+        function renderTrendChart(tabName = 'overview') {
+            const chartId = 'chart-trend-' + tabName;
+            const container = document.getElementById(chartId);
+            if (!container) return;
+
+            if (!charts[chartId]) {
+                charts[chartId] = echarts.init(container);
+            }
+
+            const c = getColors();
+            charts[chartId].setOption({
+                grid: { left: 40, right: 20, top: 20, bottom: 30 },
+                xAxis: {
+                    type: 'category',
+                    data: DATA.daily_trend.dates,
+                    axisLine: { lineStyle: { color: c.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: c.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                series: [{
+                    type: 'line',
+                    data: DATA.daily_trend.counts,
+                    smooth: true,
+                    itemStyle: { color: c.yellow },
+                    lineStyle: { width: 2, color: c.yellow },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(255, 222, 0, 0.3)' },
+                            { offset: 1, color: 'rgba(255, 222, 0, 0)' }
+                        ])
+                    }
+                }]
+            });
+        }
+
+        // 24-hour distribution
+        function renderHourChart(tabName = 'overview') {
+            const chartId = 'chart-hour-' + tabName;
+            const container = document.getElementById(chartId);
+            if (!container) return;
+
+            if (!charts[chartId]) {
+                charts[chartId] = echarts.init(container);
+            }
+
+            const c = getColors();
+            charts[chartId].setOption({
+                grid: { left: 40, right: 20, top: 20, bottom: 30 },
+                xAxis: {
+                    type: 'category',
+                    data: Array.from({length: 24}, (_, i) => i + 'h'),
+                    axisLine: { lineStyle: { color: c.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize:10, color: c.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: c.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                series: [{
+                    type: 'bar',
+                    data: DATA.hour_dist,
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: c.blue },
+                            { offset: 1, color: 'rgba(111, 194, 255, 0.2)' }
+                        ]),
+                        borderRadius: [0, 0, 0, 0]
+                    }
+                }]
+            });
+        }
+
+        // Length distribution
+        function renderLengthChart(tabName = 'overview') {
+            const chartId = 'chart-length-' + tabName;
+            const container = document.getElementById(chartId);
+            if (!container) return;
+
+            if (!charts[chartId]) {
+                charts[chartId] = echarts.init(container);
+            }
+
+            const c = getColors();
+            charts[chartId].setOption({
+                series: [{
+                    type: 'pie',
+                    radius: ['50%', '75%'],
+                    center: ['50%', '50%'],
+                    label: { show: false },
+                    data: [
+                        { value: DATA.length_dist.short, name: DATA.i18n.chart_short, itemStyle: { color: c.green } },
+                        { value: DATA.length_dist.medium, name: DATA.i18n.chart_medium, itemStyle: { color: c.blue } },
+                        { value: DATA.length_dist.long, name: DATA.i18n.chart_long, itemStyle: { color: c.purple } }
+                    ]
+                }]
+            });
+        }
+
+        // Emotion trend chart
+        function renderEmotionTrendChart() {
+            const container = document.getElementById('chart-emotion-trend');
+            if (!container || DATA.emotion_trend.dates.length === 0) return;
+
+            if (!charts['emotion-trend']) {
+                charts['emotion-trend'] = echarts.init(container);
+            }
+
+            const c = getColors();
+            charts['emotion-trend'].setOption({
+                grid: { left: 40, right: 20, top: 20, bottom: 40 },
+                xAxis: {
+                    type: 'category',
+                    data: DATA.emotion_trend.dates,
+                    axisLine: { lineStyle: { color: c.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: c.text, rotate: 30 }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: c.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                series: [{
+                    type: 'line',
+                    data: DATA.emotion_trend.scores,
+                    smooth: true,
+                    itemStyle: { color: c.pink },
+                    lineStyle: { width: 2, color: c.pink },
+                    areaStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: 'rgba(255, 77, 77, 0.3)' },
+                            { offset: 1, color: 'rgba(255, 77, 77, 0)' }
+                        ])
+                    }
+                }]
+            });
+        }
+
+        // Big Five radar chart
+        function renderBigFiveChart() {
+            const container = document.getElementById('chart-bigfive-ai');
+            if (!container) return;
+            if (!charts['bigfive-ai']) {
+                charts['bigfive-ai'] = echarts.init(container);
+            }
+            const c = getColors();
+            const bf = DATA.ai_insights.big_five;
+            charts['bigfive-ai'].setOption({
+                radar: {
+                    indicator: [
+                        { name: 'Open.', max: 1 },
+                        { name: 'Conscient.', max: 1 },
+                        { name: 'Extravers.', max: 1 },
+                        { name: 'Agreeable.', max: 1 },
+                        { name: 'Neurotic.', max: 1 },
+                    ],
+                    splitLine: { lineStyle: { color: c.border } },
+                    axisLine: { lineStyle: { color: c.border } },
+                    name: { textStyle: { color: c.text, fontFamily: 'JetBrains Mono', fontSize: 10 } }
+                },
+                series: [{
+                    type: 'radar',
+                    data: [{
+                        value: [bf.openness, bf.conscientiousness, bf.extraversion, bf.agreeableness, bf.neuroticism],
+                        itemStyle: { color: c.yellow },
+                        lineStyle: { color: c.yellow },
+                        areaStyle: { color: 'rgba(255, 222, 0, 0.2)' }
+                    }]
+                }]
+            });
+        }
+
+        // Emotion triggers bar chart
+        function renderTriggersChart() {
+            const container = document.getElementById('chart-triggers-ai');
+            if (!container || DATA.ai_insights.triggers_labels.length === 0) return;
+            if (!charts['triggers-ai']) {
+                charts['triggers-ai'] = echarts.init(container);
+            }
+            const c = getColors();
+            charts['triggers-ai'].setOption({
+                grid: { left: 120, right: 20, top: 10, bottom: 30 },
+                xAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: c.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                yAxis: {
+                    type: 'category',
+                    data: DATA.ai_insights.triggers_labels,
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: c.text }
+                },
+                series: [{
+                    type: 'bar',
+                    data: DATA.ai_insights.triggers_values,
+                    itemStyle: { color: c.blue }
+                }]
+            });
+        }
+
+        // Initial render
+        renderTrendChart('overview');
+        renderHourChart('overview');
+        renderLengthChart('overview');
+        renderEmotionTrendChart();
+
+        // Theme toggle
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+            const btn = document.querySelector('.nav button');
+            if (document.body.classList.contains('theme-dark')) {
+                btn.textContent = DATA.i18n.btn_light;
+            } else {
+                btn.textContent = DATA.i18n.btn_dark;
+            }
+            setTimeout(() => {
+                // Re-render active tab charts
+                const activeTab = document.querySelector('.tab-content.active');
+                const tabName = activeTab ? activeTab.id.replace('tab-', '') : 'overview';
+                renderTrendChart(tabName);
+                renderHourChart(tabName);
+                if (tabName === 'content' || tabName === 'overview') {
+                    renderLengthChart(tabName);
+                }
+            }, 100);
+        }
+
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Remove active state from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+            });
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            // Add active state to button
+            document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
+
+            // Delay chart rendering to ensure DOM is visible
+            setTimeout(() => {
+                // Render charts based on active tab
+                if (tabName === 'overview') {
+                    renderTrendChart('overview');
+                    renderHourChart('overview');
+                    renderLengthChart('overview');
+                } else if (tabName === 'time') {
+                    renderTrendChart('time');
+                    renderHourChart('time');
+                } else if (tabName === 'content') {
+                    renderLengthChart('content');
+                } else if (tabName === 'ai') {
+                    renderBigFiveChart();
+                    renderTriggersChart();
+                }
+                // personality tab has no charts, skip rendering
+            }, 100);
+        }
+
+        // Responsive
+        window.addEventListener('resize', () => {
+            Object.values(charts).forEach(chart => {
+                if (chart) chart.resize();
+            });
+        });
+
+        // Tab button event listeners
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabName = e.target.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+
+        // Theme toggle button event listeners
+        const themeToggleBtn = document.getElementById('theme-toggle-btn');
+        if (themeToggleBtn) {
+            themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,4002 @@
+[
+  {
+    "id": "3c05afda-f1a0-4ea9-8e4b-8ec00c9282a4",
+    "timestamp": 1766522800,
+    "content": "I'm feeling tired",
+    "duration": 2.109,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "0414c4e3-fbc6-4b78-beb2-70e7c694eef1",
+    "timestamp": 1766549787,
+    "content": "I'm not sure about this",
+    "duration": 2.558,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "f809c82d-ad57-4341-b6ec-a5c6b6a2852b",
+    "timestamp": 1766551529,
+    "content": "See you tomorrow",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "fe8794d4-ace1-46a6-b553-c68a7d2f6019",
+    "timestamp": 1766552438,
+    "content": "Like, What's the timeline for this?",
+    "duration": 5.779,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "8f6f5d0a-70c1-4779-beaa-8aafffefc0c6",
+    "timestamp": 1766555737,
+    "content": "I'm not sure about this",
+    "duration": 6.346,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "c614c67b-f4fd-4f02-8158-cb9b373fd383",
+    "timestamp": 1766564426,
+    "content": "Sounds good",
+    "duration": 3.123,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "ef7105e3-306d-406c-b201-cdd6b2d59841",
+    "timestamp": 1766564566,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 4.051,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "d929b760-ae27-4922-9f93-1d8488c2c33b",
+    "timestamp": 1766566060,
+    "content": "Perfect",
+    "duration": 1.963,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "bba83eac-7f2d-46f8-b4a8-bc1ff5877c37",
+    "timestamp": 1766573381,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 6.572,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "16b5162a-6c66-41e7-8d76-fd3735ef04e4",
+    "timestamp": 1766573879,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 6.458,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "609aaea5-24e3-474a-893b-133a874448b0",
+    "timestamp": 1766575745,
+    "content": "Basically, Need to review the pull requests",
+    "duration": 6.61,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "3609b11f-002f-4fe9-b0cd-e179eef1cf63",
+    "timestamp": 1766583115,
+    "content": "Thanks for your help",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "7ff7f93d-654b-447c-9b54-a41baacdbb8b",
+    "timestamp": 1766640634,
+    "content": "Accessibility is important",
+    "duration": 5.673,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "97fc48a8-72a5-444e-936a-04136e7b2cfe",
+    "timestamp": 1766648215,
+    "content": "The tests are failing on CI",
+    "duration": 6.551,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "ecf66782-4420-4c1b-92b9-26fce153d8b8",
+    "timestamp": 1766648653,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.516,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "9c6a417a-5663-4e17-b4dc-f2480f5624c6",
+    "timestamp": 1766652616,
+    "content": "I appreciate it",
+    "duration": 3.329,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "5071b222-0e58-4ecf-992a-7a17378001b6",
+    "timestamp": 1766666475,
+    "content": "The tests are failing on CI",
+    "duration": 6.894,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "ebde9700-be8e-4744-a904-575b18706fbd",
+    "timestamp": 1766674511,
+    "content": "I'll get back to you on this",
+    "duration": 6.807,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "c2ac27e0-47d0-4a4b-b4de-7992169e7978",
+    "timestamp": 1766706831,
+    "content": "Need to review the pull requests",
+    "duration": 4.557,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "dd8dcdc7-b11d-4d09-b4d6-8f344318954b",
+    "timestamp": 1766715946,
+    "content": "What's for lunch today?",
+    "duration": 4.589,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "f4379186-43bb-4a6f-97eb-4e884bcd7527",
+    "timestamp": 1766722669,
+    "content": "OK",
+    "duration": 1.73,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "6b507b6b-b256-4d4a-a316-eddcfd3d60f7",
+    "timestamp": 1766725220,
+    "content": "So, I'm working on the authentication module",
+    "duration": 7.113,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "81d2fff0-120d-4c6c-a422-e02f41146242",
+    "timestamp": 1766731203,
+    "content": "How did you solve this problem?",
+    "duration": 4.169,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "6bc02733-fa16-4229-a94e-ccbd83b4a421",
+    "timestamp": 1766732403,
+    "content": "Who's working on this?",
+    "duration": 4.02,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "4021e1ee-36d6-405f-8a24-a6965dd1c00c",
+    "timestamp": 1766733788,
+    "content": "When can we ship this?",
+    "duration": 3.986,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "534e2992-47ce-4733-9a37-6aafbe0d5a75",
+    "timestamp": 1766734272,
+    "content": "The database migration is complete",
+    "duration": 5.927,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "c2a0e6e1-bd3d-40ad-8ecc-60083441a91d",
+    "timestamp": 1766741324,
+    "content": "What are your thoughts on this?",
+    "duration": 5.003,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "bae03a92-8b82-4814-b31c-a984ccc0083c",
+    "timestamp": 1766743335,
+    "content": "The tests are failing on CI",
+    "duration": 4.537,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "3b05b038-cff1-4e05-b142-23082ea6ed2a",
+    "timestamp": 1766750559,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 4.287,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "bb1ccf20-b8a1-447c-8179-cd1a8c84b7be",
+    "timestamp": 1766754158,
+    "content": "We could simplify the architecture",
+    "duration": 7.641,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "31f9dfb8-129a-4864-a31f-7f3b3b1909b9",
+    "timestamp": 1766798198,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 7.796,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "3f3a1923-914c-4198-a90f-68b9e549dcec",
+    "timestamp": 1766801911,
+    "content": "I need more context on this ticket",
+    "duration": 4.225,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "81526b33-8bd7-47b6-b333-b4e0e81fecd4",
+    "timestamp": 1766816605,
+    "content": "I'm not sure about this",
+    "duration": 4.603,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "26f87e5a-43f7-4da7-8f61-32473a1b8508",
+    "timestamp": 1766817741,
+    "content": "What's for lunch today?",
+    "duration": 3.473,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "1502f3a6-ae6b-4ae9-b1c4-0332e5236bcd",
+    "timestamp": 1766820224,
+    "content": "Let's deploy to staging first",
+    "duration": 2.424,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "b4df7fba-3fa7-48e4-a5c8-ad36312ffe0a",
+    "timestamp": 1766832596,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.901,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "7e1979b6-22b1-4dbb-b378-4569dd5d4bdc",
+    "timestamp": 1766833186,
+    "content": "The database migration is complete",
+    "duration": 7.904,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "d245eb0a-762d-48ca-be4e-4fbb9d65a277",
+    "timestamp": 1766835620,
+    "content": "Need to review the pull requests",
+    "duration": 6.258,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "de16194b-a3fc-438c-bcc9-562e4bdc63d1",
+    "timestamp": 1766837947,
+    "content": "Need to review the pull requests",
+    "duration": 3.682,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "e4c33e9c-b9c8-4134-99a8-e259940b59e1",
+    "timestamp": 1766878159,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 5.484,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "4db0ea53-68f3-423b-aa52-a79f94c06945",
+    "timestamp": 1766887258,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 7.298,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "2b846cad-6faf-4451-bf3a-9beda1c61713",
+    "timestamp": 1766887597,
+    "content": "The user experience could be better",
+    "duration": 3.972,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "d6f2ae73-bb69-4604-9f33-a87e4cfca51a",
+    "timestamp": 1766889682,
+    "content": "Actually, Thanks for your help",
+    "duration": 5.813,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "ac87746e-34c6-400f-926c-90fcebd17433",
+    "timestamp": 1766890564,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 4.36,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "ca1fb021-8b78-4f4a-82c4-6336b535ce18",
+    "timestamp": 1766892076,
+    "content": "Like, The onboarding flow needs improvement",
+    "duration": 5.212,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "cadc3233-8632-4735-bd66-43d811c4b9a9",
+    "timestamp": 1766898858,
+    "content": "Sounds good to me",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "53bbdbca-6a8e-48c9-9c94-a07ce3014fa9",
+    "timestamp": 1766900223,
+    "content": "Why does this keep breaking?",
+    "duration": 6.289,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "9c1cc613-440f-49d6-ac08-5c2bcc0ca72f",
+    "timestamp": 1766908911,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 6.672,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "aba961de-ea6e-4ed0-a73c-e96975a410b5",
+    "timestamp": 1766911153,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 6.315,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "f99b788a-d899-4e43-a768-89c45dc974b7",
+    "timestamp": 1766911472,
+    "content": "I'm working on the authentication module",
+    "duration": 7.208,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "07df2ea4-ab6e-4bca-a8f6-554313edf35f",
+    "timestamp": 1766913647,
+    "content": "The feature branch is ready for review",
+    "duration": 5.776,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "b9aae398-1e1c-4d0c-9d5b-5a735da48e52",
+    "timestamp": 1766985108,
+    "content": "What are your thoughts on this?",
+    "duration": 3.001,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "a898f20b-9fab-4b51-a2af-57eb34c356d0",
+    "timestamp": 1766985811,
+    "content": "Let's add some animations",
+    "duration": 4.665,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "3897d516-d2fc-4a08-8326-824c5436ca5a",
+    "timestamp": 1766986354,
+    "content": "Let's add some animations",
+    "duration": 3.074,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "d1d40d77-4e78-4fbb-8326-97b186ddf97a",
+    "timestamp": 1766986357,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 7.915,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "e21dec69-9506-4ced-b224-3b9bb74f1a31",
+    "timestamp": 1766988573,
+    "content": "So, Let's deploy to staging first",
+    "duration": 4.217,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "829a23a8-5d6c-4d2f-ae4c-c0f274e70bf1",
+    "timestamp": 1766989930,
+    "content": "Have you considered this option?",
+    "duration": 3.17,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "a3445cd6-a4e7-4a78-a2ef-5e91c9e40ddd",
+    "timestamp": 1766990280,
+    "content": "What's for lunch today?",
+    "duration": 2.734,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "767f2c18-58ec-467b-962f-a6fad35c632d",
+    "timestamp": 1766995942,
+    "content": "Sounds good to me",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "4ead2f93-5f44-4674-9e44-3954485a2ff1",
+    "timestamp": 1766997421,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 5.103,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "23a2c0d1-9650-464c-9790-4a0a4d296405",
+    "timestamp": 1767004989,
+    "content": "We could simplify the architecture",
+    "duration": 4.431,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "13210654-991c-4df0-a8d8-39ea7cd6cfd6",
+    "timestamp": 1767005006,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 7.901,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "bc8979b8-bf4b-401d-9f82-f994315f45c8",
+    "timestamp": 1767006596,
+    "content": "That's interesting",
+    "duration": 1.5,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "562cfc79-6f0d-4d75-b371-e1eaff2bf53a",
+    "timestamp": 1767011475,
+    "content": "The onboarding flow needs improvement",
+    "duration": 5.882,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "4a5af503-94b6-4e51-8611-d8e9a31960be",
+    "timestamp": 1767021077,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 8.003,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "596bf6e8-0f8b-4563-a9ab-459a4f68d992",
+    "timestamp": 1767060315,
+    "content": "Thanks for your help",
+    "duration": 2.912,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "27fe9feb-5510-45c2-8121-91a6659f1730",
+    "timestamp": 1767083519,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.22,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "d5bcae92-f039-4476-9693-ca9d2c13d4d6",
+    "timestamp": 1767086089,
+    "content": "I'm working on the authentication module",
+    "duration": 4.415,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "84453282-fa25-462d-8a34-ed7cbe023a77",
+    "timestamp": 1767089400,
+    "content": "Like, I'm feeling tired",
+    "duration": 6.251,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "651b07b9-08d4-401e-b8c5-20ee7ef69f4f",
+    "timestamp": 1767103791,
+    "content": "How did you solve this problem?",
+    "duration": 4.315,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "29fe8cb9-198c-4460-8f46-fbb657994d0e",
+    "timestamp": 1767147218,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 8.324,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "15a33c10-4d61-4442-b8f2-72e12ea9d764",
+    "timestamp": 1767154709,
+    "content": "Let's deploy to staging first",
+    "duration": 4.115,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "8686f03e-146b-4bf6-8261-bffd80f74768",
+    "timestamp": 1767160213,
+    "content": "What if we tried a different approach?",
+    "duration": 7.565,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "7ebad517-34c9-4285-bb94-4f54a5c18103",
+    "timestamp": 1767160824,
+    "content": "We need to optimize this query",
+    "duration": 4.106,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "f1332c9a-ff69-49de-b059-d5d6ba483c75",
+    "timestamp": 1767163928,
+    "content": "That makes sense",
+    "duration": 3.458,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "69d9587e-1867-442c-9610-173720cf87a0",
+    "timestamp": 1767165791,
+    "content": "Sounds good to me",
+    "duration": 4.429,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "82fc5ecb-537d-4f7a-bf7a-c39c3bb3ffbc",
+    "timestamp": 1767175580,
+    "content": "The onboarding flow needs improvement",
+    "duration": 5.925,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "fdd9a754-17e0-45ad-9f9c-5dbf4c994d07",
+    "timestamp": 1767177102,
+    "content": "So, What's for lunch today?",
+    "duration": 3.782,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "725470b1-9cdc-4b84-8f9b-1118f09a082d",
+    "timestamp": 1767191142,
+    "content": "What are your thoughts on this?",
+    "duration": 7.073,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "2139c51f-3d77-471e-963b-14bedd249c41",
+    "timestamp": 1767235387,
+    "content": "Documentation is outdated",
+    "duration": 6.735,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "ab686211-f821-4d88-865f-18f840a77ee8",
+    "timestamp": 1767237164,
+    "content": "Can you believe this happened?",
+    "duration": 5.741,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "0633cc37-778f-452e-918c-0da31576d969",
+    "timestamp": 1767238585,
+    "content": "We should consider mobile users",
+    "duration": 5.062,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "2f1c09ae-2f3a-40a0-9363-25bbb7276ea8",
+    "timestamp": 1767238717,
+    "content": "What's the timeline for this?",
+    "duration": 2.706,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "25db31fb-80f1-4385-9ffa-dd7c5fddf422",
+    "timestamp": 1767245629,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 3.721,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "f219d5af-dc43-4c00-b331-c9ffadeb9e09",
+    "timestamp": 1767245781,
+    "content": "See you tomorrow",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "88f89013-378a-4ba8-b986-d94b064e2ef9",
+    "timestamp": 1767250012,
+    "content": "Let's deploy to staging first",
+    "duration": 2.653,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "6be681ca-a5bc-4ba9-b883-db9a9391d49c",
+    "timestamp": 1767252350,
+    "content": "Have a great weekend",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "9ad44633-8b43-49a4-9b59-6bd7a00320fc",
+    "timestamp": 1767253661,
+    "content": "Done",
+    "duration": 1.5,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "238b4c89-cf6a-4805-b784-c36c03e98c05",
+    "timestamp": 1767297974,
+    "content": "The weather is nice today",
+    "duration": 2.676,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "8739bf53-8a90-4a43-b810-b0b45fe5d5f2",
+    "timestamp": 1767326149,
+    "content": "I appreciate it",
+    "duration": 4.522,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "d05c3ee5-b9f3-4ae2-a20b-19d98c8ba803",
+    "timestamp": 1767329779,
+    "content": "What are your thoughts on this?",
+    "duration": 5.479,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "d0d0847f-cf50-4201-9c69-08564b8dfebf",
+    "timestamp": 1767332689,
+    "content": "Like, Documentation is outdated",
+    "duration": 2.916,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "d1faada7-b4c6-47d0-88ac-4aad81c8fb08",
+    "timestamp": 1767332850,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 6.8,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "f8a4b8c9-17b3-4867-ad8c-b9951395102a",
+    "timestamp": 1767337067,
+    "content": "Thanks",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "38cb230a-a5bc-4d20-a4a0-484c58b4b494",
+    "timestamp": 1767343910,
+    "content": "Documentation is outdated",
+    "duration": 2.129,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "2119a1a6-dd68-4f38-8509-7788016d7f51",
+    "timestamp": 1767346821,
+    "content": "Have a great weekend",
+    "duration": 2.437,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "9caafdf9-34ea-43c6-811b-da207517c524",
+    "timestamp": 1767383749,
+    "content": "Accessibility is important",
+    "duration": 2.023,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "f3b44693-c6cf-4ff1-a72b-64a3a253ab8d",
+    "timestamp": 1767408988,
+    "content": "Let's brainstorm about the UI",
+    "duration": 5.592,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "5162ed13-124c-4f48-8a06-115749c30695",
+    "timestamp": 1767414470,
+    "content": "The tests are failing on CI",
+    "duration": 3.282,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "0a650675-8d9b-4756-8a3b-84de60f8c1e7",
+    "timestamp": 1767418196,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 7.194,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "08a1cc1e-8582-416b-baff-232de928eeb2",
+    "timestamp": 1767423205,
+    "content": "Let's deploy to staging first",
+    "duration": 6.602,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "fc9fbcab-9cdb-427b-bd58-aaa32452320b",
+    "timestamp": 1767423979,
+    "content": "Um, What's for lunch today?",
+    "duration": 6.716,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "fdc25bb3-c014-4f73-8f3f-e0d379a173ed",
+    "timestamp": 1767426027,
+    "content": "Um, I'm working on the authentication module",
+    "duration": 6.808,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "57031fb9-15bf-44d2-aabd-395e8d50ed38",
+    "timestamp": 1767427634,
+    "content": "I'll get back to you on this",
+    "duration": 5.14,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "62809abc-d3cc-4588-8321-31bdb939f51c",
+    "timestamp": 1767434907,
+    "content": "We need to optimize this query",
+    "duration": 3.507,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "42e5f246-63f1-4795-98e9-d05f1a516449",
+    "timestamp": 1767436224,
+    "content": "That makes sense",
+    "duration": 2.087,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "6da332e2-6364-407c-9945-9ebf4b686df4",
+    "timestamp": 1767438328,
+    "content": "That's interesting",
+    "duration": 2.232,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "3b36ae95-bc3a-4f32-802c-dc2a3a2e41c2",
+    "timestamp": 1767452410,
+    "content": "What's for lunch today?",
+    "duration": 3.603,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "8c857a15-42b8-4398-b08f-959e0cdf2e39",
+    "timestamp": 1767500670,
+    "content": "The onboarding flow needs improvement",
+    "duration": 6.946,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "6126d32c-cebc-4f22-aa77-4cf09b8d3a03",
+    "timestamp": 1767501468,
+    "content": "I'm working on the authentication module",
+    "duration": 8.103,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "d9b33f72-1b1f-4e11-becd-2a8c653a6edb",
+    "timestamp": 1767502489,
+    "content": "The tests are failing on CI",
+    "duration": 5.775,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "8d5ccc3d-a52c-493e-a088-37d0cf5f56f5",
+    "timestamp": 1767507333,
+    "content": "Let me think about it",
+    "duration": 5.835,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "e351685a-ba23-4ca8-bec0-98224b90d671",
+    "timestamp": 1767514906,
+    "content": "What are your thoughts on this?",
+    "duration": 3.518,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "4ae7a0be-8f8b-4464-b8e0-eaddbeab41a7",
+    "timestamp": 1767516399,
+    "content": "Have a great weekend",
+    "duration": 4.376,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "1ceb9e2e-941d-43d8-82a5-99099f8fb472",
+    "timestamp": 1767518733,
+    "content": "After reviewing the codebase, I think we have some technical debt that needs to be addressed. The dependency tree is getting complex, and some packages haven't been updated in a while. We should plan a refactoring sprint.",
+    "duration": 35.788,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "1bd654be-1fdd-4262-a11d-272d35116640",
+    "timestamp": 1767528415,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 4.699,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "ecd2f756-30b6-40c8-8e3e-c528740e77dc",
+    "timestamp": 1767529710,
+    "content": "The database migration is complete",
+    "duration": 5.956,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "9fb58717-5d5f-44d2-8558-26a7b0ac490a",
+    "timestamp": 1767559941,
+    "content": "No",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "7d053f70-098e-4256-879a-a1e178433aa4",
+    "timestamp": 1767570698,
+    "content": "Basically, The feature branch is ready for review",
+    "duration": 6.754,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "5a537ea8-3298-476a-a584-2868c90f69d1",
+    "timestamp": 1767585494,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 7.408,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "4db2d5c1-b575-4602-85b7-93ae957db987",
+    "timestamp": 1767588130,
+    "content": "We could simplify the architecture",
+    "duration": 4.844,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "af7dd70e-355b-4dda-bba9-3d1860980e8e",
+    "timestamp": 1767595466,
+    "content": "That makes sense",
+    "duration": 1.5,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "0a8a1665-a4d7-4b3c-9b9c-acd7f0566ace",
+    "timestamp": 1767597924,
+    "content": "What's for lunch today?",
+    "duration": 2.111,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "229ad1a9-7968-4969-93cc-6289ee73bca8",
+    "timestamp": 1767664334,
+    "content": "I need more context on this ticket",
+    "duration": 4.028,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "5abb319c-e512-46be-bd75-0a82158b8ab2",
+    "timestamp": 1767668274,
+    "content": "The tests are failing on CI",
+    "duration": 6.348,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "0bf1e0bc-52cf-451a-b50d-15eefec7310b",
+    "timestamp": 1767672688,
+    "content": "I appreciate it",
+    "duration": 4.948,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "b77e1ad7-03aa-4161-bc37-afed8a9e5a22",
+    "timestamp": 1767676344,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.236,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "23ec04d8-a1e8-4b1e-9a47-71f8d33b729f",
+    "timestamp": 1767677690,
+    "content": "No worries at all",
+    "duration": 1.963,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "d8ee0696-674a-42c1-9c4a-a86e8b56dad5",
+    "timestamp": 1767678846,
+    "content": "Who's working on this?",
+    "duration": 3.873,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "d3d7089a-8136-4050-bcb6-fcca590337e2",
+    "timestamp": 1767682159,
+    "content": "The meeting yesterday was really productive. We covered a lot of ground regarding the product roadmap. I'll send out the notes later today, but the key takeaway is that we're focusing on user retention for the next quarter.",
+    "duration": 34.061,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "c75afbd2-2b0a-4a03-8bbd-97c7a7395b75",
+    "timestamp": 1767698039,
+    "content": "I need more context on this ticket",
+    "duration": 7.757,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "f9b8b096-a066-4408-808b-775d77327bb2",
+    "timestamp": 1767698743,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 6.983,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "6cd333a7-3a0a-4a67-b7d5-b9a6055f3468",
+    "timestamp": 1767742343,
+    "content": "What if we tried a different approach?",
+    "duration": 5.222,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "49c43e93-9f74-4906-a3fa-e2e62dba8337",
+    "timestamp": 1767752193,
+    "content": "The tests are failing on CI",
+    "duration": 4.693,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "1246c48e-5833-4bdb-be11-ad68d9656d98",
+    "timestamp": 1767758194,
+    "content": "I'll get back to you on this",
+    "duration": 7.045,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "518efbc9-b817-4a28-8917-befdabba8353",
+    "timestamp": 1767759462,
+    "content": "I'm feeling tired",
+    "duration": 2.392,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "475896b1-df20-4a58-9bab-31057ee3b3cd",
+    "timestamp": 1767760015,
+    "content": "How did you solve this problem?",
+    "duration": 6.315,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "61cdd10e-9f04-4bb4-903c-a39f61e843ac",
+    "timestamp": 1767767064,
+    "content": "What if we tried a different approach?",
+    "duration": 7.055,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "29a3b14d-128a-4106-934c-34c593a3b436",
+    "timestamp": 1767773074,
+    "content": "We need to optimize this query",
+    "duration": 5.582,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "d6d33459-144f-499b-be24-9c2075c96b35",
+    "timestamp": 1767784487,
+    "content": "That's interesting",
+    "duration": 2.441,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "0d4b3db0-e568-4136-98d0-b6d963919532",
+    "timestamp": 1767788173,
+    "content": "I need more context on this ticket",
+    "duration": 3.757,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "ab2a3f85-ff87-4e49-8679-2010546e1120",
+    "timestamp": 1767841647,
+    "content": "Should we use PostgreSQL or MongoDB?",
+    "duration": 4.54,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "827803a8-a70f-4520-8c70-d38a4dd826e5",
+    "timestamp": 1767848935,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 5.347,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "3703bdb4-7127-4f32-b13a-44ca7c28c954",
+    "timestamp": 1767859555,
+    "content": "See you tomorrow",
+    "duration": 2.107,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "17411ee4-3468-4571-b863-7e20830c5e26",
+    "timestamp": 1767862401,
+    "content": "I appreciate it",
+    "duration": 1.54,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "ec311eed-e50a-4a29-95d4-7dc12a4f3011",
+    "timestamp": 1767888078,
+    "content": "Um, The weather is nice today",
+    "duration": 6.732,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "abec5d9f-54f2-4efd-abbc-2d3d2a0468b2",
+    "timestamp": 1767899615,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 8.812,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "27872c48-cfe2-45a5-8b25-3b03be43c665",
+    "timestamp": 1767926989,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 7.156,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "8333fe74-84df-4ae1-809c-d3212bc2cb46",
+    "timestamp": 1767929649,
+    "content": "Let's deploy to staging first",
+    "duration": 4.814,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "0ab00d4f-8504-442a-8c83-e3490c8da36f",
+    "timestamp": 1767935906,
+    "content": "The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn't working properly in some areas.",
+    "duration": 35.883,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "6d0df1d1-d594-4d35-adab-0ca121f146c5",
+    "timestamp": 1767947871,
+    "content": "The weather is nice today",
+    "duration": 4.502,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "1210369e-a58b-43ad-917a-b45e5ea3d6db",
+    "timestamp": 1767948611,
+    "content": "The onboarding flow needs improvement",
+    "duration": 7.421,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "e627e271-13c7-43d6-a0b7-733deca39166",
+    "timestamp": 1767949648,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 5.852,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "640b1ced-7ff1-4a2e-89e3-d556a6e52589",
+    "timestamp": 1767950577,
+    "content": "Basically, That makes sense",
+    "duration": 6.345,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "eeca235a-ce2d-425f-8965-cd3f3c4819ba",
+    "timestamp": 1767954744,
+    "content": "I'll get back to you on this",
+    "duration": 6.863,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "56ae5ceb-4034-4cf8-8569-50ee78be4bf4",
+    "timestamp": 1767992437,
+    "content": "I'm not sure about this",
+    "duration": 2.054,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "5fc97c7a-a5b5-414a-a548-cb8bf8e1af88",
+    "timestamp": 1768011086,
+    "content": "Let's brainstorm about the UI",
+    "duration": 4.658,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "43e7d860-fede-4163-89e0-6a3630e0a1f4",
+    "timestamp": 1768016709,
+    "content": "Um, I have a suggestion for the dashboard",
+    "duration": 6.639,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "ebd083e4-6217-498c-9007-72721dd232e6",
+    "timestamp": 1768019068,
+    "content": "Let's add some animations",
+    "duration": 4.318,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "a663e1b6-bfda-4e6d-a681-4102a8b4677e",
+    "timestamp": 1768024697,
+    "content": "I've been thinking about the architecture for a while now, and I believe we need to reconsider our approach to data modeling. The current schema doesn't scale well, and we're seeing performance issues in production.",
+    "duration": 31.01,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "fdd36936-df78-46f8-bb99-3aca475e07fe",
+    "timestamp": 1768031334,
+    "content": "That's interesting",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "2cb3525e-f4f0-4c62-a531-55d6d21c6f30",
+    "timestamp": 1768039739,
+    "content": "Let's deploy to staging first",
+    "duration": 6.119,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "fe55dc7b-1790-4edb-8ffb-877de523efb4",
+    "timestamp": 1768040736,
+    "content": "I'll get back to you on this",
+    "duration": 6.222,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "c45d37da-7bb2-4503-98ba-768a04008f07",
+    "timestamp": 1768045016,
+    "content": "The feature branch is ready for review",
+    "duration": 6.098,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "59af423c-b40a-467e-a500-b7b0a1ef4ec4",
+    "timestamp": 1768096661,
+    "content": "I appreciate it",
+    "duration": 1.886,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "54b4c5ae-c3a1-457f-bae0-d6bd39b576a0",
+    "timestamp": 1768097506,
+    "content": "Who's working on this?",
+    "duration": 5.336,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "029a2c53-e92f-47a9-a35f-df14ec3297b2",
+    "timestamp": 1768104884,
+    "content": "What's the best approach here?",
+    "duration": 7.301,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "fd2ad66e-b235-4616-88ff-22a97d41edab",
+    "timestamp": 1768110977,
+    "content": "I'm working on the authentication module",
+    "duration": 7.403,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "02a3d4ba-3a13-4433-a89d-510555335375",
+    "timestamp": 1768122860,
+    "content": "Thanks for your help",
+    "duration": 1.5,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "76f77473-57e5-4e57-b58a-ccf7badb8021",
+    "timestamp": 1768124459,
+    "content": "Let's brainstorm about the UI",
+    "duration": 5.876,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "b52a666b-4d68-4133-b094-02e59827ed78",
+    "timestamp": 1768131962,
+    "content": "I'm working on the authentication module",
+    "duration": 7.789,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "dd0bd286-1296-4c0b-ad77-ea337cb08451",
+    "timestamp": 1768134527,
+    "content": "Let me think about it",
+    "duration": 2.465,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "75e07cc7-804e-41c6-915d-d34dfd838f9b",
+    "timestamp": 1768174064,
+    "content": "Got it",
+    "duration": 1.5,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "30f3a7d2-0137-44fd-a57a-45f96deeef13",
+    "timestamp": 1768188899,
+    "content": "What's for lunch today?",
+    "duration": 6.05,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "dda03356-7176-4fac-9076-8a125d702868",
+    "timestamp": 1768192037,
+    "content": "Uh, Let's deploy to staging first",
+    "duration": 4.284,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "dd5f6d72-6dd7-4ff9-b708-1d6209a65b85",
+    "timestamp": 1768192724,
+    "content": "Uh, See you tomorrow",
+    "duration": 2.352,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "1eb4f52e-d20d-4276-83f2-a85f7c8f0e3b",
+    "timestamp": 1768193298,
+    "content": "Accessibility is important",
+    "duration": 5.411,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "e68020c2-6e12-4727-aec1-cc54fb55f434",
+    "timestamp": 1768197676,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 7.86,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "7507e6ab-6b61-41a4-b997-5d8473fce9f5",
+    "timestamp": 1768205944,
+    "content": "I'm feeling tired",
+    "duration": 4.893,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "55e123aa-84ff-47d2-b322-0af9c3f17bb7",
+    "timestamp": 1768221175,
+    "content": "I'm working on the authentication module",
+    "duration": 6.211,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "47426d15-3efd-450a-b0d0-175fe3e2b295",
+    "timestamp": 1768224140,
+    "content": "What's the timeline for this?",
+    "duration": 7.062,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "0688056f-71f3-418e-b2ee-408323c10ec6",
+    "timestamp": 1768263158,
+    "content": "Sounds good to me",
+    "duration": 1.5,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "8babd022-efa1-47f8-b24e-45041fc80983",
+    "timestamp": 1768271419,
+    "content": "The API needs to be refactored",
+    "duration": 7.261,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "ac86b9a2-4931-4b04-9dc7-38e2653d0f30",
+    "timestamp": 1768272078,
+    "content": "What's for lunch today?",
+    "duration": 5.161,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "7b0d70f8-f8a6-4da9-b0da-304d0cfbdd53",
+    "timestamp": 1768273181,
+    "content": "I need more context on this ticket",
+    "duration": 5.423,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "3e58387e-6972-4000-a232-d8898669de15",
+    "timestamp": 1768276442,
+    "content": "The tests are failing on CI",
+    "duration": 4.006,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "af31412d-15f5-40ed-b722-f94a88d60685",
+    "timestamp": 1768284460,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 5.281,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "6052fa4a-d5a0-44f8-8b91-6148c4c14b7a",
+    "timestamp": 1768288945,
+    "content": "I'm not sure about this",
+    "duration": 4.04,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "2c16cbbd-144c-4c7f-a0f0-0d8632c74ef7",
+    "timestamp": 1768293931,
+    "content": "I appreciate it",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "47d836c6-121b-4797-ba91-89b813727b42",
+    "timestamp": 1768296033,
+    "content": "The API needs to be refactored",
+    "duration": 4.205,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "b75eff58-ca4e-4c47-a0c2-38e98a203756",
+    "timestamp": 1768304605,
+    "content": "Basically, The tests are failing on CI",
+    "duration": 6.179,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "cdc2ee90-9bf9-4612-a670-9705c09397cf",
+    "timestamp": 1768354208,
+    "content": "The database migration is complete",
+    "duration": 7.755,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "a3aa953c-437e-4406-8a6d-62b2156403b8",
+    "timestamp": 1768357470,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 7.902,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "ed7cc44d-1834-45fd-8ecc-ab765aeb3d34",
+    "timestamp": 1768361615,
+    "content": "The user experience could be better",
+    "duration": 4.797,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "c5503ed4-f82e-4b33-85b3-06db7082b355",
+    "timestamp": 1768362927,
+    "content": "The API needs to be refactored",
+    "duration": 3.163,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "44afffa8-db84-401f-8091-de2f3faeb767",
+    "timestamp": 1768365119,
+    "content": "The feature branch is ready for review",
+    "duration": 5.149,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "e2ea356b-d21f-4ee4-9705-38c632f6b958",
+    "timestamp": 1768369336,
+    "content": "Uh, OK",
+    "duration": 3.263,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "2cce3cf2-e419-41e4-891d-565432674785",
+    "timestamp": 1768370142,
+    "content": "Let's deploy to staging first",
+    "duration": 4.978,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "a1885443-5685-4ed2-a6b8-f89f754a7ca4",
+    "timestamp": 1768370182,
+    "content": "Like, The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn't working properly in some areas.",
+    "duration": 35.388,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "02036a7c-24ba-4306-8ad9-96c415a542b3",
+    "timestamp": 1768370364,
+    "content": "Can you explain this to me?",
+    "duration": 3.702,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "01eca671-dd82-45e5-8ea9-cffa85165e1e",
+    "timestamp": 1768371386,
+    "content": "Documentation is outdated",
+    "duration": 3.415,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "6a481fad-b8fd-4dc2-ae98-47cd6f3cdd41",
+    "timestamp": 1768381806,
+    "content": "What's for lunch today?",
+    "duration": 3.917,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "b8c9e7bd-eada-4da3-8172-ffe2894abcb5",
+    "timestamp": 1768383341,
+    "content": "Uh, When can we ship this?",
+    "duration": 2.987,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "23093ce1-440b-4494-a6b6-033ab93d9150",
+    "timestamp": 1768383761,
+    "content": "The feature branch is ready for review",
+    "duration": 8.471,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "b282c09f-4f3e-4e4f-a99f-5a15bde0b1dd",
+    "timestamp": 1768392025,
+    "content": "Who's working on this?",
+    "duration": 2.404,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "6e39e80e-5750-466b-999b-52a18a4312cd",
+    "timestamp": 1768448180,
+    "content": "Have a great weekend",
+    "duration": 2.021,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "662b1e6a-6923-44eb-9d6f-2ada28b43ec5",
+    "timestamp": 1768453030,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.037,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "060012fa-8825-4ba2-8466-974b647287b8",
+    "timestamp": 1768454484,
+    "content": "The tests are failing on CI",
+    "duration": 3.859,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "c13bcde6-b1ed-4bab-9a17-d68b6bd77876",
+    "timestamp": 1768455979,
+    "content": "Sounds good to me",
+    "duration": 2.207,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "3664bb99-20b8-4267-9fd7-43c913ddb08f",
+    "timestamp": 1768461682,
+    "content": "How did you solve this problem?",
+    "duration": 3.502,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "7bfeb6ec-3faa-422f-a9e2-74b6b606dd5c",
+    "timestamp": 1768463374,
+    "content": "No worries at all",
+    "duration": 2.612,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "d27e3c7a-4e40-4896-a0c3-69dc9b0e8e1c",
+    "timestamp": 1768466912,
+    "content": "I'm working on the authentication module",
+    "duration": 4.294,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "ce7345f0-6468-4422-beb5-0e01fff678ef",
+    "timestamp": 1768467775,
+    "content": "The tests are failing on CI",
+    "duration": 6.031,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "ea069094-e8ab-4683-a730-48523de949bb",
+    "timestamp": 1768479373,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 6.458,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "dbcd3ab0-03c7-43b0-bccb-22a90fdf77d4",
+    "timestamp": 1768481359,
+    "content": "Thanks for your help",
+    "duration": 1.757,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "4d53e70e-5bec-4328-8cd6-4461b3099608",
+    "timestamp": 1768483354,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 5.04,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "c6e2a335-2f0c-4b20-9250-2b550cc0d7a0",
+    "timestamp": 1768529511,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 4.843,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "272c076a-b618-4fec-8314-80f9fec75ef6",
+    "timestamp": 1768536002,
+    "content": "Basically, I'm not sure about this",
+    "duration": 4.855,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "77311f24-de0f-4729-8749-4a74b0d050cb",
+    "timestamp": 1768538206,
+    "content": "I'll get back to you on this",
+    "duration": 5.125,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "301252f2-e0d4-4ded-9b45-ef8eb0a35944",
+    "timestamp": 1768540884,
+    "content": "Let me think about it",
+    "duration": 2.267,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "55c814cb-b4c8-44bc-b723-9e26b52e9bc5",
+    "timestamp": 1768544177,
+    "content": "I'm not sure about this",
+    "duration": 1.889,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "43c6ba2c-75a8-4bcc-8a58-d3f138c04bbe",
+    "timestamp": 1768546473,
+    "content": "I'm working on the authentication module",
+    "duration": 6.22,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "3b547e05-0e79-4a23-bca5-758425bc1869",
+    "timestamp": 1768561173,
+    "content": "Sounds good to me",
+    "duration": 3.654,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "dbfb28db-d940-4884-a587-d8180c847028",
+    "timestamp": 1768616173,
+    "content": "What's for lunch today?",
+    "duration": 2.899,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "47af0854-86fb-49fb-9f6c-dbb8a44d2c53",
+    "timestamp": 1768621697,
+    "content": "Accessibility is important",
+    "duration": 3.641,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "e35f0dc7-0ee7-4f4f-8fce-0d7f7d3552fa",
+    "timestamp": 1768622339,
+    "content": "The tests are failing on CI",
+    "duration": 5.741,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "fe398b00-5be5-4963-8bad-bca66febe9a6",
+    "timestamp": 1768623115,
+    "content": "The feature branch is ready for review",
+    "duration": 6.164,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "8331c54c-2bb0-4138-8cf8-5f4d6c8c591e",
+    "timestamp": 1768635417,
+    "content": "We need to optimize this query",
+    "duration": 4.589,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "8830ea08-dd8d-4f0d-af04-06deb1ae9c5e",
+    "timestamp": 1768636734,
+    "content": "I appreciate it",
+    "duration": 1.5,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "62f46734-7f4b-4d0d-a145-8f139e8e0997",
+    "timestamp": 1768638520,
+    "content": "Let me think about it",
+    "duration": 4.337,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "72861ac1-9f07-4f61-9fbc-12de0fa4e95c",
+    "timestamp": 1768645991,
+    "content": "Accessibility is important",
+    "duration": 3.103,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "987a0242-287f-4937-b2f4-7b18aaba7a5c",
+    "timestamp": 1768647467,
+    "content": "Um, The deployment is scheduled for Friday",
+    "duration": 6.778,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "78fdc619-f352-4fb2-b195-cafe00db513b",
+    "timestamp": 1768707359,
+    "content": "Is this the right direction?",
+    "duration": 5.386,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "1f8674d1-058b-4a6c-81a8-cb6ec0de74f8",
+    "timestamp": 1768725789,
+    "content": "Basically, Can we schedule a meeting for tomorrow?",
+    "duration": 8.96,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "56800b9e-6e97-4bcf-8036-e6fdd6e10654",
+    "timestamp": 1768745500,
+    "content": "Sounds good to me",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "084bd669-bbe6-4294-83f5-2080e6ff949c",
+    "timestamp": 1768787061,
+    "content": "I wanted to share some thoughts about our development process. I think we could be more efficient if we had better code review practices and automated testing. The current manual testing approach is not scalable.",
+    "duration": 32.724,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "fdfa7828-73cd-42ab-8f1c-aed208f1ca5b",
+    "timestamp": 1768797201,
+    "content": "Hmm",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "f34766f7-d427-45cb-ba39-8c786567a61e",
+    "timestamp": 1768802354,
+    "content": "Have you considered this option?",
+    "duration": 4.477,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "6e22bd2d-9354-483d-bc8e-528f8346fa00",
+    "timestamp": 1768803025,
+    "content": "I appreciate it",
+    "duration": 2.431,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "61204ca7-7154-4f99-8fb5-4fb6d4879fb0",
+    "timestamp": 1768803123,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 6.669,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "e0261d0d-d426-4692-bcbc-3729ba0e31f2",
+    "timestamp": 1768803396,
+    "content": "Have a great weekend",
+    "duration": 5.359,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "76ed474c-9ae5-43c4-ac79-6575eadad61c",
+    "timestamp": 1768814074,
+    "content": "The feature branch is ready for review",
+    "duration": 4.768,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "eda64fe5-5e31-4bc8-bc80-18e9f63226c9",
+    "timestamp": 1768817765,
+    "content": "Can you explain this to me?",
+    "duration": 3.521,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "b76716ba-b32d-4b90-9a5b-b13a12064e2d",
+    "timestamp": 1768837397,
+    "content": "Let me think about it",
+    "duration": 3.506,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "17f307eb-cd80-4d00-8766-b9551cd4ea5c",
+    "timestamp": 1768882122,
+    "content": "Maybe",
+    "duration": 3.501,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "2f69d219-0d5c-49ab-bd5a-c90f10427fa3",
+    "timestamp": 1768892083,
+    "content": "I'm not sure about this",
+    "duration": 2.871,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "5821cfe0-602e-42e5-b726-e128ce24fd8a",
+    "timestamp": 1768892387,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 8.106,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "499dc6a8-2a4d-49a7-9e26-8cd667bafe79",
+    "timestamp": 1768894821,
+    "content": "Done",
+    "duration": 1.5,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "ffe63491-6405-45d9-b78a-a9d85e1aa783",
+    "timestamp": 1768902171,
+    "content": "Need to review the pull requests",
+    "duration": 7.039,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "2feb584e-4b77-45d0-b9ea-4828c81b5da4",
+    "timestamp": 1768905792,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 4.249,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "b49bc5a5-d7cc-4f6e-ba2b-5de51cf522a4",
+    "timestamp": 1768923018,
+    "content": "Is this the right direction?",
+    "duration": 6.723,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "7f139aae-9b04-4c0c-83a5-92d535212037",
+    "timestamp": 1768956491,
+    "content": "Noted",
+    "duration": 1.5,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "d30dd877-29d0-4744-aa1b-0ed806b3bcc4",
+    "timestamp": 1768962860,
+    "content": "Thanks for your help",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "b32740bb-427c-4acb-a91e-795d9c0a0c9c",
+    "timestamp": 1768972795,
+    "content": "I appreciate it",
+    "duration": 2.077,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "fd52af0e-631f-4863-8fc1-47b794f4cb61",
+    "timestamp": 1768977424,
+    "content": "The weather is nice today",
+    "duration": 6.729,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "7232b6aa-7b97-4f25-b6a9-dab2839dc751",
+    "timestamp": 1768980374,
+    "content": "Basically, I wanted to share some thoughts about our development process. I think we could be more efficient if we had better code review practices and automated testing. The current manual testing approach is not scalable.",
+    "duration": 33.792,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "2f530526-1e9a-405e-a82d-be11d8d1c6a2",
+    "timestamp": 1768981817,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 4.044,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "40cac163-0d13-4b95-b3e6-067beef41695",
+    "timestamp": 1768985137,
+    "content": "The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn't working properly in some areas.",
+    "duration": 35.349,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "260c9fee-23f4-4b90-b00b-2fba67952997",
+    "timestamp": 1768989302,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 6.219,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "0e07552e-c4d0-4939-9292-0d61a4f5f919",
+    "timestamp": 1769015172,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.112,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "ecd416fd-9b68-44a5-8f8d-8b0d9baa2ecc",
+    "timestamp": 1769060388,
+    "content": "Thanks",
+    "duration": 1.68,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "2169aa13-99cd-4d9a-80b9-255f6514ce3e",
+    "timestamp": 1769073641,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 7.256,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "15c5294e-e4be-4a6e-a334-91b5e5a7fba3",
+    "timestamp": 1769082947,
+    "content": "Uh, When can we ship this?",
+    "duration": 6.851,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "b8f84929-8559-42f8-8f08-17baf40caba2",
+    "timestamp": 1769111387,
+    "content": "Sure",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "a0efefa8-c689-4f3b-a0d1-39f741f3f8c7",
+    "timestamp": 1769134923,
+    "content": "Can you believe this happened?",
+    "duration": 6.943,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "fbf5c7f1-9eda-4968-b8da-28e658765015",
+    "timestamp": 1769136421,
+    "content": "Thanks for your help",
+    "duration": 5.239,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "319eb6d7-c081-4bda-b8ce-f3123a08e9e5",
+    "timestamp": 1769136526,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 3.941,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "b6229cd5-4dac-4eca-b5cd-0b39d25a11d5",
+    "timestamp": 1769151498,
+    "content": "Who's working on this?",
+    "duration": 2.651,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "c9c9fa43-38c2-4be7-9e81-7331bef797ba",
+    "timestamp": 1769157058,
+    "content": "The feature branch is ready for review",
+    "duration": 8.103,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "f466ce48-86c2-4a75-b052-94e8fe61e71a",
+    "timestamp": 1769212041,
+    "content": "Basically, The weather is nice today",
+    "duration": 5.19,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "5ae5d7e5-32aa-4b1a-b940-c303b92f5b16",
+    "timestamp": 1769219894,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 8.123,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "656d2c2b-b709-4579-8174-db36edac1b8d",
+    "timestamp": 1769222582,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 5.148,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "1d7ff928-4426-48e1-b455-da6a1d911a91",
+    "timestamp": 1769224914,
+    "content": "Need to review the pull requests",
+    "duration": 4.135,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "3cb333e5-c810-4d36-b8cc-dd4d6c2f9797",
+    "timestamp": 1769228024,
+    "content": "Let's deploy to staging first",
+    "duration": 2.502,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "a2dee454-18d9-4ff2-aca1-f7ddcc3d3ffb",
+    "timestamp": 1769231210,
+    "content": "No worries at all",
+    "duration": 1.5,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "7ded5864-bad5-49ea-8f71-6b8876b93a5d",
+    "timestamp": 1769234427,
+    "content": "Can you explain this to me?",
+    "duration": 5.095,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "2a241f39-1406-4003-a305-69f8b4e53db4",
+    "timestamp": 1769235714,
+    "content": "Thanks for your help",
+    "duration": 1.925,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "f52581d4-528f-4372-8ff6-b4065d6163d1",
+    "timestamp": 1769237078,
+    "content": "Need to review the pull requests",
+    "duration": 6.145,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "33f60d68-53b1-4a6d-8a61-bf25b46bc4f8",
+    "timestamp": 1769237967,
+    "content": "Let me think about it",
+    "duration": 4.445,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "c08edd88-8a6c-4e6f-bfb5-59ccbaf0e214",
+    "timestamp": 1769240949,
+    "content": "Is this the right direction?",
+    "duration": 3.815,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "072aef83-6e77-4dba-ab5b-103facae0790",
+    "timestamp": 1769245672,
+    "content": "Like, Let's deploy to staging first",
+    "duration": 8.161,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "1e986e1b-debe-451a-bcaa-ee71e376f724",
+    "timestamp": 1769298534,
+    "content": "When can we ship this?",
+    "duration": 4.265,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "eb7101d7-2caa-46cc-af66-925510b1f272",
+    "timestamp": 1769307266,
+    "content": "No worries at all",
+    "duration": 5.14,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "0589cb9f-4cf5-47ef-852f-ef419d8704e0",
+    "timestamp": 1769309046,
+    "content": "We need to optimize this query",
+    "duration": 5.998,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "fc899333-a696-442d-a995-46685d5116ba",
+    "timestamp": 1769317073,
+    "content": "That makes sense",
+    "duration": 4.815,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "1d78d02b-3e32-4f22-b11a-642a93ab35d4",
+    "timestamp": 1769319945,
+    "content": "So, What if we tried a different approach?",
+    "duration": 4.81,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "ecb02584-bba8-4651-9289-f2d3bc562922",
+    "timestamp": 1769340099,
+    "content": "We need to optimize this query",
+    "duration": 6.435,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "4daa8e32-cff9-49fe-97c9-6a0146fb07af",
+    "timestamp": 1769340577,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 7.088,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "c201330b-69a6-49ee-9b82-f7220a094ab3",
+    "timestamp": 1769345928,
+    "content": "See you tomorrow",
+    "duration": 4.869,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "0ea9f635-575d-4d9f-9227-a69a8973f173",
+    "timestamp": 1769377608,
+    "content": "The tests are failing on CI",
+    "duration": 6.369,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "c89e65ad-1f74-4da2-bbbe-8addf2eb5e51",
+    "timestamp": 1769395394,
+    "content": "The weather is nice today",
+    "duration": 3.423,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "f9a59b41-d8fd-436d-a3d0-ef9275b6fceb",
+    "timestamp": 1769398739,
+    "content": "Have you considered this option?",
+    "duration": 2.884,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "a24e2f50-276f-4e26-b7ee-39ecd7941db7",
+    "timestamp": 1769399586,
+    "content": "So, Documentation is outdated",
+    "duration": 3.78,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "ad8f9b3c-eceb-4989-8743-d00613d5a333",
+    "timestamp": 1769404688,
+    "content": "The tests are failing on CI",
+    "duration": 6.565,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "4d52cc34-a38a-4ff7-b3e9-fe3b97af4ead",
+    "timestamp": 1769406827,
+    "content": "Can you explain this to me?",
+    "duration": 6.606,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "16fdb760-3923-47b9-9761-8848ca5d37f5",
+    "timestamp": 1769408527,
+    "content": "Have a great weekend",
+    "duration": 2.135,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "14db39bd-660f-498b-a483-6eed58911b91",
+    "timestamp": 1769421740,
+    "content": "Like, Can you believe this happened?",
+    "duration": 5.747,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "f70b5408-581b-484c-a353-f1f7bc50a0e5",
+    "timestamp": 1769491801,
+    "content": "What's for lunch today?",
+    "duration": 5.193,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "07cbe8ab-4a6f-4dd5-b24e-28b28ef14d77",
+    "timestamp": 1769497076,
+    "content": "I appreciate it",
+    "duration": 4.333,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "9ba4a78a-836a-44b0-8d02-fefd7162a809",
+    "timestamp": 1769503030,
+    "content": "Basically, OK",
+    "duration": 3.742,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "201b1592-1736-4680-80ec-d724a2cbc9ca",
+    "timestamp": 1769504855,
+    "content": "Have a great weekend",
+    "duration": 4.317,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "8f38d975-a003-4497-9e09-98b9bf227742",
+    "timestamp": 1769509282,
+    "content": "Let me think about it",
+    "duration": 4.728,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "c873a2d0-e930-46a2-821c-5e20d955f233",
+    "timestamp": 1769510159,
+    "content": "Documentation is outdated",
+    "duration": 1.921,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "4210275e-35a7-4062-992a-d8f1b0406209",
+    "timestamp": 1769525140,
+    "content": "What's for lunch today?",
+    "duration": 2.008,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "7350c079-f89b-459b-8797-5a1accd9168d",
+    "timestamp": 1769586024,
+    "content": "I need more context on this ticket",
+    "duration": 4.377,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "522f6592-d318-430b-9154-8f6aaec0cdb5",
+    "timestamp": 1769590629,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 6.468,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "66fb5319-0ffc-4c0b-9df8-6b5ad2325203",
+    "timestamp": 1769591012,
+    "content": "See you tomorrow",
+    "duration": 3.479,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "47b58ab1-3f6b-47f9-a20b-062949567b5a",
+    "timestamp": 1769597934,
+    "content": "We need to optimize this query",
+    "duration": 4.752,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "042b1113-3ab9-4ed4-aa23-2595f3136710",
+    "timestamp": 1769653431,
+    "content": "See you tomorrow",
+    "duration": 3.697,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "2d5c0fd2-a7bd-401c-8dab-36586e1eab1d",
+    "timestamp": 1769654159,
+    "content": "Can you explain this to me?",
+    "duration": 5.096,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "1f3f023c-3e9a-48c5-84f0-c4b4674c71e8",
+    "timestamp": 1769654377,
+    "content": "No",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "f9186cf3-1851-4ea1-80ac-c58696a37551",
+    "timestamp": 1769667246,
+    "content": "I need more context on this ticket",
+    "duration": 7.979,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "8d07ac16-576a-4fe2-aa64-d0611d6e1eb1",
+    "timestamp": 1769669554,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 7.482,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "e187fa80-9566-45b3-a7b9-9f91556f4cea",
+    "timestamp": 1769673486,
+    "content": "We could simplify the architecture",
+    "duration": 6.526,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "74515dbe-7f34-40a6-b16f-afac1b30aa66",
+    "timestamp": 1769674438,
+    "content": "Uh, I'll get back to you on this",
+    "duration": 6.763,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "15356354-ec02-4462-a250-1f2ac03385fe",
+    "timestamp": 1769677416,
+    "content": "I'm working on the authentication module",
+    "duration": 8.417,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "bd0f7b84-0b46-4a9f-a9da-5efc5984d23f",
+    "timestamp": 1769739205,
+    "content": "Let's brainstorm about the UI",
+    "duration": 4.377,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "1182df3f-8036-4d18-894b-8d196b5ecb11",
+    "timestamp": 1769742016,
+    "content": "Let's deploy to staging first",
+    "duration": 5.098,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "fee8aecb-8c9a-4d72-af88-3a6d200285ed",
+    "timestamp": 1769742400,
+    "content": "Sounds good to me",
+    "duration": 4.071,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "bf9155a3-d4ff-4f46-af49-563a8a98558a",
+    "timestamp": 1769754603,
+    "content": "What are your thoughts on this?",
+    "duration": 3.777,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "21f2a344-54cd-4176-bf73-3b2d6c265026",
+    "timestamp": 1769757798,
+    "content": "The weather is nice today",
+    "duration": 5.462,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "0db2d6a0-a5db-4092-b852-def53645485d",
+    "timestamp": 1769759384,
+    "content": "The meeting yesterday was really productive. We covered a lot of ground regarding the product roadmap. I'll send out the notes later today, but the key takeaway is that we're focusing on user retention for the next quarter.",
+    "duration": 33.382,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "1ad846d7-2789-4be4-ae88-8419557d915e",
+    "timestamp": 1769760570,
+    "content": "How did you solve this problem?",
+    "duration": 3.365,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "0230b383-c657-446d-a9e1-8bf5db0ec6da",
+    "timestamp": 1769773218,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 6.213,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "a4354f2d-b367-46c3-bfea-f306ea4e4ec6",
+    "timestamp": 1769829277,
+    "content": "Let's brainstorm about the UI",
+    "duration": 7.189,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "110ca2e8-3e47-448a-983d-fc8c7d8b3079",
+    "timestamp": 1769831451,
+    "content": "Like, That makes sense",
+    "duration": 1.952,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "acc881ee-89a8-4c27-bda9-854a359b112d",
+    "timestamp": 1769843140,
+    "content": "The user experience could be better",
+    "duration": 5.8,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "1711e774-8071-4759-81c5-eb66559dd680",
+    "timestamp": 1769844385,
+    "content": "Sounds good",
+    "duration": 2.324,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "b14dcfb3-e8c6-4506-8bdf-608a7b0da9e0",
+    "timestamp": 1769845566,
+    "content": "Have a great weekend",
+    "duration": 2.485,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "159b377f-9652-4868-a778-a130926625cd",
+    "timestamp": 1769847278,
+    "content": "I'm not sure about this",
+    "duration": 5.551,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "4c63ba51-fef2-495a-a853-1846f5330d91",
+    "timestamp": 1769852831,
+    "content": "The meeting yesterday was really productive. We covered a lot of ground regarding the product roadmap. I'll send out the notes later today, but the key takeaway is that we're focusing on user retention for the next quarter.",
+    "duration": 31.864,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "cef4d477-505a-4d42-95b3-30fefa8551b7",
+    "timestamp": 1769854261,
+    "content": "Let's add some animations",
+    "duration": 1.798,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "86547065-57b5-49fc-ab6b-4446fb856788",
+    "timestamp": 1769860195,
+    "content": "What's for lunch today?",
+    "duration": 4.705,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "85b6fa1e-2a6f-43d4-acf7-fa96d9a27285",
+    "timestamp": 1769861197,
+    "content": "Uh, The user experience could be better",
+    "duration": 6.981,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "75d133ac-5ed3-4346-809c-f2404e3a6e0b",
+    "timestamp": 1769871980,
+    "content": "This is a nightmare",
+    "duration": 5.614,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "8a2a9efa-bff5-4e5e-8441-0bfb440d2c9e",
+    "timestamp": 1769903439,
+    "content": "Actually, Should we use TypeScript or JavaScript?",
+    "duration": 9.51,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "8a7c5731-77d3-42ec-9533-94e9b19a0f27",
+    "timestamp": 1769927324,
+    "content": "We should consider mobile users",
+    "duration": 4.654,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "8ecd2a18-ba58-4b3c-ac74-25b104b79512",
+    "timestamp": 1769934810,
+    "content": "See you tomorrow",
+    "duration": 1.5,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "cb4e10f2-0be3-4edb-9f3d-a8e1ca2fc621",
+    "timestamp": 1769935117,
+    "content": "Accessibility is important",
+    "duration": 2.706,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "6573b638-3b5e-44b0-be37-622b645fba5c",
+    "timestamp": 1769937336,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 5.995,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "3c6d2d2d-61f5-483c-9ec5-3cff63321bde",
+    "timestamp": 1769944033,
+    "content": "The weather is nice today",
+    "duration": 5.904,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "146311b7-0bd4-46ac-9fc3-43bc7750ecfc",
+    "timestamp": 1769945878,
+    "content": "What if we tried a different approach?",
+    "duration": 7.365,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "3e39a9ef-b5ea-4f62-8dd6-694458853f97",
+    "timestamp": 1770002473,
+    "content": "Idea for the new feature: add a dark mode",
+    "duration": 8.705,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "8ff1227f-ce04-47c7-a917-190140d2da07",
+    "timestamp": 1770017615,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 7.451,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "0023398d-7c32-419a-85d8-69374c7fc7f8",
+    "timestamp": 1770022486,
+    "content": "Is this the right direction?",
+    "duration": 6.488,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "231f160c-6bf3-4767-9c07-604eff9ead54",
+    "timestamp": 1770026760,
+    "content": "I'll get back to you on this",
+    "duration": 6.53,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "fe09dd69-61c3-4079-b71b-dbe29f2fbcf1",
+    "timestamp": 1770034388,
+    "content": "This is driving me crazy",
+    "duration": 5.393,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "1ba7f14d-9abf-4cec-89d0-1cda555ea102",
+    "timestamp": 1770039439,
+    "content": "Sounds good",
+    "duration": 1.5,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "b790eedf-7e10-444f-9810-7c77440cdf1c",
+    "timestamp": 1770079906,
+    "content": "Should we use PostgreSQL or MongoDB?",
+    "duration": 6.756,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "036fed15-a5fb-41fb-8b5d-fa83e7a097ec",
+    "timestamp": 1770089772,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 5.371,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "3607a350-bbf1-4762-953f-4f16bd45f75f",
+    "timestamp": 1770090652,
+    "content": "Accessibility is important",
+    "duration": 6.472,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "e5c47c6a-605c-4d91-bec6-907fcc095571",
+    "timestamp": 1770095385,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 6.725,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "b95652cc-020b-435b-a1f0-21683e8b4949",
+    "timestamp": 1770104935,
+    "content": "I appreciate it",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "cc07f276-041c-4297-8651-3202c906ee94",
+    "timestamp": 1770132436,
+    "content": "The database migration is complete",
+    "duration": 6.138,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "fcb2df48-8ac2-4e69-9c69-adf74da688a8",
+    "timestamp": 1770171284,
+    "content": "We need to optimize this query",
+    "duration": 7.407,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "787ad96f-344b-406d-b7d9-a7f73735ea08",
+    "timestamp": 1770181281,
+    "content": "Let's deploy to staging first",
+    "duration": 3.263,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "c7ebd405-1620-4de3-8027-4dc3a5c870fb",
+    "timestamp": 1770188633,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 7.233,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "35cfad0f-1e0f-4a96-8d0f-e0d0b25efa3e",
+    "timestamp": 1770190201,
+    "content": "Like, Let's brainstorm about the UI",
+    "duration": 3.303,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "c3b9c242-c789-4786-a202-34a41ec84c2a",
+    "timestamp": 1770206624,
+    "content": "Should we use PostgreSQL or MongoDB?",
+    "duration": 3.555,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "03eb9965-840a-4f28-853e-f1ce26d73141",
+    "timestamp": 1770209668,
+    "content": "Like, We could simplify the architecture",
+    "duration": 8.534,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "4b4681b0-84c7-4c9b-8156-bd9b915f5083",
+    "timestamp": 1770214376,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 6.067,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "d8754209-c798-4f86-ad79-fba69bab902b",
+    "timestamp": 1770257983,
+    "content": "That makes sense",
+    "duration": 3.13,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "73bb5fe3-0715-40a9-acf8-5a84c38cc207",
+    "timestamp": 1770259716,
+    "content": "Have you considered this option?",
+    "duration": 3.323,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "f74e7dc1-6b30-4408-a190-e730d712d20f",
+    "timestamp": 1770261671,
+    "content": "We should consider mobile users",
+    "duration": 3.517,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "5ef23614-637c-450b-8f78-381c2bf3fb33",
+    "timestamp": 1770268213,
+    "content": "What's the timeline for this?",
+    "duration": 5.476,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "032279cb-b777-4e92-b26b-a58bc7e2e49f",
+    "timestamp": 1770273422,
+    "content": "The onboarding flow needs improvement",
+    "duration": 6.505,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "bb057076-9713-40c5-9662-680eddb70609",
+    "timestamp": 1770275832,
+    "content": "How did you solve this problem?",
+    "duration": 7.047,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "5e62f826-0590-4cad-8336-99b6cd7d6d2e",
+    "timestamp": 1770276076,
+    "content": "So, The tests are failing on CI",
+    "duration": 2.689,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "332d19c2-529c-4c70-b160-652dcd5a1651",
+    "timestamp": 1770277353,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 6.076,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "ab84af8b-cfdc-49f3-99fb-3dc7fbb51fc4",
+    "timestamp": 1770277765,
+    "content": "Have a great weekend",
+    "duration": 2.176,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "191ef849-7e25-42cc-b115-bcb2499232d0",
+    "timestamp": 1770281049,
+    "content": "How did you solve this problem?",
+    "duration": 6.535,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "6780a80e-2421-4023-a8ec-bb3fe50a17de",
+    "timestamp": 1770348620,
+    "content": "No worries at all",
+    "duration": 4.699,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "cd20b3bd-ee99-4ccc-8f97-7a9586a802aa",
+    "timestamp": 1770354175,
+    "content": "Let's add some animations",
+    "duration": 4.675,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "35c95f2c-5f7f-46f7-ac1b-08ab473facc8",
+    "timestamp": 1770359619,
+    "content": "Accessibility is important",
+    "duration": 4.486,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "bc4e41fa-6e37-4e4b-88da-fb8597311b28",
+    "timestamp": 1770359734,
+    "content": "Basically, Should we use PostgreSQL or MongoDB?",
+    "duration": 8.202,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "850bbb34-a464-46bd-a94d-895979ac51cd",
+    "timestamp": 1770360353,
+    "content": "Thanks for your help",
+    "duration": 4.518,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "34ba9c4d-126c-404b-baa2-66c55350fc84",
+    "timestamp": 1770365688,
+    "content": "I'll get back to you on this",
+    "duration": 5.191,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "e1b8232d-f0e2-4dd8-84d8-10db801f3021",
+    "timestamp": 1770368083,
+    "content": "That makes sense",
+    "duration": 2.787,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "16226ffd-9c88-4fd9-99e5-5ce645b575d7",
+    "timestamp": 1770372780,
+    "content": "We could simplify the architecture",
+    "duration": 4.298,
+    "app_name": "Discord",
+    "window_title": "Discord - #general"
+  },
+  {
+    "id": "7919ea03-98df-4ec4-9172-1144f5ecda34",
+    "timestamp": 1770373538,
+    "content": "Should we use PostgreSQL or MongoDB?",
+    "duration": 4.856,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "3b652128-7875-4e8b-bf73-33945ff19da3",
+    "timestamp": 1770376644,
+    "content": "Uh, The weather is nice today",
+    "duration": 3.621,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "b51c3fac-aa4e-4b85-8629-71277916b4d6",
+    "timestamp": 1770430193,
+    "content": "Will do",
+    "duration": 1.5,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "50d16eed-2cdc-4ea7-ad3e-5371ce0feac9",
+    "timestamp": 1770436958,
+    "content": "Let's brainstorm about the UI",
+    "duration": 6.12,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "26dfe0f3-24bb-43c4-9dc3-91492182a149",
+    "timestamp": 1770437695,
+    "content": "So, I'll get back to you on this",
+    "duration": 5.683,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "66f898d5-7e52-4e25-a0dc-43cacc13edf7",
+    "timestamp": 1770448828,
+    "content": "We could simplify the architecture",
+    "duration": 6.11,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "1a9a0458-7057-4683-920d-db24890a41ad",
+    "timestamp": 1770466913,
+    "content": "We could simplify the architecture",
+    "duration": 4.167,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "79a7eaba-268a-451f-a613-f2854dfd0ca5",
+    "timestamp": 1770467216,
+    "content": "Have a great weekend",
+    "duration": 4.791,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "0121f856-24bf-42d9-aa1f-544630e1938e",
+    "timestamp": 1770515003,
+    "content": "Basically, What's for lunch today?",
+    "duration": 7.894,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "6200d646-682e-440c-b836-5eae37ed8365",
+    "timestamp": 1770517653,
+    "content": "Have you considered this option?",
+    "duration": 6.185,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "385365d2-d4e4-4eb9-86ad-2492a8fa86d4",
+    "timestamp": 1770543071,
+    "content": "The feature branch is ready for review",
+    "duration": 5.287,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "aea4718f-0f35-4d19-91f1-03a49eed5057",
+    "timestamp": 1770544589,
+    "content": "Agreed",
+    "duration": 1.5,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "00949944-a12e-4b69-b575-fa5bed7a4eca",
+    "timestamp": 1770554945,
+    "content": "Let's deploy to staging first",
+    "duration": 6.266,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "a9003e73-c3e4-42de-83db-c5d07a4b249f",
+    "timestamp": 1770600878,
+    "content": "No",
+    "duration": 2.924,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "7a8c8334-ad36-4ef6-8247-f4f63a472e47",
+    "timestamp": 1770606404,
+    "content": "We need to optimize this query",
+    "duration": 3.157,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "520350f6-3c50-4d64-8c6a-5ea51321256a",
+    "timestamp": 1770612728,
+    "content": "Need to review the pull requests",
+    "duration": 4.661,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "f72e03a6-4099-4473-926b-7d6e5be60dc5",
+    "timestamp": 1770614891,
+    "content": "So, We need to optimize this query",
+    "duration": 7.234,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "947c61ae-895e-435a-8be4-6aa8fff189ab",
+    "timestamp": 1770616572,
+    "content": "I'm not sure about this",
+    "duration": 5.882,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "13f62be1-c448-42d8-8dc5-19738fa6b9f9",
+    "timestamp": 1770620645,
+    "content": "I'm not sure about this",
+    "duration": 3.051,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "4c5f0d62-e919-4a80-870f-f109e32d47b6",
+    "timestamp": 1770621307,
+    "content": "The API needs to be refactored",
+    "duration": 3.503,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "28522466-4716-4a0d-a810-fda2f35f3e17",
+    "timestamp": 1770630291,
+    "content": "Let's deploy to staging first",
+    "duration": 2.988,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "220e2e7a-dde4-439a-b1ba-b927ac2b03b0",
+    "timestamp": 1770633252,
+    "content": "I'm feeling tired",
+    "duration": 3.428,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "47cbe450-76a0-4cad-91ac-0739c6191940",
+    "timestamp": 1770683858,
+    "content": "Need to review the pull requests",
+    "duration": 3.056,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "dc87e8a0-2779-4326-9e2e-8ce49319add0",
+    "timestamp": 1770700138,
+    "content": "Let's brainstorm about the UI",
+    "duration": 6.551,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "6dca2a44-924b-4cbf-bb4b-874e9f3910eb",
+    "timestamp": 1770700544,
+    "content": "I'm working on the authentication module",
+    "duration": 4.707,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "bd7e74fe-dc0b-49a0-8dda-e2db91f0f0ca",
+    "timestamp": 1770702029,
+    "content": "The user experience could be better",
+    "duration": 5.129,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "19b0c6a1-d210-4551-8726-20f58fe6a559",
+    "timestamp": 1770704393,
+    "content": "What are your thoughts on this?",
+    "duration": 3.52,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "57496422-84f2-49f2-b0cc-d4650a3e2041",
+    "timestamp": 1770715685,
+    "content": "The tests are failing on CI",
+    "duration": 3.159,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "f3264bc9-19e1-4c0c-aa8c-58edee6bbcab",
+    "timestamp": 1770774362,
+    "content": "Need to review the pull requests",
+    "duration": 3.255,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "63a91941-9362-436d-aaf2-3ab6643941e8",
+    "timestamp": 1770782794,
+    "content": "That makes sense",
+    "duration": 3.338,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "9280072c-5f16-40c2-8800-791fe3fbfb9e",
+    "timestamp": 1770784062,
+    "content": "The tests are failing on CI",
+    "duration": 5.421,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "886baad9-7892-410f-a0e5-022afb316ea3",
+    "timestamp": 1770786872,
+    "content": "I appreciate it",
+    "duration": 4.045,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Voice Notes"
+  },
+  {
+    "id": "14ed1120-6f46-478d-9e31-e9d1e270b31d",
+    "timestamp": 1770786942,
+    "content": "The feature branch is ready for review",
+    "duration": 8.037,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "4f538ba8-db31-46e5-8b05-f336268ffbb8",
+    "timestamp": 1770786996,
+    "content": "Need to review the pull requests",
+    "duration": 3.473,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "42023ea3-d259-4f36-b352-2137e6b1a11a",
+    "timestamp": 1770789498,
+    "content": "Thanks for your help",
+    "duration": 2.251,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "30994952-8270-420b-8bef-c63727521b75",
+    "timestamp": 1770798217,
+    "content": "I'll get back to you on this",
+    "duration": 2.645,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "8ec6e475-43e0-4277-abf7-a32b1f9fd726",
+    "timestamp": 1770799330,
+    "content": "Should we use PostgreSQL or MongoDB?",
+    "duration": 4.916,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "21f16279-6b7d-4328-93ca-fa1718a2fc68",
+    "timestamp": 1770800615,
+    "content": "I appreciate it",
+    "duration": 5.231,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "a860cc6c-5e1d-44a3-9168-72fa6637131f",
+    "timestamp": 1770801366,
+    "content": "That's interesting",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "d03c5b97-9a30-4a0e-b6a9-99afd523e2a1",
+    "timestamp": 1770860794,
+    "content": "The tests are failing on CI",
+    "duration": 4.392,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "45bf78b6-2545-40dc-af50-8eb5a78dd85e",
+    "timestamp": 1770868918,
+    "content": "Can you believe this happened?",
+    "duration": 3.022,
+    "app_name": "Figma",
+    "window_title": "Figma - Design File"
+  },
+  {
+    "id": "692f347c-0597-414d-94fb-1d01e23ce5f4",
+    "timestamp": 1770870273,
+    "content": "Yes",
+    "duration": 2.543,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "095a4843-30c0-452a-b95e-73c676e637aa",
+    "timestamp": 1770872924,
+    "content": "What if we tried a different approach?",
+    "duration": 5.662,
+    "app_name": "Notion",
+    "window_title": "Notion - Documentation"
+  },
+  {
+    "id": "2f439658-9726-46aa-b6c3-44f2e3353908",
+    "timestamp": 1770875571,
+    "content": "Basically, The user experience could be better",
+    "duration": 5.516,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "09f9c09e-8df4-454d-8860-f5609a34e2b6",
+    "timestamp": 1770881242,
+    "content": "I'm feeling tired",
+    "duration": 4.771,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "4c582460-911c-4b16-aabf-d775b0256111",
+    "timestamp": 1770889002,
+    "content": "Let me think about it",
+    "duration": 3.308,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "ac3550e7-d764-4950-a7af-7a3cef1e5ee3",
+    "timestamp": 1770890439,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 4.749,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "893e40ac-9640-43e1-a5a0-a3a23c7f5944",
+    "timestamp": 1770891102,
+    "content": "That makes sense",
+    "duration": 2.404,
+    "app_name": "Discord",
+    "window_title": "Discord - Voice Channel"
+  },
+  {
+    "id": "91117821-3965-4d70-bb77-09ee0775cc4c",
+    "timestamp": 1770892754,
+    "content": "Have a great weekend",
+    "duration": 2.823,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "afc3eefb-6f2c-403c-b9b9-b6d1b4508458",
+    "timestamp": 1770957065,
+    "content": "Idea for the new feature: add a dark mode",
+    "duration": 7.938,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "5e6f11bd-3139-4334-8a37-a431b6563fa5",
+    "timestamp": 1770958424,
+    "content": "Actually, How did you solve this problem?",
+    "duration": 9.004,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "092953b2-f93f-4d3a-b8a1-371a7f932f23",
+    "timestamp": 1770959376,
+    "content": "Let me think about it",
+    "duration": 5.496,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "7ab9c1a3-65c4-440b-aaef-c1d7ff9015ab",
+    "timestamp": 1770960001,
+    "content": "That makes sense",
+    "duration": 1.5,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "324c82a7-ebf4-445a-b415-3ba87cacee01",
+    "timestamp": 1770964318,
+    "content": "That's interesting",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "e302891d-2d9e-4db7-83a7-f2f142f555e1",
+    "timestamp": 1770966576,
+    "content": "Can you believe this happened?",
+    "duration": 5.386,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "a269504b-ff5b-42c5-92fc-9eec028c1d0f",
+    "timestamp": 1770972447,
+    "content": "Can you explain this to me?",
+    "duration": 3.205,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "a372ed16-d476-43ac-bcd7-36f34b2e6cf8",
+    "timestamp": 1770976338,
+    "content": "Have a great weekend",
+    "duration": 4.761,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "b21a8079-57de-4489-974f-03598c363379",
+    "timestamp": 1770987681,
+    "content": "Is this the right direction?",
+    "duration": 2.597,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "7d806a7e-4996-4b68-9590-58a9213f6ebe",
+    "timestamp": 1771035432,
+    "content": "Thanks for your help",
+    "duration": 2.711,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "e38a6e1d-8c73-413d-b959-9f39b44f0d43",
+    "timestamp": 1771041970,
+    "content": "When can we ship this?",
+    "duration": 4.928,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "81a08f5d-7518-463e-8abc-238329911748",
+    "timestamp": 1771043652,
+    "content": "Let's brainstorm about the UI",
+    "duration": 3.423,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "e494029d-8493-466f-a9e3-a5f26c5be9ea",
+    "timestamp": 1771053921,
+    "content": "Actually, Can you explain this to me?",
+    "duration": 4.059,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "b94bea44-6e6f-495a-8de8-c1dafc18dad9",
+    "timestamp": 1771057011,
+    "content": "Um, I'm not sure about this",
+    "duration": 4.92,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "913a2e2e-7741-4b1c-965c-ae667338c4fb",
+    "timestamp": 1771058602,
+    "content": "I'm working on the authentication module",
+    "duration": 4.791,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "f39289ab-11e1-4b50-94ca-b96575cfb541",
+    "timestamp": 1771059133,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 6.779,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "914ba68e-8e9f-4b3a-bdda-93c0a9454a67",
+    "timestamp": 1771066078,
+    "content": "Have a great weekend",
+    "duration": 5.99,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "3ad2e2a2-879d-45c7-bca1-da6a30c9ef53",
+    "timestamp": 1771067611,
+    "content": "The feature branch is ready for review",
+    "duration": 4.383,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "9fa27d6e-8930-4d34-9c4b-e0c240b0e1a2",
+    "timestamp": 1771080667,
+    "content": "So, What if we tried a different approach?",
+    "duration": 4.361,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "8cf1336e-f775-4d7d-a93d-239eb7468ef9",
+    "timestamp": 1771116912,
+    "content": "We need to optimize this query",
+    "duration": 5.158,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "5123d37c-4356-4933-9eac-69381e74d7b9",
+    "timestamp": 1771129752,
+    "content": "Sounds good to me",
+    "duration": 4.964,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "68c5be28-b7dd-4353-86ac-87eb694562ab",
+    "timestamp": 1771129772,
+    "content": "Agreed",
+    "duration": 1.5,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "bfd081da-89c5-4a30-95f1-d7940aa653ad",
+    "timestamp": 1771138981,
+    "content": "I'll get back to you on this",
+    "duration": 2.624,
+    "app_name": "Notion",
+    "window_title": "Notion - Meeting Notes"
+  },
+  {
+    "id": "33b418aa-2567-429c-9b94-3f0d6ef82362",
+    "timestamp": 1771139674,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 4.442,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "b7d46505-e462-44f3-be23-b9ca7513e657",
+    "timestamp": 1771141066,
+    "content": "Actually, I need more context on this ticket",
+    "duration": 7.884,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "fa42cf6f-e770-410f-9e25-73d742a26047",
+    "timestamp": 1771168201,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 7.97,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "92f03898-73ed-4ef4-9aab-64d1ad267c24",
+    "timestamp": 1771205754,
+    "content": "Let me think about it",
+    "duration": 5.536,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "65eee427-b416-422b-89ba-a1ca9f5b02ef",
+    "timestamp": 1771218810,
+    "content": "When can we ship this?",
+    "duration": 1.735,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "1eefaf8f-d199-445d-866e-9dc78d22e005",
+    "timestamp": 1771219610,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 6.586,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "f9dd76ca-1d05-4ece-bdfa-72530138bcd7",
+    "timestamp": 1771219811,
+    "content": "Sounds good to me",
+    "duration": 1.5,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "36ccbd62-cb1d-4749-9954-a1be8ca583ad",
+    "timestamp": 1771222284,
+    "content": "Is this the right direction?",
+    "duration": 5.264,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "72a5f8be-705f-4127-aae8-aedaffb23273",
+    "timestamp": 1771224971,
+    "content": "We could simplify the architecture",
+    "duration": 4.203,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  },
+  {
+    "id": "c65a4898-562a-47bc-9c4f-234001ccbb07",
+    "timestamp": 1771227348,
+    "content": "The onboarding flow needs improvement",
+    "duration": 6.799,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "a65ba45d-03b8-4e5f-9182-52297f8d0fc2",
+    "timestamp": 1771230658,
+    "content": "I'm feeling tired",
+    "duration": 1.5,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "63e543ba-3fce-4468-a3f2-b30589c19843",
+    "timestamp": 1771237819,
+    "content": "That makes sense",
+    "duration": 5.289,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "a1ac9070-c2eb-4203-83db-abf8e545f4af",
+    "timestamp": 1771240222,
+    "content": "I'm working on the authentication module",
+    "duration": 4.526,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "85975a88-cd27-463d-8037-5a2a69e95f37",
+    "timestamp": 1771240468,
+    "content": "What's for lunch today?",
+    "duration": 2.947,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "ca8cf872-2b58-4489-a4e4-3b469c3b8f6c",
+    "timestamp": 1771240911,
+    "content": "Should we use TypeScript or JavaScript?",
+    "duration": 8.393,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "67377aab-c3aa-4563-be41-72c703adc6c0",
+    "timestamp": 1771242120,
+    "content": "I'll get back to you on this",
+    "duration": 6.147,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "400a8e4b-bd91-4b20-a1a6-74a21c3a7623",
+    "timestamp": 1771298455,
+    "content": "The user experience could be better",
+    "duration": 5.707,
+    "app_name": "Google Chrome",
+    "window_title": "GitHub - Repository"
+  },
+  {
+    "id": "62ec98c9-a006-427b-b218-dacaa10cbf2f",
+    "timestamp": 1771308284,
+    "content": "Let's deploy to staging first",
+    "duration": 6.115,
+    "app_name": "Typeless",
+    "window_title": "Typeless - Settings"
+  },
+  {
+    "id": "6e16ee54-250f-46ea-a583-65199ae0d78b",
+    "timestamp": 1771313735,
+    "content": "Can you believe this happened?",
+    "duration": 3.422,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "0a6c5928-7359-433a-8ef1-127593dbd2d9",
+    "timestamp": 1771315916,
+    "content": "So, What are your thoughts on this?",
+    "duration": 3.446,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "9be7ae05-89a0-49e4-8858-cf97f08ff22d",
+    "timestamp": 1771326610,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 7.994,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "32593b93-78d2-498f-b576-e66662e599e2",
+    "timestamp": 1771380312,
+    "content": "Let's sync up about the project roadmap",
+    "duration": 5.949,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "ebb9d5bd-36fd-4140-9f1a-0fa8ee6d07c4",
+    "timestamp": 1771389646,
+    "content": "Like, Can you believe this happened?",
+    "duration": 4.222,
+    "app_name": "Figma",
+    "window_title": "Figma - Prototype"
+  },
+  {
+    "id": "9d19adfc-53e8-4bdd-af89-766e52e00d8b",
+    "timestamp": 1771393739,
+    "content": "Like, The database migration is complete",
+    "duration": 6.042,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "a4e0abc5-38c4-4b7d-9026-04d142689d10",
+    "timestamp": 1771405413,
+    "content": "That's interesting",
+    "duration": 3.936,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "5e9586b6-affb-4f4a-9f9e-b04a8e4dad62",
+    "timestamp": 1771405869,
+    "content": "Can you believe this happened?",
+    "duration": 5.588,
+    "app_name": "Terminal",
+    "window_title": "python - Interactive"
+  },
+  {
+    "id": "cf7d13e3-0904-45eb-944c-3028ec6f5fc2",
+    "timestamp": 1771434648,
+    "content": "The weather is nice today",
+    "duration": 4.063,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "733b49b4-a279-4a58-a58c-e9b29f64756a",
+    "timestamp": 1771465508,
+    "content": "I have a suggestion for the dashboard",
+    "duration": 4.412,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "2ba911de-1bea-441a-a408-af99db6027ab",
+    "timestamp": 1771465740,
+    "content": "We should consider mobile users",
+    "duration": 6.764,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "dcb866f9-30b3-4806-94f5-b8188c34ceab",
+    "timestamp": 1771466724,
+    "content": "Let's add some animations",
+    "duration": 3.443,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "23fac72e-c06a-499b-a124-2e66d023cf3d",
+    "timestamp": 1771481919,
+    "content": "Let me think about it",
+    "duration": 4.747,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "4f623a5c-9a4d-403d-98eb-ee12870b3d65",
+    "timestamp": 1771491871,
+    "content": "Like, Sounds good to me",
+    "duration": 3.294,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "3add4434-8c9e-415f-b411-91e5f563fca0",
+    "timestamp": 1771494070,
+    "content": "I appreciate it",
+    "duration": 5.215,
+    "app_name": "VSCode",
+    "window_title": "config.py - Typeless Project"
+  },
+  {
+    "id": "6c43078d-bbc1-49f1-b934-859439785714",
+    "timestamp": 1771501719,
+    "content": "Can you believe this happened?",
+    "duration": 5.728,
+    "app_name": "VSCode",
+    "window_title": "main.py - Visual Studio Code"
+  },
+  {
+    "id": "c28754fa-73f3-414b-b8c5-57bd051b17a9",
+    "timestamp": 1771560763,
+    "content": "Agreed",
+    "duration": 1.63,
+    "app_name": "Typeless",
+    "window_title": "Typeless - History"
+  },
+  {
+    "id": "093c6bf5-c483-4328-8b25-73b6b7b69249",
+    "timestamp": 1771562978,
+    "content": "Um, Is this the right direction?",
+    "duration": 6.685,
+    "app_name": "Terminal",
+    "window_title": "zsh - ~"
+  },
+  {
+    "id": "39d5261d-4ba2-484d-9dc2-33fbb3694ab8",
+    "timestamp": 1771566353,
+    "content": "I'll fix this bug by the end of the day",
+    "duration": 5.666,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "d966b3eb-65a6-442d-808a-b194662f58ff",
+    "timestamp": 1771653117,
+    "content": "I'm not sure about this",
+    "duration": 3.365,
+    "app_name": "Slack",
+    "window_title": "Slack - #development"
+  },
+  {
+    "id": "7bc28300-c167-42b8-8a09-26edaac53f1f",
+    "timestamp": 1771665495,
+    "content": "What if we tried a different approach?",
+    "duration": 4.5,
+    "app_name": "VSCode",
+    "window_title": "README.md - Visual Studio Code"
+  },
+  {
+    "id": "285da5c3-61fe-47bd-90f5-2b372386c1d4",
+    "timestamp": 1771677275,
+    "content": "Basically, I'm feeling tired",
+    "duration": 6.162,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "d1fede81-bf15-4e19-ac9a-8f809531e070",
+    "timestamp": 1771683688,
+    "content": "The database migration is complete",
+    "duration": 5.704,
+    "app_name": "Google Chrome",
+    "window_title": "Google Docs - Document"
+  },
+  {
+    "id": "55fe691c-68a6-4606-842c-d35b5181a924",
+    "timestamp": 1771686362,
+    "content": "See you tomorrow",
+    "duration": 3.457,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "6979d39a-f00f-46ee-8f77-3c368ca0f097",
+    "timestamp": 1771732472,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 7.695,
+    "app_name": "VSCode",
+    "window_title": "Typeless Voice Notes - VSCode"
+  },
+  {
+    "id": "db6d95c8-9552-4443-acd9-7b39afc950be",
+    "timestamp": 1771738103,
+    "content": "Can we schedule a meeting for tomorrow?",
+    "duration": 8.642,
+    "app_name": "Google Chrome",
+    "window_title": "Gmail - Inbox"
+  },
+  {
+    "id": "7c1f9923-40e0-448e-b6fc-724572b8ffc5",
+    "timestamp": 1771744366,
+    "content": "Hmm",
+    "duration": 1.5,
+    "app_name": "Slack",
+    "window_title": "Slack - DM"
+  },
+  {
+    "id": "29fbd909-a69f-4eb2-9f33-886cbbd29a69",
+    "timestamp": 1771749022,
+    "content": "Have you considered this option?",
+    "duration": 7.495,
+    "app_name": "Terminal",
+    "window_title": "bash - Terminal"
+  },
+  {
+    "id": "ed973aee-26ae-4a00-8c7e-05a2370a5741",
+    "timestamp": 1771750297,
+    "content": "The deployment is scheduled for Friday",
+    "duration": 8.624,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "5c6b8bea-fd1b-4d2d-9a21-6ebb8720f99c",
+    "timestamp": 1771757799,
+    "content": "Is this the right direction?",
+    "duration": 4.898,
+    "app_name": "Slack",
+    "window_title": "Slack - #general"
+  },
+  {
+    "id": "2479c93d-1105-4f1f-8c3b-6a6cfdff2427",
+    "timestamp": 1771762466,
+    "content": "What are your thoughts on this?",
+    "duration": 4.087,
+    "app_name": "Google Chrome",
+    "window_title": "Stack Overflow - Question"
+  }
+]
