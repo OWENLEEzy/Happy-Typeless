@@ -1,0 +1,15 @@
+# tests/unit/nlp/strategies/test_segment_en.py
+from src.nlp.strategies.segment_en import EnglishSegmentStrategy
+
+
+def test_english_segment_fallback():
+    strategy = EnglishSegmentStrategy(
+        stop_words={"the", "a", "an"},
+        spacy_model=None,  # Force fallback
+    )
+
+    result = strategy.segment("This is a test")
+
+    assert "the" not in result
+    assert "a" not in result
+    assert "test" in result

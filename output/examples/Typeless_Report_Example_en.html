@@ -1,0 +1,3291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typeless Analytics - Voice Data Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+        /* ── Design tokens (unchanged from original) ───────────────── */
+        :root {
+            --bg-primary:    #F4EFEA;
+            --bg-card:       #FFFFFF;
+            --bg-elevated:   #FAF9F6;
+            --bg-hover:      #F0EDE8;
+            --text-primary:  #2D2D2D;
+            --text-secondary:#6B6B6B;
+            --text-tertiary: #9B9B9B;
+            --border-default:#2D2D2D;
+            --border-subtle: #E5E5E5;
+            --accent-primary:#FFDE00;
+            --accent-secondary:#6FC2FF;
+            --accent-success:#00D26A;
+            --accent-warning:#FFAB00;
+            --accent-error:  #FF4D4D;
+            --accent-purple: #A855F7;
+            --accent-orange: #FF8C00;
+        }
+
+        body.theme-dark {
+            --bg-primary:    #121212;
+            --bg-card:       #1E1E1E;
+            --bg-elevated:   #2A2A2A;
+            --bg-hover:      #323232;
+            --text-primary:  #F4EFEA;
+            --text-secondary:#9B9B9B;
+            --text-tertiary: #5A5A5A;
+            --border-default:#6B6B6B;
+            --border-subtle: #3A3A3A;
+        }
+
+        /* ── Reset ─────────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 13px;
+            line-height: 1.5;
+            min-height: 100vh;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        /* ── Mono utility ───────────────────────────────────────────── */
+        .mono { font-family: 'JetBrains Mono', 'Courier New', monospace; }
+
+        /* ── Newspaper band grid (core layout primitive) ────────────── */
+        /* A band is a row of cells separated by 1px lines (gap = border color). */
+        .band {
+            display: grid;
+            background: var(--border-default);
+            gap: 1px;
+            margin-bottom: 1px;
+        }
+        .band-c1  { grid-template-columns: 1fr; }
+        .band-c2  { grid-template-columns: repeat(2, 1fr); }
+        .band-c3  { grid-template-columns: repeat(3, 1fr); }
+        .band-c4  { grid-template-columns: repeat(4, 1fr); }
+        .band-c6  { grid-template-columns: repeat(6, 1fr); }
+        .band-1-2 { grid-template-columns: 1fr 2fr; }
+        .band-2-1 { grid-template-columns: 2fr 1fr; }
+        .band-1-1-2 { grid-template-columns: 1fr 1fr 2fr; }
+        .band-3-1 { grid-template-columns: 3fr 1fr; }
+        .band-2-1-1 { grid-template-columns: 2fr 1fr 1fr; }
+
+        .cell {
+            background: var(--bg-card);
+            padding: 14px 16px;
+            min-width: 0;
+        }
+        .cell-sm { background: var(--bg-card); padding: 10px 14px; min-width: 0; }
+        .cell-lg { background: var(--bg-card); padding: 20px 24px; min-width: 0; }
+
+        /* Span helpers for band children */
+        .span-2 { grid-column: span 2; }
+        .span-3 { grid-column: span 3; }
+        .span-4 { grid-column: span 4; }
+        .span-6 { grid-column: span 6; }
+
+        /* ── Section header bar (inverted) ─────────────────────────── */
+        .band-hdr {
+            background: var(--border-default);
+            color: var(--bg-card);
+            padding: 5px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 1px;
+        }
+
+        /* ── Navigation ─────────────────────────────────────────────── */
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            height: 46px;
+            background: var(--bg-primary);
+            border-bottom: 2px solid var(--border-default);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+        .nav-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 5px 12px;
+            border: 1px solid var(--border-default);
+            background: transparent;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .nav-btn:hover { background: var(--text-primary); color: var(--bg-card); }
+
+        /* ── Page wrapper ───────────────────────────────────────────── */
+        .wrapper { max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; }
+
+        /* ── Page header ────────────────────────────────────────────── */
+        .page-hdr {
+            padding: 28px 0 20px;
+            border-bottom: 2px solid var(--border-default);
+            margin-bottom: 0;
+        }
+        .page-hdr-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+        .page-hdr-title {
+            font-family: 'Inter', sans-serif;
+            font-size: clamp(28px, 4vw, 48px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+        .page-hdr-range {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+        .range-accent { color: var(--accent-primary); font-weight: 600; }
+
+        /* ── Tabs ───────────────────────────────────────────────────── */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid var(--border-default);
+            margin-bottom: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tab-btn {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 12px 18px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .tab-btn:hover { color: var(--text-primary); background: var(--bg-elevated); }
+        .tab-btn.active { color: var(--text-primary); border-bottom-color: var(--accent-primary); }
+        .tab-panel { display: none; padding-top: 1px; }
+        .tab-panel.active { display: block; }
+
+        /* ── Stat display ───────────────────────────────────────────── */
+        .stat-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: -0.03em;
+        }
+        .stat-num-lg { font-size: 56px; }
+        .stat-num-sm { font-size: 28px; }
+        .stat-lbl {
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .stat-unit {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-left: 3px;
+        }
+
+        /* ── Progress bar ───────────────────────────────────────────── */
+        .bar-track { height: 4px; background: var(--bg-elevated); margin-top: 8px; }
+        .bar-fill { height: 100%; transition: width 0.6s; }
+
+        /* ── Badge ──────────────────────────────────────────────────── */
+        .badge-icon { font-size: 32px; margin-bottom: 6px; }
+        .badge-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        .badge-prog {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--text-tertiary);
+            margin-top: 5px;
+        }
+
+        /* ── Sentence compare ───────────────────────────────────────── */
+        .sent-half {
+            padding: 14px;
+            text-align: center;
+            flex: 1;
+        }
+        .sent-half.q { border-right: 1px solid var(--border-default); }
+        .sent-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 48px;
+            font-weight: 600;
+            line-height: 0.9;
+        }
+        .sent-pct.q { color: var(--accent-purple); }
+        .sent-pct.s { color: var(--accent-success); }
+        .sent-type { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-top: 6px; }
+        .sent-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+
+        /* ── Emotion bar ────────────────────────────────────────────── */
+        .emo-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .emo-row:last-child { border-bottom: none; }
+        .emo-label { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; min-width: 112px; flex-shrink: 0; color: var(--text-secondary); white-space: nowrap; }
+        .emo-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 22px;
+            font-weight: 600;
+            width: 68px;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .emo-track { flex: 1; height: 6px; background: var(--bg-elevated); }
+        .emo-fill { height: 100%; transition: width 0.6s; }
+        .emo-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); width: 40px; text-align: right; flex-shrink: 0; }
+
+        /* ── Personality tags ───────────────────────────────────────── */
+        .p-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border: 1px solid var(--border-default);
+            margin: 3px;
+            transition: all 0.15s;
+        }
+        .p-tag:hover { transform: translate(-2px, -2px); box-shadow: 3px 3px 0 var(--accent-primary); }
+        .p-tag-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+        .p-tag-desc { font-size: 10px; color: var(--text-secondary); }
+
+        /* ── Efficiency scores ──────────────────────────────────────── */
+        .eff-cell { text-align: center; padding: 14px 10px; }
+        .eff-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 36px;
+            font-weight: 600;
+            line-height: 1;
+            display: block;
+        }
+        .eff-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-secondary); margin-top: 4px; }
+
+        /* ── Frag box ───────────────────────────────────────────────── */
+        .frag-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg-elevated);
+            border-top: 1px solid var(--border-subtle);
+        }
+        .frag-lv {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-warning);
+        }
+        .frag-meta { font-size: 10px; color: var(--text-secondary); }
+
+        /* ── Word cloud tags ────────────────────────────────────────── */
+        .w-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            margin: 2px;
+            border: 1px solid var(--border-default);
+            font-family: 'JetBrains Mono', monospace;
+            cursor: default;
+            transition: all 0.15s;
+        }
+        .w-tag:hover { background: var(--accent-primary); transform: translate(-1px, -1px); box-shadow: 2px 2px 0 var(--border-default); }
+        .w-tag.hi { background: var(--accent-primary); border-color: var(--accent-primary); }
+        .text-xs  { font-size: 11px; }
+        .text-sm  { font-size: 12px; }
+        .text-base{ font-size: 13px; }
+        .text-lg  { font-size: 15px; }
+
+        /* ── Topic cells ────────────────────────────────────────────── */
+        .topic-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .topic-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-top: 4px; }
+        .topic-pct { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-tertiary); }
+
+        /* ── Chart container ────────────────────────────────────────── */
+        .chart-box { width: 100%; }
+
+        /* ── Longest yap ────────────────────────────────────────────── */
+        .yap-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .yap-body { font-size: 13px; line-height: 1.65; }
+
+        /* ── Accordion ──────────────────────────────────────────────── */
+        .accord-item { border-bottom: 1px solid var(--border-subtle); }
+        .accord-item:last-child { border-bottom: none; }
+        .accord-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            cursor: pointer;
+            user-select: none;
+        }
+        .accord-hdr:hover { opacity: 0.8; }
+        .accord-title { display: flex; align-items: center; gap: 10px; }
+        .accord-label { font-size: 12px; font-weight: 600; }
+        .accord-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .accord-icon { font-size: 10px; color: var(--text-secondary); transition: transform 0.2s; }
+        .accord-hdr.open .accord-icon { transform: rotate(180deg); }
+        .accord-body { display: none; max-height: 280px; overflow-y: auto; border-top: 1px solid var(--border-subtle); }
+        .accord-body.open { display: block; }
+        .accord-row { padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .accord-row:last-child { border-bottom: none; }
+        .accord-meta {
+            display: grid;
+            grid-template-columns: 120px 48px 50px;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        .accord-score { color: var(--accent-error); font-weight: 600; }
+        .accord-text { font-size: 12px; line-height: 1.5; }
+
+        /* ── Data table ─────────────────────────────────────────────── */
+        .dt { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .dt th {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            padding: 6px 8px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-default);
+        }
+        .dt td { padding: 6px 8px; border-bottom: 1px solid var(--border-subtle); vertical-align: middle; }
+        .dt tr:last-child td { border-bottom: none; }
+        .dt tr:hover td { background: var(--bg-elevated); }
+
+        /* ── Rank list ──────────────────────────────────────────────── */
+        .rank-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 7px 0;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+        .rank-row:last-child { border-bottom: none; }
+        .rank-medal { font-size: 14px; width: 22px; text-align: center; }
+        .rank-body { flex: 1; min-width: 0; }
+        .rank-top { display: flex; justify-content: space-between; margin-bottom: 3px; }
+        .rank-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+        .rank-n {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .rank-bar { height: 3px; background: var(--bg-elevated); }
+        .rank-bar-fill { height: 100%; background: var(--accent-primary); }
+
+        /* ── AI moment items ────────────────────────────────────────── */
+        .moment {
+            padding: 10px 12px;
+            border-left: 2px solid var(--border-subtle);
+            margin-bottom: 8px;
+            transition: border-color 0.15s;
+        }
+        .moment:hover { border-left-color: var(--accent-primary); }
+        .moment-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-secondary); margin-bottom: 4px; }
+        .moment-text { font-size: 12px; line-height: 1.5; }
+
+        /* ── AI topic tags ──────────────────────────────────────────── */
+        .ai-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border: 1px solid var(--border-subtle);
+            margin: 2px;
+            font-size: 11px;
+        }
+        .ai-tag-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+        /* ── AI topic cards ─────────────────────────────────────── */
+        .topic-card {
+            border: 1px solid var(--border-subtle);
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+        }
+        .topic-card-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 600;
+            line-height: 1;
+            color: var(--text-primary);
+        }
+        .topic-card-name {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* ── Habit stat ─────────────────────────────────────────────── */
+        .habit-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+        .habit-row:last-child { border-bottom: none; }
+        .habit-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--text-secondary); }
+        .habit-val { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 600; line-height: 1; }
+
+        /* ── Mental health mini ─────────────────────────────────────── */
+        .mh-half { text-align: center; padding: 16px 10px; flex: 1; }
+        .mh-half:first-child { border-right: 1px solid var(--border-default); }
+        .mh-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 40px;
+            font-weight: 600;
+            line-height: 1;
+        }
+        .mh-lbl { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-secondary); margin-top: 6px; }
+
+        /* ── Footer ─────────────────────────────────────────────────── */
+        .footer {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-tertiary);
+            text-align: center;
+            padding: 20px 24px;
+            border-top: 1px solid var(--border-subtle);
+            letter-spacing: 0.08em;
+        }
+
+        /* ── Utilities ──────────────────────────────────────────────── */
+        .flex { display: flex; }
+        .flex-wrap { flex-wrap: wrap; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .justify-center { justify-content: center; }
+        .text-center { text-align: center; }
+        .col-green  { color: var(--accent-success); }
+        .col-red    { color: var(--accent-error); }
+        .col-blue   { color: var(--accent-secondary); }
+        .col-yellow { color: var(--accent-primary); }
+        .col-purple { color: var(--accent-purple); }
+        .col-orange { color: var(--accent-orange); }
+        .col-muted  { color: var(--text-secondary); }
+        .mt4  { margin-top: 4px; }
+        .mt8  { margin-top: 8px; }
+        .mt12 { margin-top: 12px; }
+        .mt16 { margin-top: 16px; }
+        .mb8  { margin-bottom: 8px; }
+        .mb12 { margin-bottom: 12px; }
+        .mb16 { margin-bottom: 16px; }
+        .gap8  { gap: 8px; }
+        .gap12 { gap: 12px; }
+        .overflow-hidden { overflow: hidden; }
+
+        /* ── Responsive ─────────────────────────────────────────────── */
+        @media (max-width: 1100px) {
+            .band-c6 { grid-template-columns: repeat(3, 1fr); }
+            .band-c4 { grid-template-columns: repeat(2, 1fr); }
+            .band-1-1-2 { grid-template-columns: 1fr 1fr; }
+            .band-1-1-2 .span-2 { grid-column: span 2; }
+        }
+        @media (max-width: 720px) {
+            .band-c6, .band-c4, .band-c3, .band-c2,
+            .band-1-2, .band-2-1, .band-1-1-2, .band-3-1, .band-2-1-1 {
+                grid-template-columns: 1fr;
+            }
+            .span-2, .span-3, .span-4, .span-6 { grid-column: span 1; }
+            .stat-num { font-size: 32px; }
+            .sent-half.q { border-right: none; border-bottom: 1px solid var(--border-default); }
+            .accord-meta { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Navigation ──────────────────────────────────────────── -->
+    <nav class="nav">
+        <div class="nav-brand">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.7">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                <line x1="12" y1="19" x2="12" y2="23"/>
+                <line x1="8" y1="23" x2="16" y2="23"/>
+            </svg>
+            Typeless Analytics
+        </div>
+        <button class="nav-btn" id="theme-btn">🌙 Dark Mode</button>
+    </nav>
+
+    <div class="wrapper">
+
+        <!-- ── Page header ──────────────────────────────────────── -->
+        <header class="page-hdr">
+            <p class="page-hdr-meta">Voice Data Analytics Report</p>
+            <h1 class="page-hdr-title">Speaking Pattern Analysis</h1>
+            <p class="page-hdr-range">
+                Data Range:
+                <span class="range-accent">2025-12-31</span>
+                to
+                <span class="range-accent">2026-03-01</span>
+            </p>
+        </header>
+
+        <!-- ── Tab navigation ───────────────────────────────────── -->
+        <div class="tabs">
+            <button class="tab-btn active" data-panel="overview">Overview &amp; Profile</button>
+            <button class="tab-btn" data-panel="content">Content &amp; Communication</button>
+            <button class="tab-btn" data-panel="time">Time &amp; Habits</button>
+        </div>
+
+
+        <div class="tab-panel active" id="panel-overview">
+
+            <div class="band-hdr">Voice Data Analytics Report — 2025-12-31 to 2026-03-01</div>
+            <div class="band band-c6">
+                <div class="cell">
+                    <p class="stat-lbl">Total Records</p>
+                    <p class="stat-num" data-count="500" data-dec="0">500</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">Total Words</p>
+                    <p class="stat-num col-green" data-count="15644" data-dec="0">15,644</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">Total Duration</p>
+                    <p class="stat-num">43<span class="stat-unit">min</span></p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">Daily Avg</p>
+                    <p class="stat-num">8.2</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">Avg Words</p>
+                    <p class="stat-num">31.3</p>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl">Avg Duration</p>
+                    <p class="stat-num">5.2<span class="stat-unit">sec</span></p>
+                </div>
+            </div>
+
+            <div class="band band-c3 mt8">
+                <div class="cell text-center">
+                    <div class="badge-icon">🗣️</div>
+                    <p class="badge-name mono">Chatterbox</p>
+                    <div class="bar-track">
+                        <div class="bar-fill" style="width:31.3%; background:#CD7F32;"></div>
+                    </div>
+                    <p class="badge-prog">15,644 / 50,000 words</p>
+                </div>
+
+                <div class="cell" style="padding:0;">
+                    <p class="stat-lbl" style="padding: 10px 14px 0;">Sentence Patterns</p>
+                    <div class="flex">
+                        <div class="sent-half q">
+                            <p class="sent-pct q">21%</p>
+                            <p class="sent-type">Questions</p>
+                            <p class="sent-count">105 items</p>
+                        </div>
+                        <div class="sent-half">
+                            <p class="sent-pct s">79%</p>
+                            <p class="sent-type">Statements</p>
+                            <p class="sent-count">395 items</p>
+                        </div>
+                    </div>
+                    <p style="font-size:11px; color:var(--text-secondary); padding:8px 14px; border-top:1px solid var(--border-subtle);">💡 Conclusion: You tend to &#34;give commands&#34; rather than &#34;ask questions&#34;</p>
+                </div>
+
+                <div class="cell">
+                    <p class="stat-lbl mb8">Emotion Overview</p>
+                    <div class="emo-row">
+                        <span class="emo-label col-green">Normal/Positive</span>
+                        <span class="emo-pct col-green">90%</span>
+                        <div class="emo-track"><div class="emo-fill" style="width:89.60000000000001%; background:var(--accent-success);"></div></div>
+                        <span class="emo-count">448</span>
+                    </div>
+                    <div class="emo-row">
+                        <span class="emo-label col-red">Negative</span>
+                        <span class="emo-pct col-red">10.4%</span>
+                        <div class="emo-track"><div class="emo-fill" style="width:10.4%; background:var(--accent-error);"></div></div>
+                        <span class="emo-count">52</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">🎭 Language Style Profile</div>
+            <div class="band band-c1">
+                <div class="cell flex flex-wrap items-center" style="min-height:56px;">
+                        <div class="p-tag" style="border-color:#00D26A;">
+                            <span class="p-tag-name" style="color:#00D26A;">Concise</span>
+                            <span class="p-tag-desc">Straight to the point</span>
+                        </div>
+                        <div class="p-tag" style="border-color:#9B9B9B;">
+                            <span class="p-tag-name" style="color:#9B9B9B;">Balanced</span>
+                            <span class="p-tag-desc">Q&amp;A balanced</span>
+                        </div>
+                        <div class="p-tag" style="border-color:#FFAB00;">
+                            <span class="p-tag-name" style="color:#FFAB00;">Normal Emotion</span>
+                            <span class="p-tag-desc">Moderate mood swings</span>
+                        </div>
+                        <div class="p-tag" style="border-color:#A855F7;">
+                            <span class="p-tag-name" style="color:#A855F7;">Lifestyle Oriented</span>
+                            <span class="p-tag-desc">Talks more on weekends</span>
+                        </div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">⚡ Efficiency Score</div>
+            <div class="band band-c2">
+                <div class="cell" style="padding:0; display:flex; flex-direction:column;">
+                    <div class="band band-c4" style="margin:0; background:var(--border-subtle);">
+                        <div class="eff-cell" style="background:var(--bg-card);">
+                            <span class="eff-val" style="color:#FF4D4D;">0</span>
+                            <span class="eff-lbl">Sleep</span>
+                        </div>
+                        <div class="eff-cell" style="background:var(--bg-card);">
+                            <span class="eff-val" style="color:#FF4D4D;">25</span>
+                            <span class="eff-lbl">Efficiency</span>
+                        </div>
+                        <div class="eff-cell" style="background:var(--bg-card);">
+                            <span class="eff-val" style="color:#FF4D4D;">52</span>
+                            <span class="eff-lbl">Focus</span>
+                        </div>
+                        <div class="eff-cell" style="background:var(--bg-card);">
+                            <span class="eff-val" style="color:#FF4D4D;">26</span>
+                            <span class="eff-lbl">Overall</span>
+                        </div>
+                    </div>
+                    <div class="frag-box" style="margin-top:auto;">
+                        <span class="frag-lv">Low</span>
+                        <span class="frag-meta">Fragmentation Index · 20.2% · Deep thinking</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <p class="stat-lbl mb8">Big Five Personality</p>
+                    <div class="chart-box" id="chart-bigfive" style="height:170px;"></div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="tab-panel" id="panel-content">
+
+            <div class="band-hdr">Content Topic Classification</div>
+            <div class="band band-c3">
+                <div class="cell text-center" style="border-left:3px solid var(--accent-success);">
+                    <p class="topic-num col-green">440</p>
+                    <p class="topic-lbl">Daily/Other</p>
+                    <p class="topic-pct">98%</p>
+                </div>
+                <div class="cell text-center" style="border-left:3px solid var(--accent-secondary);">
+                    <p class="topic-num col-blue">0</p>
+                    <p class="topic-lbl">AI/Tech</p>
+                    <p class="topic-pct">0%</p>
+                </div>
+                <div class="cell text-center" style="border-left:3px solid var(--accent-purple);">
+                    <p class="topic-num col-purple">7</p>
+                    <p class="topic-lbl">Design</p>
+                    <p class="topic-pct">2%</p>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">Top 20 High-Frequency Words</div>
+            <div class="band band-c1">
+                <div class="cell flex flex-wrap overflow-hidden" style="max-height:130px;">
+                        <span class="w-tag text-lg hi">let (45)</span>
+                        <span class="w-tag text-lg hi">need (39)</span>
+                        <span class="w-tag text-base hi">today (27)</span>
+                        <span class="w-tag text-base">review (22)</span>
+                        <span class="w-tag text-base">needs (21)</span>
+                        <span class="w-tag text-base">working (20)</span>
+                        <span class="w-tag text-base">approach (19)</span>
+                        <span class="w-tag text-base">think (19)</span>
+                        <span class="w-tag text-sm">context (18)</span>
+                        <span class="w-tag text-sm">ticket (18)</span>
+                        <span class="w-tag text-sm">thanks (18)</span>
+                        <span class="w-tag text-sm">database (18)</span>
+                        <span class="w-tag text-sm">migration (18)</span>
+                        <span class="w-tag text-sm">complete (18)</span>
+                        <span class="w-tag text-sm">believe (17)</span>
+                        <span class="w-tag text-sm">help (17)</span>
+                        <span class="w-tag text-sm">tomorrow (17)</span>
+                        <span class="w-tag text-sm">weather (16)</span>
+                        <span class="w-tag text-sm">nice (16)</span>
+                        <span class="w-tag text-sm">happened (16)</span>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">Content Length Distribution / 🎙️ Longest Voice Recording</div>
+            <div class="band band-1-2">
+                <div class="cell">
+                    <div class="chart-box" id="chart-length" style="height:180px;"></div>
+                </div>
+                <div class="cell">
+                    <div class="yap-meta">
+                        <span>📅 2026-01-18</span>
+                        <span>⏰ 2:00</span>
+                        <span>🎙️ 36sec</span>
+                        <span>📝 239words</span>
+                    </div>
+                    <p class="yap-body">"The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn&#39;t working properly in some areas."</p>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">😔 Emotion Deep Dive</div>
+            <div class="band band-c1">
+                <div class="cell">
+                    <div>
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:#FF4D4D;">Anger</span>
+                                    <span class="accord-count">66 (13.2%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 03:00</span>
+                                            <span class="accord-score">-0.06</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 09:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">So, Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 06:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 02:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">What are your thoughts on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 02:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m not sure about this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 03:00</span>
+                                            <span class="accord-score">0.35</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 11:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>36 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, Accessibility is important</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-11 03:00</span>
+                                            <span class="accord-score">-0.11</span>
+                                            <span>42 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-12 03:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s sync up about the project roadmap</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-14 02:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-15 01:00</span>
+                                            <span class="accord-score">0.10</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 04:00</span>
+                                            <span class="accord-score">-0.03</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Who&#39;s working on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 12:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">No worries at all</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-18 05:00</span>
+                                            <span class="accord-score">-0.40</span>
+                                            <span>24 words</span>
+                                        </div>
+                                        <div class="accord-text">This is driving me crazy</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-18 06:00</span>
+                                            <span class="accord-score">0.16</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-19 01:00</span>
+                                            <span class="accord-score">0.15</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-20 00:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Can we schedule a meeting for tomorrow?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-21 03:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-21 07:00</span>
+                                            <span class="accord-score">0.19</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, Let me think about it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-22 04:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">What if we tried a different approach?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-22 08:00</span>
+                                            <span class="accord-score">0.09</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Can we schedule a meeting for tomorrow?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-25 09:00</span>
+                                            <span class="accord-score">0.35</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-26 03:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>37 words</span>
+                                        </div>
+                                        <div class="accord-text">The onboarding flow needs improvement</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-26 07:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-27 04:00</span>
+                                            <span class="accord-score">0.06</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Documentation is outdated</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-27 04:00</span>
+                                            <span class="accord-score">-0.09</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-27 05:00</span>
+                                            <span class="accord-score">-0.13</span>
+                                            <span>4 words</span>
+                                        </div>
+                                        <div class="accord-text">Sure</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-29 13:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">The tests are failing on CI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-30 03:00</span>
+                                            <span class="accord-score">-0.00</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">The database migration is complete</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-31 06:00</span>
+                                            <span class="accord-score">0.08</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">We need to optimize this query</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-05 11:00</span>
+                                            <span class="accord-score">-0.09</span>
+                                            <span>37 words</span>
+                                        </div>
+                                        <div class="accord-text">The onboarding flow needs improvement</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-05 13:00</span>
+                                            <span class="accord-score">0.27</span>
+                                            <span>42 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-06 07:00</span>
+                                            <span class="accord-score">0.11</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">No worries at all</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-07 08:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-07 09:00</span>
+                                            <span class="accord-score">-0.03</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The feature branch is ready for review</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-08 09:00</span>
+                                            <span class="accord-score">-0.11</span>
+                                            <span>37 words</span>
+                                        </div>
+                                        <div class="accord-text">I have a suggestion for the dashboard</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-08 11:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">The tests are failing on CI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-09 06:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-10 02:00</span>
+                                            <span class="accord-score">-0.03</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-10 11:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">We should consider mobile users</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 00:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m not sure about this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 01:00</span>
+                                            <span class="accord-score">0.10</span>
+                                            <span>43 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, Let&#39;s sync up about the project roadmap</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 05:00</span>
+                                            <span class="accord-score">-0.15</span>
+                                            <span>42 words</span>
+                                        </div>
+                                        <div class="accord-text">Basically, We should consider mobile users</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-14 05:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">When can we ship this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-16 04:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-16 08:00</span>
+                                            <span class="accord-score">0.15</span>
+                                            <span>9 words</span>
+                                        </div>
+                                        <div class="accord-text">Um, Maybe</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-17 03:00</span>
+                                            <span class="accord-score">0.23</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">What are your thoughts on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-17 09:00</span>
+                                            <span class="accord-score">-0.13</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-18 04:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s add some animations</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:#FFAB00;">Anxiety</span>
+                                    <span class="accord-count">48 (9.6%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 07:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">No worries at all</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Documentation is outdated</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 07:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the timeline for this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 10:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Can we schedule a meeting for tomorrow?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 04:00</span>
+                                            <span class="accord-score">0.25</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">We should consider mobile users</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 22:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-11 12:00</span>
+                                            <span class="accord-score">-0.06</span>
+                                            <span>43 words</span>
+                                        </div>
+                                        <div class="accord-text">Um, I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-15 17:00</span>
+                                            <span class="accord-score">0.29</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 08:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 08:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">The database migration is complete</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-18 03:00</span>
+                                            <span class="accord-score">0.35</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-19 02:00</span>
+                                            <span class="accord-score">-0.03</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-19 02:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s add some animations</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-19 07:00</span>
+                                            <span class="accord-score">0.09</span>
+                                            <span>2 words</span>
+                                        </div>
+                                        <div class="accord-text">OK</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-20 12:00</span>
+                                            <span class="accord-score">0.07</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">The database migration is complete</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-21 00:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">The API needs to be refactored</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-23 05:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>21 words</span>
+                                        </div>
+                                        <div class="accord-text">Let me think about it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-24 05:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">What if we tried a different approach?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-24 09:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">We need to optimize this query</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-28 02:00</span>
+                                            <span class="accord-score">0.10</span>
+                                            <span>239 words</span>
+                                        </div>
+                                        <div class="accord-text">The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn&#39;t working properly in some areas.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-29 03:00</span>
+                                            <span class="accord-score">-0.05</span>
+                                            <span>24 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-30 03:00</span>
+                                            <span class="accord-score">0.17</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-30 04:00</span>
+                                            <span class="accord-score">0.16</span>
+                                            <span>35 words</span>
+                                        </div>
+                                        <div class="accord-text">The user experience could be better</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-31 06:00</span>
+                                            <span class="accord-score">-0.40</span>
+                                            <span>19 words</span>
+                                        </div>
+                                        <div class="accord-text">This is a nightmare</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-31 08:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-31 17:00</span>
+                                            <span class="accord-score">0.29</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-02 09:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">What if we tried a different approach?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-05 02:00</span>
+                                            <span class="accord-score">0.10</span>
+                                            <span>36 words</span>
+                                        </div>
+                                        <div class="accord-text">Should we use PostgreSQL or MongoDB?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-05 06:00</span>
+                                            <span class="accord-score">0.28</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Who&#39;s working on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-05 10:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>239 words</span>
+                                        </div>
+                                        <div class="accord-text">The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn&#39;t working properly in some areas.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-08 06:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>28 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll get back to you on this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-11 03:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>21 words</span>
+                                        </div>
+                                        <div class="accord-text">Let me think about it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-11 23:00</span>
+                                            <span class="accord-score">0.29</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Who&#39;s working on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-12 00:00</span>
+                                            <span class="accord-score">-0.05</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">We need to optimize this query</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 03:00</span>
+                                            <span class="accord-score">0.01</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, I&#39;ll get back to you on this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 13:00</span>
+                                            <span class="accord-score">-0.07</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-13 22:00</span>
+                                            <span class="accord-score">-0.06</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the timeline for this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-16 01:00</span>
+                                            <span class="accord-score">0.05</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s sync up about the project roadmap</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-16 10:00</span>
+                                            <span class="accord-score">0.10</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">We need to optimize this query</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-19 00:00</span>
+                                            <span class="accord-score">0.01</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">We need to optimize this query</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-19 02:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-19 07:00</span>
+                                            <span class="accord-score">-0.11</span>
+                                            <span>37 words</span>
+                                        </div>
+                                        <div class="accord-text">I have a suggestion for the dashboard</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-19 11:00</span>
+                                            <span class="accord-score">0.13</span>
+                                            <span>37 words</span>
+                                        </div>
+                                        <div class="accord-text">Like, How did you solve this problem?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-21 02:00</span>
+                                            <span class="accord-score">0.14</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-22 03:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>28 words</span>
+                                        </div>
+                                        <div class="accord-text">Is this the right direction?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-23 01:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The feature branch is ready for review</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-23 07:00</span>
+                                            <span class="accord-score">0.28</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-23 09:00</span>
+                                            <span class="accord-score">0.08</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">The database migration is complete</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:#6FC2FF;">Sadness</span>
+                                    <span class="accord-count">34 (6.8%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 05:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 09:00</span>
+                                            <span class="accord-score">-0.07</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Should we use TypeScript or JavaScript?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 07:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 06:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 05:00</span>
+                                            <span class="accord-score">0.30</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s sync up about the project roadmap</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-12 00:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 02:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 06:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 04:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">When can we ship this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 05:00</span>
+                                            <span class="accord-score">0.09</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">When can we ship this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 17:00</span>
+                                            <span class="accord-score">-0.11</span>
+                                            <span>2 words</span>
+                                        </div>
+                                        <div class="accord-text">No</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 21:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-18 02:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>239 words</span>
+                                        </div>
+                                        <div class="accord-text">The user feedback has been incredibly valuable. People love the new interface, but there are some accessibility concerns we should address. The contrast ratio needs improvement, and keyboard navigation isn&#39;t working properly in some areas.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-19 06:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">No worries at all</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-20 03:00</span>
+                                            <span class="accord-score">0.05</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-22 03:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">What if we tried a different approach?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-23 06:00</span>
+                                            <span class="accord-score">-0.05</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-28 15:00</span>
+                                            <span class="accord-score">0.07</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">The database migration is complete</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-30 02:00</span>
+                                            <span class="accord-score">0.07</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-31 10:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>40 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m working on the authentication module</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-03 06:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Documentation is outdated</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-04 12:00</span>
+                                            <span class="accord-score">0.34</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-07 02:00</span>
+                                            <span class="accord-score">0.05</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-07 06:00</span>
+                                            <span class="accord-score">0.35</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-08 01:00</span>
+                                            <span class="accord-score">0.11</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-09 07:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>21 words</span>
+                                        </div>
+                                        <div class="accord-text">Like, I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-15 01:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>50 words</span>
+                                        </div>
+                                        <div class="accord-text">Basically, I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-17 05:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>36 words</span>
+                                        </div>
+                                        <div class="accord-text">Should we use PostgreSQL or MongoDB?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-19 05:00</span>
+                                            <span class="accord-score">0.26</span>
+                                            <span>231 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, After reviewing the codebase, I think we have some technical debt that needs to be addressed. The dependency tree is getting complex, and some packages haven&#39;t been updated in a while. We should plan a refactoring sprint.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-20 06:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>41 words</span>
+                                        </div>
+                                        <div class="accord-text">Idea for the new feature: add a dark mode</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-26 13:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-02-28 03:00</span>
+                                            <span class="accord-score">-0.05</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m not sure about this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-03-01 07:00</span>
+                                            <span class="accord-score">-0.40</span>
+                                            <span>18 words</span>
+                                        </div>
+                                        <div class="accord-text">This is ridiculous</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:#9B9B9B;">Fatigue</span>
+                                    <span class="accord-count">393 (78.6%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 00:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 01:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 04:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">So, The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 05:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 07:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">No worries at all</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 02:00</span>
+                                            <span class="accord-score">0.28</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the best approach here?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>26 words</span>
+                                        </div>
+                                        <div class="accord-text">Um, When can we ship this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Should we use TypeScript or JavaScript?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Documentation is outdated</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 06:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">The tests are failing on CI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 06:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>41 words</span>
+                                        </div>
+                                        <div class="accord-text">Idea for the new feature: add a dark mode</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 06:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">Sounds good to me</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 07:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 20:00</span>
+                                            <span class="accord-score">0.30</span>
+                                            <span>42 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, What if we tried a different approach?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-02 06:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>221 words</span>
+                                        </div>
+                                        <div class="accord-text">After reviewing the codebase, I think we have some technical debt that needs to be addressed. The dependency tree is getting complex, and some packages haven&#39;t been updated in a while. We should plan a refactoring sprint.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-02 08:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-02 20:00</span>
+                                            <span class="accord-score">-0.05</span>
+                                            <span>16 words</span>
+                                        </div>
+                                        <div class="accord-text">That makes sense</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 02:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 03:00</span>
+                                            <span class="accord-score">-0.00</span>
+                                            <span>16 words</span>
+                                        </div>
+                                        <div class="accord-text">That makes sense</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 03:00</span>
+                                            <span class="accord-score">-0.06</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, That&#39;s interesting</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 03:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>28 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll get back to you on this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 05:00</span>
+                                            <span class="accord-score">0.25</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 06:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 06:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>2 words</span>
+                                        </div>
+                                        <div class="accord-text">No</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 07:00</span>
+                                            <span class="accord-score">0.34</span>
+                                            <span>6 words</span>
+                                        </div>
+                                        <div class="accord-text">Got it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 07:00</span>
+                                            <span class="accord-score">-0.10</span>
+                                            <span>16 words</span>
+                                        </div>
+                                        <div class="accord-text">That makes sense</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 08:00</span>
+                                            <span class="accord-score">0.30</span>
+                                            <span>4 words</span>
+                                        </div>
+                                        <div class="accord-text">Wait</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 06:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 07:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the timeline for this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 08:00</span>
+                                            <span class="accord-score">0.05</span>
+                                            <span>35 words</span>
+                                        </div>
+                                        <div class="accord-text">The user experience could be better</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-05 01:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-05 03:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>16 words</span>
+                                        </div>
+                                        <div class="accord-text">See you tomorrow</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-05 03:00</span>
+                                            <span class="accord-score">0.14</span>
+                                            <span>21 words</span>
+                                        </div>
+                                        <div class="accord-text">Uh, I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 05:00</span>
+                                            <span class="accord-score">0.19</span>
+                                            <span>3 words</span>
+                                        </div>
+                                        <div class="accord-text">Yes</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 06:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you explain this to me?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 07:00</span>
+                                            <span class="accord-score">0.08</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s brainstorm about the UI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 08:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Have a great weekend</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 20:00</span>
+                                            <span class="accord-score">0.27</span>
+                                            <span>212 words</span>
+                                        </div>
+                                        <div class="accord-text">I wanted to share some thoughts about our development process. I think we could be more efficient if we had better code review practices and automated testing. The current manual testing approach is not scalable.</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 00:00</span>
+                                            <span class="accord-score">0.27</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">The API needs to be refactored</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 02:00</span>
+                                            <span class="accord-score">0.12</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">What are your thoughts on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 05:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Have a great weekend</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 06:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 06:00</span>
+                                            <span class="accord-score">-0.00</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">The tests are failing on CI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 08:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">The API needs to be refactored</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 01:00</span>
+                                            <span class="accord-score">0.23</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 03:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>40 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m working on the authentication module</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">0.15</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">What are your thoughts on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Have you considered this option?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 00:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                            </div>
+                        </div>
+                        <div class="accord-item">
+                            <div class="accord-hdr" onclick="toggleAccordion(this)">
+                                <div class="accord-title">
+                                    <span class="accord-label" style="color:#A855F7;">Stress</span>
+                                    <span class="accord-count">184 (36.8%)</span>
+                                </div>
+                                <span class="accord-icon">❯</span>
+                            </div>
+                            <div class="accord-body">
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 00:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 04:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">So, The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 05:00</span>
+                                            <span class="accord-score">-0.04</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2025-12-31 09:00</span>
+                                            <span class="accord-score">0.23</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">Can you believe this happened?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>26 words</span>
+                                        </div>
+                                        <div class="accord-text">Um, When can we ship this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.18</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Should we use TypeScript or JavaScript?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 05:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">Documentation is outdated</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 06:00</span>
+                                            <span class="accord-score">0.21</span>
+                                            <span>27 words</span>
+                                        </div>
+                                        <div class="accord-text">The tests are failing on CI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-01 06:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">Sounds good to me</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-02 10:00</span>
+                                            <span class="accord-score">-0.12</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the timeline for this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 02:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 03:00</span>
+                                            <span class="accord-score">-0.00</span>
+                                            <span>16 words</span>
+                                        </div>
+                                        <div class="accord-text">That makes sense</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-03 05:00</span>
+                                            <span class="accord-score">0.25</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-04 06:00</span>
+                                            <span class="accord-score">-0.02</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-05 01:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>25 words</span>
+                                        </div>
+                                        <div class="accord-text">The weather is nice today</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 05:00</span>
+                                            <span class="accord-score">0.19</span>
+                                            <span>3 words</span>
+                                        </div>
+                                        <div class="accord-text">Yes</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 07:00</span>
+                                            <span class="accord-score">0.08</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s brainstorm about the UI</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 12:00</span>
+                                            <span class="accord-score">0.23</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-06 14:00</span>
+                                            <span class="accord-score">0.11</span>
+                                            <span>2 words</span>
+                                        </div>
+                                        <div class="accord-text">OK</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 08:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>30 words</span>
+                                        </div>
+                                        <div class="accord-text">The API needs to be refactored</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 09:00</span>
+                                            <span class="accord-score">0.28</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-07 10:00</span>
+                                            <span class="accord-score">0.24</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Can we schedule a meeting for tomorrow?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 01:00</span>
+                                            <span class="accord-score">0.23</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 03:00</span>
+                                            <span class="accord-score">0.03</span>
+                                            <span>40 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m working on the authentication module</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">0.15</span>
+                                            <span>31 words</span>
+                                        </div>
+                                        <div class="accord-text">What are your thoughts on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-08 04:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>32 words</span>
+                                        </div>
+                                        <div class="accord-text">Have you considered this option?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 00:00</span>
+                                            <span class="accord-score">0.00</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 03:00</span>
+                                            <span class="accord-score">0.19</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">Let&#39;s deploy to staging first</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 05:00</span>
+                                            <span class="accord-score">0.33</span>
+                                            <span>29 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s the timeline for this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 06:00</span>
+                                            <span class="accord-score">0.28</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The deployment is scheduled for Friday</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-09 12:00</span>
+                                            <span class="accord-score">0.14</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 02:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m not sure about this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 02:00</span>
+                                            <span class="accord-score">-0.14</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 11:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>36 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, Accessibility is important</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-10 23:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Have a great weekend</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-11 03:00</span>
+                                            <span class="accord-score">-0.11</span>
+                                            <span>42 words</span>
+                                        </div>
+                                        <div class="accord-text">Actually, Need to review the pull requests</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-12 00:00</span>
+                                            <span class="accord-score">0.22</span>
+                                            <span>20 words</span>
+                                        </div>
+                                        <div class="accord-text">Thanks for your help</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-12 04:00</span>
+                                            <span class="accord-score">0.50</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">Like, Sounds good to me</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-12 22:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Who&#39;s working on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-13 03:00</span>
+                                            <span class="accord-score">0.02</span>
+                                            <span>28 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll get back to you on this</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-13 06:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>23 words</span>
+                                        </div>
+                                        <div class="accord-text">What&#39;s for lunch today?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-14 04:00</span>
+                                            <span class="accord-score">0.30</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-14 05:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>15 words</span>
+                                        </div>
+                                        <div class="accord-text">I appreciate it</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-14 14:00</span>
+                                            <span class="accord-score">0.32</span>
+                                            <span>17 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;m feeling tired</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 03:00</span>
+                                            <span class="accord-score">0.06</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">Can we schedule a meeting for tomorrow?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 04:00</span>
+                                            <span class="accord-score">-0.03</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">Who&#39;s working on this?</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-16 08:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>39 words</span>
+                                        </div>
+                                        <div class="accord-text">I&#39;ll fix this bug by the end of the day</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 02:00</span>
+                                            <span class="accord-score">0.31</span>
+                                            <span>34 words</span>
+                                        </div>
+                                        <div class="accord-text">I need more context on this ticket</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 03:00</span>
+                                            <span class="accord-score">0.35</span>
+                                            <span>38 words</span>
+                                        </div>
+                                        <div class="accord-text">The feature branch is ready for review</div>
+                                    </div>
+                                    <div class="accord-row">
+                                        <div class="accord-meta">
+                                            <span>2026-01-17 04:00</span>
+                                            <span class="accord-score">0.20</span>
+                                            <span>22 words</span>
+                                        </div>
+                                        <div class="accord-text">When can we ship this?</div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="band band-c1">
+                <div class="cell">
+                    <p class="stat-lbl mb8">📈 Daily Sentiment Trend</p>
+                    <div class="chart-box" id="chart-emotion-trend" style="height:180px;"></div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">⚠️ Profanity Calendar / 📱 App Usage Stats / Mental Health Indicators</div>
+            <div class="band band-c3">
+                <div class="cell" style="padding:0;">
+                    <table class="dt" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th>DATETIME</th>
+                                <th>WORDS</th>
+                                <th>CONTENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mono" style="font-size:10px; color:var(--accent-error);">2026-01-31 06</td>
+                                <td class="mono" style="font-size:10px; color:var(--text-secondary);">words 19</td>
+                                <td style="font-size:11px;">This is a nightmare</td>
+                            </tr>
+                            <tr>
+                                <td class="mono" style="font-size:10px; color:var(--accent-error);">2026-03-01 07</td>
+                                <td class="mono" style="font-size:10px; color:var(--text-secondary);">words 18</td>
+                                <td style="font-size:11px;">This is ridiculous</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cell" style="padding:0;">
+                    <table class="dt" style="width:100%;">
+                        <thead>
+                            <tr>
+                                <th style="width:24px;">#</th>
+                                <th>APP</th>
+                                <th>COUNT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mono" style="font-size:13px;">🥇</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">VSCode</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:0.228%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">114</td>
+                            </tr>
+                            <tr>
+                                <td class="mono" style="font-size:13px;">🥈</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">Google Chrome</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:0.184%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">92</td>
+                            </tr>
+                            <tr>
+                                <td class="mono" style="font-size:13px;">🥉</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">Terminal</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:0.176%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">88</td>
+                            </tr>
+                            <tr>
+                                <td class="mono" style="font-size:13px;">4.</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">Slack</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:0.11%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">55</td>
+                            </tr>
+                            <tr>
+                                <td class="mono" style="font-size:13px;">5.</td>
+                                <td>
+                                    <div style="font-size:11px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:120px;">Typeless</div>
+                                    <div style="height:3px; background:var(--bg-elevated); margin-top:3px;">
+                                        <div style="width:0.106%; height:100%; background:var(--accent-success);"></div>
+                                    </div>
+                                </td>
+                                <td class="mono" style="font-size:11px; text-align:right; color:var(--text-secondary);">53</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="cell" style="padding:0;">
+                    <div class="flex">
+                        <div class="mh-half">
+                            <p class="mh-val" style="color:var(--accent-warning);">0.51</p>
+                            <p class="mh-lbl">Avg Stress</p>
+                        </div>
+                        <div class="mh-half">
+                            <p class="mh-val col-green">0.60</p>
+                            <p class="mh-lbl">Optimism Score</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">Topic Distribution</div>
+            <div class="band band-c1">
+                <div class="cell">
+                    <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:8px;">
+                        <div class="topic-card" style="flex:0 0 160px;">
+                            <span class="topic-card-num">256</span>
+                            <span class="topic-card-name">工作</span>
+                        </div>
+                        <div class="topic-card" style="flex:0 0 160px;">
+                            <span class="topic-card-num">256</span>
+                            <span class="topic-card-name">技术</span>
+                        </div>
+                        <div class="topic-card" style="flex:0 0 160px;">
+                            <span class="topic-card-num">244</span>
+                            <span class="topic-card-name">生活</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">Creative Moments / Humor Moments</div>
+            <div class="band band-c2">
+                <div class="cell" style="max-height:240px; overflow-y:auto;">
+                        <div class="moment">
+                            <p class="moment-meta">2025-12-31 · routine</p>
+                            <p class="moment-text">"The weather is nice today"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-01 · routine</p>
+                            <p class="moment-text">"Should we use TypeScript or JavaScript?"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-01 · routine</p>
+                            <p class="moment-text">"The tests are failing on CI"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-02 · routine</p>
+                            <p class="moment-text">"What&#39;s the timeline for this?"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-03 · routine</p>
+                            <p class="moment-text">"Thanks for your help"</p>
+                        </div>
+                </div>
+                <div class="cell" style="max-height:240px; overflow-y:auto;">
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-02 · None</p>
+                            <p class="moment-text">"I appreciate it"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-02 · None</p>
+                            <p class="moment-text">"Let&#39;s add some animations"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-03 · None</p>
+                            <p class="moment-text">"Thanks for your help"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-03 · None</p>
+                            <p class="moment-text">"That makes sense"</p>
+                        </div>
+                        <div class="moment">
+                            <p class="moment-meta">2026-01-05 · None</p>
+                            <p class="moment-text">"See you tomorrow"</p>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="tab-panel" id="panel-time">
+
+            <div class="band-hdr">Usage Habits / Extreme Comparison</div>
+            <div class="band band-c2">
+                <div class="cell">
+                    <div class="habit-row">
+                        <span class="habit-lbl">Longest Streak (days)</span>
+                        <span class="habit-val">61</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">Active Days</span>
+                        <span class="habit-val">61</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">Gap Days</span>
+                        <span class="habit-val">0</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="habit-row">
+                        <span class="habit-lbl">Busiest Week</span>
+                        <span class="habit-val">63</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">Laziest Week</span>
+                        <span class="habit-val">38</span>
+                    </div>
+                    <div class="habit-row">
+                        <span class="habit-lbl">Gap Ratio</span>
+                        <span class="habit-val col-yellow">1.7×</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">Last 30 Days Trend</div>
+            <div class="band band-c1">
+                <div class="cell">
+                    <div class="chart-box" id="chart-trend" style="height:200px;"></div>
+                </div>
+            </div>
+
+            <div class="band-hdr mt8">24-Hour Distribution / Top 5 Dates</div>
+            <div class="band band-c2">
+                <div class="cell">
+                    <div class="chart-box" id="chart-hour" style="height:200px;"></div>
+                </div>
+                <div class="cell">
+                        <div class="rank-row">
+                            <span class="rank-medal">🥇</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">2026-02-19</span>
+                                    <span class="rank-n">14</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:100.0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rank-row">
+                            <span class="rank-medal">🥈</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">2026-01-09</span>
+                                    <span class="rank-n">13</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:92.9%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rank-row">
+                            <span class="rank-medal">🥉</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">2026-01-17</span>
+                                    <span class="rank-n">13</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:92.9%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rank-row">
+                            <span class="rank-medal">4.</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">2026-01-03</span>
+                                    <span class="rank-n">12</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:85.7%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rank-row">
+                            <span class="rank-medal">5.</span>
+                            <div class="rank-body">
+                                <div class="rank-top">
+                                    <span class="rank-date">2026-01-16</span>
+                                    <span class="rank-n">12</span>
+                                </div>
+                                <div class="rank-bar">
+                                    <div class="rank-bar-fill" style="width:85.7%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div><!-- end .wrapper -->
+
+    <footer class="footer">
+        Generated by Typeless Analytics · 2026-03-01
+    </footer>
+
+    <script>
+        const DATA = {"ai_insights": {"big_five": {"agreeableness": 0.598, "conscientiousness": 0.659, "extraversion": 0.451, "neuroticism": 0.402, "openness": 0.557}, "sentiment": {"negative": 52, "neutral": 256, "positive": 192}, "triggers_labels": [], "triggers_values": []}, "daily_trend": {"counts": [11, 4, 7, 9, 6, 10, 7, 11, 9, 6, 6, 9, 7, 12, 6, 10, 6, 10, 7, 14, 12, 8, 6, 7, 5, 8, 9, 8, 12, 9], "dates": ["2026-01-31", "2026-02-01", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-07", "2026-02-08", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28", "2026-03-01"]}, "emotion_trend": {"dates": ["2025-12-31", "2026-01-01", "2026-01-02", "2026-01-03", "2026-01-04", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-10", "2026-01-11", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-17", "2026-01-18", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-24", "2026-01-25", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-01-31", "2026-02-01", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-07", "2026-02-08", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-14", "2026-02-15", "2026-02-16", "2026-02-17", "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-21", "2026-02-22", "2026-02-23", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-02-28", "2026-03-01"], "scores": [0.207, 0.172, 0.04, 0.117, -0.042, 0.268, 0.17, 0.212, 0.058, 0.174, 0.153, 0.036, 0.193, 0.146, 0.151, 0.212, 0.16, 0.184, 0.057, 0.16, 0.178, 0.155, 0.136, 0.086, 0.11, 0.161, 0.247, 0.064, 0.085, 0.102, 0.059, 0.07, 0.19, 0.27, 0.106, 0.205, 0.215, 0.133, 0.114, 0.213, 0.127, 0.008, 0.144, 0.131, 0.07, 0.192, 0.177, 0.045, 0.127, 0.083, 0.129, 0.145, 0.163, 0.208, 0.089, 0.18, 0.045, 0.127, 0.151, 0.119, 0.089]}, "hour_dist": [22, 28, 38, 59, 45, 41, 58, 38, 38, 32, 17, 18, 20, 9, 6, 1, 0, 4, 3, 1, 5, 2, 9, 6], "i18n": {"big_five_labels": ["Openness", "Conscient.", "Extravers.", "Agreeable.", "Neurotic."], "btn_dark": "\ud83c\udf19 Dark Mode", "btn_light": "\u2600\ufe0f Light Mode", "chart_long": "Long \u003e100", "chart_medium": "Medium 21-100", "chart_short": "Short \u226420"}, "length_dist": {"long": 10, "medium": 389, "short": 101}};
+
+
+        /* ── Color helper ───────────────────────────────────────── */
+        function c() {
+            const dark = document.body.classList.contains('theme-dark');
+            return {
+                bg:     dark ? '#1E1E1E' : '#FFFFFF',
+                text:   dark ? '#9B9B9B' : '#6B6B6B',
+                border: dark ? '#3A3A3A' : '#E5E5E5',
+                yellow: '#FFDE00',
+                green:  '#00D26A',
+                blue:   '#6FC2FF',
+                red:    '#FF4D4D',
+                purple: '#A855F7',
+            };
+        }
+
+        const charts = {};
+
+        function initChart(id) {
+            const el = document.getElementById(id);
+            if (!el) return null;
+            if (!charts[id]) { charts[id] = echarts.init(el); }
+            charts[id].resize();
+            return charts[id];
+        }
+
+        /* ── Chart renderers ────────────────────────────────────── */
+        function renderTrendChart() {
+            const chart = initChart('chart-trend');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 44, right: 16, top: 12, bottom: 28 },
+                xAxis: {
+                    type: 'category', data: DATA.daily_trend.dates,
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                series: [{
+                    type: 'line', data: DATA.daily_trend.counts, smooth: true,
+                    symbol: 'none',
+                    itemStyle: { color: col.yellow },
+                    lineStyle: { width: 2, color: col.yellow },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255,222,0,0.35)' },
+                        { offset: 1, color: 'rgba(255,222,0,0)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderHourChart() {
+            const chart = initChart('chart-hour');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 30, right: 12, top: 12, bottom: 28 },
+                xAxis: {
+                    type: 'category',
+                    data: Array.from({length: 24}, (_, i) => i + 'h'),
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'bar', data: DATA.hour_dist,
+                    itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: col.blue },
+                        { offset: 1, color: 'rgba(111,194,255,0.2)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderLengthChart() {
+            const chart = initChart('chart-length');
+            if (!chart) return;
+            const col = c();
+            chart.setOption({
+                tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+                legend: {
+                    orient: 'vertical', right: 0, top: 'center',
+                    textStyle: { fontFamily: 'JetBrains Mono', fontSize: 10, color: col.text }
+                },
+                series: [{
+                    type: 'pie', radius: ['42%', '68%'],
+                    center: ['38%', '50%'],
+                    label: { show: false },
+                    data: [
+                        { value: DATA.length_dist.short,  name: DATA.i18n.chart_short,  itemStyle: { color: col.green } },
+                        { value: DATA.length_dist.medium, name: DATA.i18n.chart_medium, itemStyle: { color: col.blue } },
+                        { value: DATA.length_dist.long,   name: DATA.i18n.chart_long,   itemStyle: { color: col.purple } }
+                    ]
+                }]
+            });
+        }
+
+        function renderEmotionTrendChart() {
+            const chart = initChart('chart-emotion-trend');
+            if (!chart || DATA.emotion_trend.dates.length === 0) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 44, right: 16, top: 12, bottom: 36 },
+                xAxis: {
+                    type: 'category', data: DATA.emotion_trend.dates,
+                    axisLine: { lineStyle: { color: col.border } },
+                    axisLabel: {
+                        fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text, rotate: 30,
+                        interval: Math.max(0, Math.floor(DATA.emotion_trend.dates.length / 7) - 1)
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'line', data: DATA.emotion_trend.scores, smooth: true,
+                    symbol: 'none',
+                    itemStyle: { color: col.red },
+                    lineStyle: { width: 2, color: col.red },
+                    areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        { offset: 0, color: 'rgba(255,77,77,0.3)' },
+                        { offset: 1, color: 'rgba(255,77,77,0)' }
+                    ])}
+                }]
+            });
+        }
+
+        function renderBigFiveChart() {
+            const chart = initChart('chart-bigfive');
+            if (!chart) return;
+            const col = c();
+            const bf = DATA.ai_insights.big_five;
+            const labels = DATA.i18n.big_five_labels;
+            chart.setOption({
+                radar: {
+                    indicator: labels.map(name => ({ name, max: 1 })),
+                    splitLine: { lineStyle: { color: col.border } },
+                    axisLine: { lineStyle: { color: col.border } },
+                    name: { textStyle: { color: col.text, fontFamily: 'JetBrains Mono', fontSize: 10 } }
+                },
+                series: [{
+                    type: 'radar',
+                    data: [{
+                        value: [bf.openness, bf.conscientiousness, bf.extraversion, bf.agreeableness, bf.neuroticism],
+                        itemStyle: { color: col.yellow },
+                        lineStyle: { color: col.yellow },
+                        areaStyle: { color: 'rgba(255,222,0,0.2)' }
+                    }]
+                }]
+            });
+        }
+
+        function renderTriggersChart() {
+            const chart = initChart('chart-triggers');
+            if (!chart || DATA.ai_insights.triggers_labels.length === 0) return;
+            const col = c();
+            chart.setOption({
+                grid: { left: 120, right: 16, top: 8, bottom: 28 },
+                xAxis: {
+                    type: 'value',
+                    splitLine: { lineStyle: { color: col.border, type: 'dashed' } },
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                yAxis: {
+                    type: 'category', data: DATA.ai_insights.triggers_labels,
+                    axisLabel: { fontFamily: 'JetBrains Mono', fontSize: 9, color: col.text }
+                },
+                series: [{
+                    type: 'bar', data: DATA.ai_insights.triggers_values,
+                    itemStyle: { color: col.blue }
+                }]
+            });
+        }
+
+        function rerenderActive() {
+            const active = document.querySelector('.tab-panel.active');
+            if (!active) return;
+            const id = active.id;
+            if (id === 'panel-overview') { renderBigFiveChart(); }
+            else if (id === 'panel-content') { renderLengthChart(); renderTriggersChart(); renderEmotionTrendChart(); }
+            else if (id === 'panel-time') { renderTrendChart(); renderHourChart(); }
+        }
+
+        /* ── Count-up animation ──────────────────────────────────── */
+        function countUp(el, target, decimals) {
+            const start = performance.now();
+            const dur = 900;
+            function step(now) {
+                const p = Math.min((now - start) / dur, 1);
+                const ease = 1 - Math.pow(1 - p, 3);
+                const val = target * ease;
+                el.textContent = decimals > 0
+                    ? val.toFixed(decimals)
+                    : Math.floor(val).toLocaleString();
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = decimals > 0 ? target.toFixed(decimals) : Number(target).toLocaleString();
+            }
+            requestAnimationFrame(step);
+        }
+
+        function initCountUp() {
+            document.querySelectorAll('[data-count]').forEach(el => {
+                const target = parseFloat(el.dataset.count);
+                const dec = parseInt(el.dataset.dec || '0');
+                if (!isNaN(target)) countUp(el, target, dec);
+            });
+        }
+
+        /* ── Theme toggle ────────────────────────────────────────── */
+        function toggleTheme() {
+            document.body.classList.toggle('theme-dark');
+            const isDark = document.body.classList.contains('theme-dark');
+            document.getElementById('theme-btn').textContent = isDark ? DATA.i18n.btn_light : DATA.i18n.btn_dark;
+            setTimeout(rerenderActive, 120);
+        }
+
+        /* ── Tab switching ───────────────────────────────────────── */
+        function switchTab(panel) {
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('panel-' + panel).classList.add('active');
+            document.querySelector(`[data-panel="${panel}"]`).classList.add('active');
+            setTimeout(() => {
+                if (panel === 'overview') renderBigFiveChart();
+                else if (panel === 'content') { renderLengthChart(); renderTriggersChart(); renderEmotionTrendChart(); }
+                else if (panel === 'time') { renderTrendChart(); renderHourChart(); }
+            }, 80);
+        }
+
+        /* ── Accordion ───────────────────────────────────────────── */
+        function toggleAccordion(hdr) {
+            const body = hdr.nextElementSibling;
+            const wasOpen = hdr.classList.contains('open');
+            document.querySelectorAll('.accord-hdr').forEach(h => {
+                h.classList.remove('open');
+                h.nextElementSibling.classList.remove('open');
+            });
+            if (!wasOpen) { hdr.classList.add('open'); body.classList.add('open'); }
+        }
+
+        /* ── Init ────────────────────────────────────────────────── */
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.panel));
+        });
+        document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+        window.addEventListener('resize', () => Object.values(charts).forEach(ch => ch && ch.resize()));
+
+        renderBigFiveChart();
+        renderEmotionTrendChart();
+        initCountUp();
+
+    </script>
+</body>
+</html>

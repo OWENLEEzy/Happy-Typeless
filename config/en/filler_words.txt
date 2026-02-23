@@ -1,0 +1,19 @@
+# English filler words
+# 用于口头禅分类
+
+# 语气词
+um uh hmm
+
+# 填充词
+like you know
+
+# 副词修饰
+actually basically literally
+
+# 短语
+kind of sort of
+
+# 连接词
+I mean
+
+well so
